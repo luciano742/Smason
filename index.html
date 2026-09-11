@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smazon - Catalogo e-commerce</title>
+    <style>
+        :root {
+            --primary-color: #232f3e;
+            --secondary-color: #febd69;
+            --background-color: #eaeded;
+            --text-color: #0F1111;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        select, button {
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cart-btn {
+            background-color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .register-btn {
+            background-color: #ffd814;
+            font-weight: bold;
+        }
+
+        .upload-toggle-btn {
+            background-color: #007185;
+            color: white;
+            font-weight: bold;
+        }
+
+        .categories-bar {
+            background-color: #37475a;
+            padding: 0.75rem 2rem;
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .category-item {
+            color: var(--white);
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 2px;
+        }
+
+        .category-item:hover, .category-item.active {
+            background-color: rgba(255,255,255,0.2);
+            color: var(--secondary-color);
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .auth-section, .upload-section {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .auth-section h2, .upload-section h2 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .auth-form, .upload-form {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .auth-form input, .upload-form input, .upload-form select {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .upload-form input[type="file"] {
+            border: none;
+            padding: 0.2rem;
+        }
+
+        .auth-form button, .upload-form button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .product-card::after {
+            content: "📷 Clicca per caricare foto";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .product-card:hover::after {
+            opacity: 1;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            background-color: #f0f0f0;
+        }
+
+        .product-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card p {
+            color: #565959;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #B12704;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            background-color: #ffd814;
+            border: 1px solid #fcd200;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .add-to-cart:hover {
+            background-color: #f7ca00;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .cart-items-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 0.5rem 0;
+        }
+
+        .cart-summary {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .whatsapp-order-btn {
+            background-color: #25d366;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .close-modal {
+            background-color: #ccc;
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Input file nascosto per la galleria associato alle card esistenti -->
+    <input type="file" id="quick-file-input" accept="image/*" style="display: none;" onchange="handleQuickImageUpload(event)">
+
+    <header>
+        <div class="logo" id="logo-text">Smazon</div>
+        <div class="controls">
+            <select id="lang-select" onchange="changeLanguage()">
+                <optgroup label="Italiano">
+                    <option value="it">Italiano (Standard)</option>
+                </optgroup>
+                <optgroup label="Deutsch (Germania e Regioni)">
+                    <option value="de">Deutsch (Standard)</option>
+                    <option value="de-by">Bayern (Baviera)</option>
+                    <option value="de-nw">Nordrhein-Westfalen</option>
+                    <option value="de-bw">Baden-Württemberg</option>
+                </optgroup>
+                <optgroup label="Français (Francia e Regioni)">
+                    <option value="fr">Français (Standard)</option>
+                    <option value="fr-idf">Île-de-France</option>
+                    <option value="fr-pac">Provence-Alpes-Côte d'Azur</option>
+                    <option value="fr-ara">Auvergne-Rhône-Alpes</option>
+                </optgroup>
+                <optgroup label="Русский (Russia e Regioni)">
+                    <option value="ru">Русский (Standard)</option>
+                    <option value="ru-mos">Москва (Mosca)</option>
+                    <option value="ru-spb">Санкт-Петербург</option>
+                </optgroup>
+                <optgroup label="中文 (Cina e Regioni)">
+                    <option value="zh">中文 (Mandarino)</option>
+                    <option value="zh-gd">广东 (Guangdong)</option>
+                    <option value="zh-zj">浙江 (Zhejiang)</option>
+                    <option value="zh-sc">四川 (Sichuan)</option>
+                </optgroup>
+                <optgroup label="Bahasa Indonesia (Indonesia e Regioni)">
+                    <option value="id">Indonesia (Standard)</option>
+                    <option value="id-jkt">DKI Jakarta</option>
+                    <option value="id-jb">Jawa Barat</option>
+                    <option value="id-ji">Jawa Timur</option>
+                </optgroup>
+                <optgroup label="اردو / ਪੰਜਾਬੀ (Pakistan e Regioni)">
+                    <option value="ur">اردو / Pakistani (Standard)</option>
+                    <option value="ur-pun">پنجاب (Punjab)</option>
+                    <option value="ur-sin">سندھ (Sindh)</option>
+                    <option value="ur-kpk">خیبر پختونخوا (KPK)</option>
+                </optgroup>
+                <optgroup label="English (Stati Uniti e Regioni)">
+                    <option value="en-us">English (US Standard)</option>
+                    <option value="en-ny">New York State</option>
+                    <option value="en-ca">California</option>
+                    <option value="en-tx">Texas</option>
+                    <option value="en-fl">Florida</option>
+                </optgroup>
+            </select>
+
+            <select id="currency-select" onchange="changeCurrency()">
+                <option value="EUR">EUR (€)</option>
+                <option value="USD">USD ($)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="RUB">RUB (₽)</option>
+                <option value="CNY">CNY (¥)</option>
+                <option value="IDR">IDR (Rp)</option>
+                <option value="PKR">PKR (Rs)</option>
+            </select>
+
+            <button class="upload-toggle-btn" onclick="toggleUpload()" id="upload-toggle-text">Carica Prodotto</button>
+            <button class="register-btn" onclick="toggleAuth()" id="reg-btn-text">Registrati</button>
+            <button class="cart-btn" onclick="openCart()" id="cart-btn-text">Carrello (<span id="cart-count">0</span>)</button>
+        </div>
+    </header>
+
+    <nav class="categories-bar">
+        <button class="category-item active" onclick="filterCategory('all', this)" id="cat-all">Tutti</button>
+        <button class="category-item" onclick="filterCategory('elettronica', this)" id="cat-elec">Elettronica</button>
+        <button class="category-item" onclick="filterCategory('abbigliamento', this)" id="cat-cloth">Abbigliamento</button>
+        <button class="category-item" onclick="filterCategory('casa', this)" id="cat-home">Casa e Cucina</button>
+        <button class="category-item" onclick="filterCategory('gioielli', this)" id="cat-jewels">Gioielli - Made in Italy</button>
+        <button class="category-item" onclick="filterCategory('sport', this)" id="cat-sport">Sport e Tempo Libero</button>
+    </nav>
+
+    <main>
+        <div class="upload-section" id="upload-section">
+            <h2 id="upload-title">Carica Nuovo Prodotto</h2>
+            <div class="upload-form">
+                <input type="text" id="new-prod-name" placeholder="Nome Prodotto">
+                <input type="text" id="new-prod-desc" placeholder="Descrizione breve">
+                <input type="number" step="0.01" id="new-prod-price" placeholder="Prezzo in EUR (€)">
+                <select id="new-prod-cat">
+                    <option value="elettronica">Elettronica</option>
+                    <option value="abbigliamento">Abbigliamento</option>
+                    <option value="casa">Casa e Cucina</option>
+                    <option value="gioielli">Gioielli - Made in Italy</option>
+                    <option value="sport">Sport e Tempo Libero</option>
+                </select>
+                <input type="file" id="new-prod-img" accept="image/*">
+                <button onclick="addNewProduct()" id="upload-submit-btn">Pubblica Prodotto</button>
+            </div>
+        </div>
+
+        <div class="auth-section" id="auth-section">
+            <h2 id="auth-title">Registrazione Utente</h2>
+            <div class="auth-form">
+                <input type="text" id="username" placeholder="Nome e Cognome">
+                <input type="email" id="useremail" placeholder="Indirizzo Email">
+                <button onclick="registerUser()" id="auth-submit">Conferma Registrazione</button>
+            </div>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+            <div class="product-card" data-category="elettronica" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Smartphone X1</h3>
+                    <p class="prod-desc">Dispositivo mobile di ultima generazione.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="349.99">€349.99</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Smartphone X1', 349.99)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="elettronica" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Auricolari Wireless</h3>
+                    <p class="prod-desc">Audio ad alta fedeltà con cancellazione rumore.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="79.99">€79.99</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Auricolari Wireless', 79.99)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="elettronica" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Smartwatch Sport</h3>
+                    <p class="prod-desc">Monitoraggio fitness e notifiche smart.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="129.50">€129.50</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Smartwatch Sport', 129.50)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="abbigliamento" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Felpa con Cappuccio</h3>
+                    <p class="prod-desc">Comoda felpa in cotone felpato.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="45.00">€45.00</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Felpa con Cappuccio', 45.00)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="abbigliamento" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Giacca Impermeabile</h3>
+                    <p class="prod-desc">Ideale per tutte le condizioni atmosferiche.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="89.90">€89.90</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Giacca Impermeabile', 89.90)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="abbigliamento" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Scarpe da Ginnastica</h3>
+                    <p class="prod-desc">Calzature ammortizzate per la corsa.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="69.99">€69.99</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Scarpe da Ginnastica', 69.99)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="casa" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Robot Aspirapolvere</h3>
+                    <p class="prod-desc">Pulizia intelligente autonoma per casa.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="199.00">€199.00</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Robot Aspirapolvere', 199.00)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="casa" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Macchina Caffè Espresso</h3>
+                    <p class="prod-desc">Gusta un ottimo caffè cremoso ogni mattina.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="110.00">€110.00</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Macchina Caffè Espresso', 110.00)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="gioielli" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Collana in Argento</h3>
+                    <p class="prod-desc">Elegante gioiello artigianale rifinito a mano.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="55.00">€55.00</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Collana in Argento', 55.00)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="gioielli" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Bracciale con Pietre</h3>
+                    <p class="prod-desc">Design esclusivo e materiali pregiati.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="75.00">€75.00</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Bracciale con Pietre', 75.00)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="sport" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Tappetino Yoga Antiscivolo</h3>
+                    <p class="prod-desc">Perfetto per pilates, fitness e stretching.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="25.00">€25.00</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Tappetino Yoga Antiscivolo', 25.00)">Aggiungi al carrello</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="sport" onclick="triggerCardImageUpload(this, event)">
+                <div>
+                    <img src="" alt="Prodotto" class="product-img">
+                    <h3 class="prod-title">Set Manubri Regolabili</h3>
+                    <p class="prod-desc">Attrezzatura ideale per allenamento a casa.</p>
+                </div>
+                <div>
+                    <div class="price" data-price="99.99">€99.99</div>
+                    <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('Set Manubri Regolabili', 99.99)">Aggiungi al carrello</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <h3 id="modal-title">Il tuo Carrello</h3>
+            <div class="cart-items-list" id="cart-items-list">
+                <p>Il carrello è vuoto.</p>
+            </div>
+            <div id="cart-totals-container"></div>
+            <button class="whatsapp-order-btn" onclick="sendOrderWhatsApp()" id="wa-order-btn">Invia Ordine via WhatsApp</button>
+            <button class="close-modal" onclick="closeCart()" id="close-modal-btn">Chiudi</button>
+        </div>
+    </div>
+
+    <footer>
+        <p id="footer-copy">&copy; 2026 Smazon - Tutti i diritti riservati</p>
+        <div class="footer-links">
+            <a href="https://wa.me/393494605029" target="_blank" id="wa-link">WhatsApp: +39 349 460 5029</a>
+            <a href="mailto:smanzon@libero.it" id="contact-link">Email: smanzon@libero.it</a>
+            <a href="#" id="social-link-1">Instagram</a>
+            <a href="#" id="social-link-2">Facebook</a>
+        </div>
+    </footer>
+
+    <script>
+        let cart = [];
+        let activeCardForImage = null;
+
+        const translations = {
+            'it': { cart: 'Carrello', register: 'Registrati', upload: 'Carica Prodotto', add: 'Aggiungi al carrello', copy: '&copy; 2026 Smazon - Tutti i diritti riservati', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: smanzon@libero.it', modalTitle: 'Il tuo Carrello', emptyCart: 'Il carrello è vuoto.', waBtn: 'Invia Ordine via WhatsApp', closeBtn: 'Chiudi', authTitle: 'Registrazione Utente', authSubmit: 'Conferma Registrazione', regSuccess: 'Registrazione completata con successo!', uploadTitle: 'Carica Nuovo Prodotto', uploadBtn: 'Pubblica Prodotto', shipping: 'Spedizione', total: 'Totale', catAll: 'Tutti', catElec: 'Elettronica', catCloth: 'Abbigliamento', catHome: 'Casa e Cucina', catJewels: 'Gioielli - Made in Italy', catSport: 'Sport e Tempo Libero' },
+            'de': { cart: 'Warenkorb', register: 'Registrieren', upload: 'Produkt hochladen', add: 'In den Warenkorb', copy: '&copy; 2026 Smazon - Alle Rechte vorbehalten', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'E-Mail: smanzon@libero.it', modalTitle: 'Ihr Warenkorb', emptyCart: 'Der Warenkorb ist leer.', waBtn: 'Bestellung via WhatsApp senden', closeBtn: 'Schließen', authTitle: 'Benutzerregistrierung', authSubmit: 'Registrierung bestätigen', regSuccess: 'Registrierung erfolgreich!', uploadTitle: 'Neues Produkt hochladen', uploadBtn: 'Veröffentlichen', shipping: 'Versand', total: 'Gesamt', catAll: 'Alle', catElec: 'Elektronik', catCloth: 'Kleidung', catHome: 'Haus & Küche', catJewels: 'Schmuck - Made in Italy', catSport: 'Sport & Freizeit' },
+            'de-by': { cart: 'Warenkorb (Bay)', register: 'Registrieren (Bayern)', upload: 'Produkt hochladen', add: 'In den Warenkorb', copy: '&copy; 2026 Smazon Bayern', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'E-Mail: smanzon@libero.it', modalTitle: 'Ihr Warenkorb (Bayern)', emptyCart: 'Leer.', waBtn: 'Bestellung senden', closeBtn: 'Schließen', authTitle: 'Registrierung Bayern', authSubmit: 'Registrieren', regSuccess: 'Erfolgreich!', uploadTitle: 'Produkt hochladen', uploadBtn: 'Veröffentlichen', shipping: 'Versand', total: 'Gesamt', catAll: 'Alle', catElec: 'Elektronik', catCloth: 'Kleidung', catHome: 'Haus', catJewels: 'Schmuck - Made in Italy', catSport: 'Sport' },
+            'fr': { cart: 'Panier', register: "S'inscrire", upload: 'Ajouter Produit', add: 'Ajouter au panier', copy: '&copy; 2026 Smazon - Tous droits réservés', whatsapp: 'WhatsApp : +39 349 460 5029', contact: 'E-mail : smanzon@libero.it', modalTitle: 'Votre Panier', emptyCart: 'Le panier est vide.', waBtn: 'Envoyer via WhatsApp', closeBtn: 'Fermer', authTitle: 'Enregistrement', authSubmit: "Valider", regSuccess: 'Réussi !', uploadTitle: 'Ajouter un produit', uploadBtn: 'Publier', shipping: 'Livraison', total: 'Total', catAll: 'Tous', catElec: 'Électronique', catCloth: 'Vêtements', catHome: 'Maison', catJewels: 'Bijoux - Made in Italy', catSport: 'Sport' },
+            'ru': { cart: 'Корзина', register: 'Регистрация', upload: 'Загрузить товар', add: 'В корзину', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: smanzon@libero.it', modalTitle: 'Корзина', emptyCart: 'Пусто.', waBtn: 'Заказать', closeBtn: 'Закрыть', authTitle: 'Регистрация', authSubmit: 'OK', regSuccess: 'Успешно!', uploadTitle: 'Загрузить товар', uploadBtn: 'Опубликовать', shipping: 'Доставка', total: 'Итого', catAll: 'Все', catElec: 'Электроника', catCloth: 'Одежда', catHome: 'Дом', catJewels: 'Украшения - Made in Italy', catSport: 'Спорт' },
+            'zh': { cart: '购物车', register: '注册', upload: '上传商品', add: '加入购物车', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: '邮箱: smanzon@libero.it', modalTitle: '购物车', emptyCart: '空', waBtn: '发送订单', closeBtn: '关闭', authTitle: '注册', authSubmit: '确定', regSuccess: '成功！', uploadTitle: '上传新商品', uploadBtn: '发布', shipping: '运费', total: '总计', catAll: '全部', catElec: '电子产品', catCloth: '服装', catHome: '家居', catJewels: '珠宝 - Made in Italy', catSport: '运动' },
+            'id': { cart: 'Keranjang', register: 'Daftar', upload: 'Unggah Produk', add: 'Tambah', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: smanzon@libero.it', modalTitle: 'Keranjang', emptyCart: 'Kosong.', waBtn: 'Kirim', closeBtn: 'Tutup', authTitle: 'Daftar', authSubmit: 'OK', regSuccess: 'Berhasil!', uploadTitle: 'Unggah Produk Baru', uploadBtn: 'Publikasikan', shipping: 'Pengiriman', total: 'Total', catAll: 'Semua', catElec: 'Elektronik', catCloth: 'Pakaian', catHome: 'Rumah', catJewels: 'Perhiasan - Made in Italy', catSport: 'Olahraga' },
+            'ur': { cart: 'کارٹ', register: 'رجستر', upload: 'پروڈکٹ اپ لوڈ کریں', add: 'شامل کریں', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'ای میل: smanzon@libero.it', modalTitle: 'کارٹ', emptyCart: 'خالی ہے', waBtn: 'آرڈر بھیجیں', closeBtn: 'بند کریں', authTitle: 'رجسٹریشن', authSubmit: 'تصدیق', regSuccess: 'کامیاب!', uploadTitle: 'نئی پروڈکٹ اپ لوڈ کریں', uploadBtn: 'شائع کریں', shipping: 'ترسیل', total: 'کل رقم', catAll: 'سب', catElec: 'الیکٹرانکس', catCloth: 'ملبوسات', catHome: 'گھر', catJewels: 'زیورات - Made in Italy', catSport: 'کھیل' },
+            'en-us': { cart: 'Cart', register: 'Register', upload: 'Upload Product', add: 'Add to Cart', copy: '&copy; 2026 Smazon - All rights reserved', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: smanzon@libero.it', modalTitle: 'Your Cart', emptyCart: 'Your cart is empty.', waBtn: 'Send Order via WhatsApp', closeBtn: 'Close', authTitle: 'User Registration', authSubmit: 'Confirm Registration', regSuccess: 'Registration successful!', uploadTitle: 'Upload New Product', uploadBtn: 'Publish Product', shipping: 'Shipping', total: 'Total', catAll: 'All', catElec: 'Electronics', catCloth: 'Clothing', catHome: 'Home & Kitchen', catJewels: 'Jewelry - Made in Italy', catSport: 'Sports & Outdoors' }
+        };
+
+        function getLangKey(selectValue) {
+            let base = selectValue.split('-')[0];
+            return translations[selectValue] ? selectValue : (translations[base] ? base : 'it');
+        }
+
+        function changeLanguage() {
+            const selectVal = document.getElementById('lang-select').value;
+            const t = translations[getLangKey(selectVal)] || translations['it'];
+
+            document.getElementById('cart-btn-text').innerHTML = `${t.cart} (<span id="cart-count">${cart.length}</span>)`;
+            document.getElementById('reg-btn-text').innerText = t.register;
+            document.getElementById('upload-toggle-text').innerText = t.upload;
+            document.getElementById('footer-copy').innerHTML = t.copy;
+            document.getElementById('wa-link').innerText = t.whatsapp;
+            document.getElementById('contact-link').innerText = t.contact;
+            document.getElementById('modal-title').innerText = t.modalTitle;
+            document.getElementById('wa-order-btn').innerText = t.waBtn;
+            document.getElementById('close-modal-btn').innerText = t.closeBtn;
+            document.getElementById('auth-title').innerText = t.authTitle;
+            document.getElementById('auth-submit').innerText = t.authSubmit;
+            document.getElementById('upload-title').innerText = t.uploadTitle;
+            document.getElementById('upload-submit-btn').innerText = t.uploadBtn;
+
+            document.getElementById('cat-all').innerText = t.catAll;
+            document.getElementById('cat-elec').innerText = t.catElec;
+            document.getElementById('cat-cloth').innerText = t.catCloth;
+            document.getElementById('cat-home').innerText = t.catHome;
+            document.getElementById('cat-jewels').innerText = t.catJewels;
+            document.getElementById('cat-sport').innerText = t.catSport;
+
+            const catSelect = document.getElementById('new-prod-cat');
+            if(catSelect) {
+                catSelect.options[0].text = t.catElec;
+                catSelect.options[1].text = t.catCloth;
+                catSelect.options[2].text = t.catHome;
+                catSelect.options[3].text = t.catJewels;
+                catSelect.options[4].text = t.catSport;
+            }
+
+            document.querySelectorAll('.btn-text').forEach(btn => {
+                btn.innerText = t.add;
+            });
+
+            if (document.getElementById('cartModal').style.display === 'flex') {
+                openCart();
+            }
+        }
+
+        function filterCategory(category, btnElement) {
+            document.querySelectorAll('.category-item').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleAuth() {
+            const section = document.getElementById('auth-section');
+            const uploadSec = document.getElementById('upload-section');
+            uploadSec.style.display = 'none';
+            section.style.display = section.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleUpload() {
+            const section = document.getElementById('upload-section');
+            const authSec = document.getElementById('auth-section');
+            authSec.style.display = 'none';
+            section.style.display = section.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function registerUser() {
+            const name = document.getElementById('username').value;
+            const selectVal = document.getElementById('lang-select').value;
+            const t = translations[getLangKey(selectVal)] || translations['it'];
+            if(name) {
+                alert(`${t.regSuccess} Benvenuto, ${name}!`);
+                document.getElementById('auth-section').style.display = 'none';
+            } else {
+                alert("Inserisci un nome valido.");
+            }
+        }
+
+        function triggerCardImageUpload(cardElement, event) {
+            activeCardForImage = cardElement;
+            document.getElementById('quick-file-input').click();
+        }
+
+        function handleQuickImageUpload(event) {
+            const fileInput = event.target;
+            if (fileInput.files && fileInput.files[0] && activeCardForImage) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgEl = activeCardForImage.querySelector('.product-img');
+                    if (imgEl) {
+                        imgEl.src = e.target.result;
+                    }
+                    activeCardForImage = null;
+                    fileInput.value = '';
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        function addNewProduct() {
+            const name = document.getElementById('new-prod-name').value;
+            const desc = document.getElementById('new-prod-desc').value;
+            const price = parseFloat(document.getElementById('new-prod-price').value);
+            const category = document.getElementById('new-prod-cat').value;
+            const imageInput = document.getElementById('new-prod-img');
+
+            if (!name || isNaN(price)) {
+                alert("Inserisci almeno un nome valido e un prezzo numerico.");
+                return;
+            }
+
+            const grid = document.getElementById('product-grid');
+            const newCard = document.createElement('div');
+            newCard.className = 'product-card';
+            newCard.setAttribute('data-category', category);
+            newCard.setAttribute('onclick', 'triggerCardImageUpload(this, event)');
+
+            const createCardHTML = (imgSrc) => {
+                const selectVal = document.getElementById('lang-select').value;
+                const t = translations[getLangKey(selectVal)] || translations['it'];
+
+                newCard.innerHTML = `
+                    <div>
+                        <img src="${imgSrc}" alt="${name}" class="product-img">
+                        <h3 class="prod-title">${name}</h3>
+                        <p class="prod-desc">${desc || 'Nessuna descrizione inserita.'}</p>
+                    </div>
+                    <div>
+                        <div class="price" data-price="${price}">€${price.toFixed(2)}</div>
+                        <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart('${name.replace(/'/g, "\\'")}', ${price})">${t.add}</button>
+                    </div>
+                `;
+                grid.prepend(newCard);
+                
+                const activeCat = document.querySelector('.category-item.active');
+                if (activeCat && !activeCat.id.includes('cat-all')) {
+                    let activeCategoryKey = 'all';
+                    if (activeCat.id === 'cat-elec') activeCategoryKey = 'elettronica';
+                    if (activeCat.id === 'cat-cloth') activeCategoryKey = 'abbigliamento';
+                    if (activeCat.id === 'cat-home') activeCategoryKey = 'casa';
+                    if (activeCat.id === 'cat-jewels') activeCategoryKey = 'gioielli';
+                    if (activeCat.id === 'cat-sport') activeCategoryKey = 'sport';
+
+                    if (category !== activeCategoryKey) {
+                        newCard.style.display = 'none';
+                    }
+                }
+
+                changeCurrency();
+                document.getElementById('upload-section').style.display = 'none';
+                document.getElementById('new-prod-name').value = '';
+                document.getElementById('new-prod-desc').value = '';
+                document.getElementById('new-prod-price').value = '';
+                document.getElementById('new-prod-img').value = '';
+                alert("Prodotto caricato con successo!");
+            };
+
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    createCardHTML(e.target.result);
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                createCardHTML('');
+            }
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            document.getElementById('cart-count').innerText = cart.length;
+            
+            const selectVal = document.getElementById('lang-select').value;
+            const t = translations[getLangKey(selectVal)] || translations['it'];
+            alert(`${name} ${t.add.toLowerCase()}!`);
+        }
+
+        function formatPrice(basePrice) {
+            const currency = document.getElementById('currency-select').value;
+            let symbol = '€';
+            let convertedPrice = basePrice;
+
+            if (currency === 'USD') {
+                convertedPrice = basePrice * 1.1;
+                symbol = '$';
+            } else if (currency === 'GBP') {
+                convertedPrice = basePrice * 0.85;
+                symbol = '£';
+            } else if (currency === 'RUB') {
+                convertedPrice = basePrice * 101.5;
+                symbol = '₽';
+            } else if (currency === 'CNY') {
+                convertedPrice = basePrice * 7.9;
+                symbol = '¥';
+            } else if (currency === 'IDR') {
+                convertedPrice = basePrice * 16900;
+                symbol = 'Rp ';
+            } else if (currency === 'PKR') {
+                convertedPrice = basePrice * 305;
+                symbol = 'Rs ';
+            }
+
+            if (currency === 'IDR' || currency === 'PKR') {
+                return symbol + convertedPrice.toLocaleString('it-IT', {maximumFractionDigits: 0});
+            } else {
+                return symbol + convertedPrice.toFixed(2);
+            }
+        }
+
+        function openCart() {
+            const selectVal = document.getElementById('lang-select').value;
+            const t = translations[getLangKey(selectVal)] || translations['it'];
+            const listContainer = document.getElementById('cart-items-list');
+            const totalsContainer = document.getElementById('cart-totals-container');
+            
+            listContainer.innerHTML = '';
+            if (cart.length === 0) {
+                listContainer.innerHTML = `<p>${t.emptyCart}</p>`;
+                totalsContainer.innerHTML = '';
+            } else {
+                let html = '<ul>';
+                let subtotal = 0;
+                cart.forEach((item) => {
+                    html += `<li>${item.name} - ${formatPrice(item.price)}</li>`;
+                    subtotal += item.price;
+                });
+                html += '</ul>';
+                listContainer.innerHTML = html;
+
+                let shippingCost = 5.00;
+                let grandTotal = subtotal + shippingCost;
+
+                totalsContainer.innerHTML = `
+                    <div class="cart-summary"><span>Subtotale:</span> <span>${formatPrice(subtotal)}</span></div>
+                    <div class="cart-summary"><span>${t.shipping}:</span> <span>${formatPrice(shippingCost)}</span></div>
+                    <div class="cart-summary" style="font-weight: bold; margin-top: 5px;"><span>${t.total}:</span> <span>${formatPrice(grandTotal)}</span></div>
+                `;
+            }
+            document.getElementById('cartModal').style.display = 'flex';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function sendOrderWhatsApp() {
+            if (cart.length === 0) {
+                alert("Il carrello è vuoto.");
+                return;
+            }
+            const selectVal = document.getElementById('lang-select').value;
+            const t = translations[getLangKey(selectVal)] || translations['it'];
+
+            let message = "Salve, vorrei ordinare i seguenti prodotti da Smazon:\n";
+            let subtotal = 0;
+            cart.forEach(item => {
+                message += `- ${item.name} (${formatPrice(item.price)})\n`;
+                subtotal += item.price;
+            });
+            let shippingCost = 5.00;
+            let grandTotal = subtotal + shippingCost;
+
+            message += `\n${t.shipping}: ${formatPrice(shippingCost)}`;
+            message += `\n${t.total}: ${formatPrice(grandTotal)}`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/393494605029?text=${encodedMessage}`, '_blank');
+        }
+
+        function changeCurrency() {
+            const priceElements = document.querySelectorAll('.price');
+            priceElements.forEach(el => {
+                let basePrice = parseFloat(el.getAttribute('data-price'));
+                el.innerText = formatPrice(basePrice);
+            });
+
+            if (document.getElementById('cartModal').style.display === 'flex') {
+                openCart();
+            }
+        }
+    </script>
+</body>
+</html>
