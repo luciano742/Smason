@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smazon - Catalogo e-commerce</title>
+    
+    <!-- SEO e Meta Tag -->
+    <title>Smazon - Catalogo E-commerce Multilingua e Ordini WhatsApp</title>
+    <meta name="description" content="Smazon è il tuo negozio e-commerce online di fiducia. Scopri elettronica, abbigliamento, casa, sport e gioielli Made in Italy. Ordina facilmente tramite WhatsApp.">
+    <meta name="keywords" content="Smazon, e-commerce, shopping online, elettronica, abbigliamento, gioielli Made in Italy, casa, sport, ordini whatsapp">
+    <meta name="author" content="Luciano Cirillo">
+    <meta name="robots" content="index, follow">
+
     <style>
         :root {
             --primary-color: #232f3e;
@@ -202,13 +209,53 @@
 
         .product-card h3 {
             font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .product-card p {
             color: #565959;
             font-size: 0.9rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-box {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            color: #007185;
+        }
+
+        .stars {
+            color: #ffa41c;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        .stars span {
+            transition: color 0.1s;
+        }
+
+        .stars span:hover, .stars span:hover ~ span {
+            color: #ccc;
+        }
+        
+        /* Invertiamo l'effetto hover delle stelle per illuminarle correttamente da sinistra a destra */
+        .stars {
+            unicode-bidi: bidi-override;
+            direction: rtl;
+            text-align: left;
+        }
+        .stars > span {
+            display: inline-block;
+            position: relative;
+            unicode-bidi: bidi-override;
+            direction: ltr;
+        }
+        .stars > span:hover:before,
+        .stars > span:hover ~ span:before {
+            color: #ffa41c;
         }
 
         .price {
@@ -257,12 +304,35 @@
         }
 
         .cart-items-list {
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
             margin-bottom: 1rem;
             border-top: 1px solid #eee;
             border-bottom: 1px solid #eee;
             padding: 0.5rem 0;
+        }
+
+        .shipping-calculator {
+            margin-bottom: 1rem;
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .shipping-calculator label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+            color: var(--primary-color);
+        }
+
+        .shipping-calculator select {
+            width: 100%;
+            padding: 0.4rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
         .cart-summary {
@@ -431,6 +501,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Smartphone X1</h3>
                     <p class="prod-desc">Dispositivo mobile di ultima generazione.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.5</strong> (<span class="review-count">12</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="349.99">€349.99</div>
@@ -443,6 +519,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Auricolari Wireless</h3>
                     <p class="prod-desc">Audio ad alta fedeltà con cancellazione rumore.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.2</strong> (<span class="review-count">8</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="79.99">€79.99</div>
@@ -455,6 +537,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Smartwatch Sport</h3>
                     <p class="prod-desc">Monitoraggio fitness e notifiche smart.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.7</strong> (<span class="review-count">19</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="129.50">€129.50</div>
@@ -467,6 +555,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Felpa con Cappuccio</h3>
                     <p class="prod-desc">Comoda felpa in cotone felpato.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.0</strong> (<span class="review-count">5</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="45.00">€45.00</div>
@@ -479,6 +573,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Giacca Impermeabile</h3>
                     <p class="prod-desc">Ideale per tutte le condizioni atmosferiche.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.4</strong> (<span class="review-count">10</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="89.90">€89.90</div>
@@ -491,6 +591,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Scarpe da Ginnastica</h3>
                     <p class="prod-desc">Calzature ammortizzate per la corsa.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.6</strong> (<span class="review-count">14</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="69.99">€69.99</div>
@@ -503,6 +609,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Robot Aspirapolvere</h3>
                     <p class="prod-desc">Pulizia intelligente autonoma per casa.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.8</strong> (<span class="review-count">22</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="199.00">€199.00</div>
@@ -515,6 +627,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Macchina Caffè Espresso</h3>
                     <p class="prod-desc">Gusta un ottimo caffè cremoso ogni mattina.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.3</strong> (<span class="review-count">11</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="110.00">€110.00</div>
@@ -527,6 +645,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Collana in Argento</h3>
                     <p class="prod-desc">Elegante gioiello artigianale rifinito a mano.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.9</strong> (<span class="review-count">30</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="55.00">€55.00</div>
@@ -539,6 +663,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Bracciale con Pietre</h3>
                     <p class="prod-desc">Design esclusivo e materiali pregiati.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.5</strong> (<span class="review-count">16</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="75.00">€75.00</div>
@@ -551,6 +681,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Tappetino Yoga Antiscivolo</h3>
                     <p class="prod-desc">Perfetto per pilates, fitness e stretching.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.1</strong> (<span class="review-count">7</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="25.00">€25.00</div>
@@ -563,6 +699,12 @@
                     <img src="" alt="Prodotto" class="product-img">
                     <h3 class="prod-title">Set Manubri Regolabili</h3>
                     <p class="prod-desc">Attrezzatura ideale per allenamento a casa.</p>
+                    <div class="rating-box" onclick="event.stopPropagation()">
+                        <div class="stars" onclick="event.stopPropagation()">
+                            <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                        </div>
+                        <span class="rating-text"><strong class="avg-rating">4.4</strong> (<span class="review-count">9</span>)</span>
+                    </div>
                 </div>
                 <div>
                     <div class="price" data-price="99.99">€99.99</div>
@@ -578,6 +720,17 @@
             <div class="cart-items-list" id="cart-items-list">
                 <p>Il carrello è vuoto.</p>
             </div>
+            
+            <div class="shipping-calculator">
+                <label id="dest-label" for="shipping-dest">Destinazione Spedizione:</label>
+                <select id="shipping-dest" onchange="openCart()">
+                    <option value="italy">Italia (Gratuita)</option>
+                    <option value="europe">Europa (Standard: €10.00)</option>
+                    <option value="usa">Stati Uniti / Nord America (€20.00)</option>
+                    <option value="world">Resto del Mondo (€35.00)</option>
+                </select>
+            </div>
+
             <div id="cart-totals-container"></div>
             <button class="whatsapp-order-btn" onclick="sendOrderWhatsApp()" id="wa-order-btn">Invia Ordine via WhatsApp</button>
             <button class="close-modal" onclick="closeCart()" id="close-modal-btn">Chiudi</button>
@@ -588,7 +741,7 @@
         <p id="footer-copy">&copy; 2026 Smazon - Tutti i diritti riservati</p>
         <div class="footer-links">
             <a href="https://wa.me/393494605029" target="_blank" id="wa-link">WhatsApp: +39 349 460 5029</a>
-            <a href="mailto:smanzon@libero.it" id="contact-link">Email: smanzon@libero.it</a>
+            <a href="mailto:Lucianocirillo14@gmail.com" id="contact-link">Email: Lucianocirillo14@gmail.com</a>
             <a href="#" id="social-link-1">Instagram</a>
             <a href="#" id="social-link-2">Facebook</a>
         </div>
@@ -599,15 +752,15 @@
         let activeCardForImage = null;
 
         const translations = {
-            'it': { cart: 'Carrello', register: 'Registrati', upload: 'Carica Prodotto', add: 'Aggiungi al carrello', copy: '&copy; 2026 Smazon - Tutti i diritti riservati', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: smanzon@libero.it', modalTitle: 'Il tuo Carrello', emptyCart: 'Il carrello è vuoto.', waBtn: 'Invia Ordine via WhatsApp', closeBtn: 'Chiudi', authTitle: 'Registrazione Utente', authSubmit: 'Conferma Registrazione', regSuccess: 'Registrazione completata con successo!', uploadTitle: 'Carica Nuovo Prodotto', uploadBtn: 'Pubblica Prodotto', shipping: 'Spedizione', total: 'Totale', catAll: 'Tutti', catElec: 'Elettronica', catCloth: 'Abbigliamento', catHome: 'Casa e Cucina', catJewels: 'Gioielli - Made in Italy', catSport: 'Sport e Tempo Libero' },
-            'de': { cart: 'Warenkorb', register: 'Registrieren', upload: 'Produkt hochladen', add: 'In den Warenkorb', copy: '&copy; 2026 Smazon - Alle Rechte vorbehalten', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'E-Mail: smanzon@libero.it', modalTitle: 'Ihr Warenkorb', emptyCart: 'Der Warenkorb ist leer.', waBtn: 'Bestellung via WhatsApp senden', closeBtn: 'Schließen', authTitle: 'Benutzerregistrierung', authSubmit: 'Registrierung bestätigen', regSuccess: 'Registrierung erfolgreich!', uploadTitle: 'Neues Produkt hochladen', uploadBtn: 'Veröffentlichen', shipping: 'Versand', total: 'Gesamt', catAll: 'Alle', catElec: 'Elektronik', catCloth: 'Kleidung', catHome: 'Haus & Küche', catJewels: 'Schmuck - Made in Italy', catSport: 'Sport & Freizeit' },
-            'de-by': { cart: 'Warenkorb (Bay)', register: 'Registrieren (Bayern)', upload: 'Produkt hochladen', add: 'In den Warenkorb', copy: '&copy; 2026 Smazon Bayern', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'E-Mail: smanzon@libero.it', modalTitle: 'Ihr Warenkorb (Bayern)', emptyCart: 'Leer.', waBtn: 'Bestellung senden', closeBtn: 'Schließen', authTitle: 'Registrierung Bayern', authSubmit: 'Registrieren', regSuccess: 'Erfolgreich!', uploadTitle: 'Produkt hochladen', uploadBtn: 'Veröffentlichen', shipping: 'Versand', total: 'Gesamt', catAll: 'Alle', catElec: 'Elektronik', catCloth: 'Kleidung', catHome: 'Haus', catJewels: 'Schmuck - Made in Italy', catSport: 'Sport' },
-            'fr': { cart: 'Panier', register: "S'inscrire", upload: 'Ajouter Produit', add: 'Ajouter au panier', copy: '&copy; 2026 Smazon - Tous droits réservés', whatsapp: 'WhatsApp : +39 349 460 5029', contact: 'E-mail : smanzon@libero.it', modalTitle: 'Votre Panier', emptyCart: 'Le panier est vide.', waBtn: 'Envoyer via WhatsApp', closeBtn: 'Fermer', authTitle: 'Enregistrement', authSubmit: "Valider", regSuccess: 'Réussi !', uploadTitle: 'Ajouter un produit', uploadBtn: 'Publier', shipping: 'Livraison', total: 'Total', catAll: 'Tous', catElec: 'Électronique', catCloth: 'Vêtements', catHome: 'Maison', catJewels: 'Bijoux - Made in Italy', catSport: 'Sport' },
-            'ru': { cart: 'Корзина', register: 'Регистрация', upload: 'Загрузить товар', add: 'В корзину', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: smanzon@libero.it', modalTitle: 'Корзина', emptyCart: 'Пусто.', waBtn: 'Заказать', closeBtn: 'Закрыть', authTitle: 'Регистрация', authSubmit: 'OK', regSuccess: 'Успешно!', uploadTitle: 'Загрузить товар', uploadBtn: 'Опубликовать', shipping: 'Доставка', total: 'Итого', catAll: 'Все', catElec: 'Электроника', catCloth: 'Одежда', catHome: 'Дом', catJewels: 'Украшения - Made in Italy', catSport: 'Спорт' },
-            'zh': { cart: '购物车', register: '注册', upload: '上传商品', add: '加入购物车', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: '邮箱: smanzon@libero.it', modalTitle: '购物车', emptyCart: '空', waBtn: '发送订单', closeBtn: '关闭', authTitle: '注册', authSubmit: '确定', regSuccess: '成功！', uploadTitle: '上传新商品', uploadBtn: '发布', shipping: '运费', total: '总计', catAll: '全部', catElec: '电子产品', catCloth: '服装', catHome: '家居', catJewels: '珠宝 - Made in Italy', catSport: '运动' },
-            'id': { cart: 'Keranjang', register: 'Daftar', upload: 'Unggah Produk', add: 'Tambah', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: smanzon@libero.it', modalTitle: 'Keranjang', emptyCart: 'Kosong.', waBtn: 'Kirim', closeBtn: 'Tutup', authTitle: 'Daftar', authSubmit: 'OK', regSuccess: 'Berhasil!', uploadTitle: 'Unggah Produk Baru', uploadBtn: 'Publikasikan', shipping: 'Pengiriman', total: 'Total', catAll: 'Semua', catElec: 'Elektronik', catCloth: 'Pakaian', catHome: 'Rumah', catJewels: 'Perhiasan - Made in Italy', catSport: 'Olahraga' },
-            'ur': { cart: 'کارٹ', register: 'رجستر', upload: 'پروڈکٹ اپ لوڈ کریں', add: 'شامل کریں', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'ای میل: smanzon@libero.it', modalTitle: 'کارٹ', emptyCart: 'خالی ہے', waBtn: 'آرڈر بھیجیں', closeBtn: 'بند کریں', authTitle: 'رجسٹریشن', authSubmit: 'تصدیق', regSuccess: 'کامیاب!', uploadTitle: 'نئی پروڈکٹ اپ لوڈ کریں', uploadBtn: 'شائع کریں', shipping: 'ترسیل', total: 'کل رقم', catAll: 'سب', catElec: 'الیکٹرانکس', catCloth: 'ملبوسات', catHome: 'گھر', catJewels: 'زیورات - Made in Italy', catSport: 'کھیل' },
-            'en-us': { cart: 'Cart', register: 'Register', upload: 'Upload Product', add: 'Add to Cart', copy: '&copy; 2026 Smazon - All rights reserved', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: smanzon@libero.it', modalTitle: 'Your Cart', emptyCart: 'Your cart is empty.', waBtn: 'Send Order via WhatsApp', closeBtn: 'Close', authTitle: 'User Registration', authSubmit: 'Confirm Registration', regSuccess: 'Registration successful!', uploadTitle: 'Upload New Product', uploadBtn: 'Publish Product', shipping: 'Shipping', total: 'Total', catAll: 'All', catElec: 'Electronics', catCloth: 'Clothing', catHome: 'Home & Kitchen', catJewels: 'Jewelry - Made in Italy', catSport: 'Sports & Outdoors' }
+            'it': { cart: 'Carrello', register: 'Registrati', upload: 'Carica Prodotto', add: 'Aggiungi al carrello', copy: '&copy; 2026 Smazon - Tutti i diritti riservati', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: Lucianocirillo14@gmail.com', modalTitle: 'Il tuo Carrello', emptyCart: 'Il carrello è vuoto.', waBtn: 'Invia Ordine via WhatsApp', closeBtn: 'Chiudi', authTitle: 'Registrazione Utente', authSubmit: 'Conferma Registrazione', regSuccess: 'Registrazione completata con successo!', uploadTitle: 'Carica Nuovo Prodotto', uploadBtn: 'Pubblica Prodotto', shipping: 'Spedizione', total: 'Totale', subtotal: 'Subtotale', destLabel: 'Destinazione Spedizione:', optItaly: 'Italia (Gratuita)', optEur: 'Europa (Standard: €10.00)', optUsa: 'Stati Uniti / Nord America (€20.00)', optWorld: 'Resto del Mondo (€35.00)', catAll: 'Tutti', catElec: 'Elettronica', catCloth: 'Abbigliamento', catHome: 'Casa e Cucina', catJewels: 'Gioielli - Made in Italy', catSport: 'Sport e Tempo Libero' },
+            'de': { cart: 'Warenkorb', register: 'Registrieren', upload: 'Produkt hochladen', add: 'In den Warenkorb', copy: '&copy; 2026 Smazon - Alle Rechte vorbehalten', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'E-Mail: Lucianocirillo14@gmail.com', modalTitle: 'Ihr Warenkorb', emptyCart: 'Der Warenkorb ist leer.', waBtn: 'Bestellung via WhatsApp senden', closeBtn: 'Schließen', authTitle: 'Benutzerregistrierung', authSubmit: 'Registrierung bestätigen', regSuccess: 'Registrierung erfolgreich!', uploadTitle: 'Neues Produkt hochladen', uploadBtn: 'Veröffentlichen', shipping: 'Versand', total: 'Gesamt', subtotal: 'Zwischensumme', destLabel: 'Versandziel:', optItaly: 'Italien (Kostenlos)', optEur: 'Europa (Standard: €10.00)', optUsa: 'USA / Nordamerika (€20.00)', optWorld: 'Rest der Welt (€35.00)', catAll: 'Alle', catElec: 'Elektronik', catCloth: 'Kleidung', catHome: 'Haus & Küche', catJewels: 'Schmuck - Made in Italy', catSport: 'Sport & Freizeit' },
+            'de-by': { cart: 'Warenkorb (Bay)', register: 'Registrieren (Bayern)', upload: 'Produkt hochladen', add: 'In den Warenkorb', copy: '&copy; 2026 Smazon Bayern', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'E-Mail: Lucianocirillo14@gmail.com', modalTitle: 'Ihr Warenkorb (Bayern)', emptyCart: 'Leer.', waBtn: 'Bestellung senden', closeBtn: 'Schließen', authTitle: 'Registrierung Bayern', authSubmit: 'Registrieren', regSuccess: 'Erfolgreich!', uploadTitle: 'Produkt hochladen', uploadBtn: 'Veröffentlichen', shipping: 'Versand', total: 'Gesamt', subtotal: 'Zwischensumme', destLabel: 'Versandziel:', optItaly: 'Italien (Kostenlos)', optEur: 'Europa (€10.00)', optUsa: 'USA (€20.00)', optWorld: 'Welt (€35.00)', catAll: 'Alle', catElec: 'Elektronik', catCloth: 'Kleidung', catHome: 'Haus', catJewels: 'Schmuck - Made in Italy', catSport: 'Sport' },
+            'fr': { cart: 'Panier', register: "S'inscrire", upload: 'Ajouter Produit', add: 'Ajouter au panier', copy: '&copy; 2026 Smazon - Tous droits réservés', whatsapp: 'WhatsApp : +39 349 460 5029', contact: 'E-mail : Lucianocirillo14@gmail.com', modalTitle: 'Votre Panier', emptyCart: 'Le panier est vide.', waBtn: 'Envoyer via WhatsApp', closeBtn: 'Fermer', authTitle: 'Enregistrement', authSubmit: "Valider", regSuccess: 'Réussi !', uploadTitle: 'Ajouter un produit', uploadBtn: 'Publier', shipping: 'Livraison', total: 'Total', subtotal: 'Sous-total', destLabel: 'Destination de livraison :', optItaly: 'Italie (Gratuite)', optEur: 'Europe (Standard : €10.00)', optUsa: 'États-Unis (€20.00)', optWorld: 'Reste du monde (€35.00)', catAll: 'Tous', catElec: 'Électronique', catCloth: 'Vêtements', catHome: 'Maison', catJewels: 'Bijoux - Made in Italy', catSport: 'Sport' },
+            'ru': { cart: 'Корзина', register: 'Регистрация', upload: 'Загрузить товар', add: 'В корзину', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: Lucianocirillo14@gmail.com', modalTitle: 'Корзина', emptyCart: 'Пусто.', waBtn: 'Заказать', closeBtn: 'Закрыть', authTitle: 'Регистрация', authSubmit: 'OK', regSuccess: 'Успешно!', uploadTitle: 'Загрузить товар', uploadBtn: 'Опубликовать', shipping: 'Доставка', total: 'Итого', subtotal: 'Подытог', destLabel: 'Пункт назначения:', optItaly: 'Италия (Бесплатно)', optEur: 'Европа (€10.00)', optUsa: 'США (€20.00)', optWorld: 'Остальной мир (€35.00)', catAll: 'Все', catElec: 'Электроника', catCloth: 'Одежда', catHome: 'Дом', catJewels: 'Украшения - Made in Italy', catSport: 'Спорт' },
+            'zh': { cart: '购物车', register: '注册', upload: '上传商品', add: '加入购物车', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: '邮箱: Lucianocirillo14@gmail.com', modalTitle: '购物车', emptyCart: '空', waBtn: '发送订单', closeBtn: '关闭', authTitle: '注册', authSubmit: '确定', regSuccess: '成功！', uploadTitle: '上传新商品', uploadBtn: '发布', shipping: '运费', total: '总计', subtotal: '小计', destLabel: '运送目的地:', optItaly: '意大利 (免运费)', optEur: '欧洲 (€10.00)', optUsa: '美国 (€20.00)', optWorld: '其他国家 (€35.00)', catAll: '全部', catElec: '电子产品', catCloth: '服装', catHome: '家居', catJewels: '珠宝 - Made in Italy', catSport: '运动' },
+            'id': { cart: 'Keranjang', register: 'Daftar', upload: 'Unggah Produk', add: 'Tambah', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: Lucianocirillo14@gmail.com', modalTitle: 'Keranjang', emptyCart: 'Kosong.', waBtn: 'Kirim', closeBtn: 'Tutup', authTitle: 'Daftar', authSubmit: 'OK', regSuccess: 'Berhasil!', uploadTitle: 'Unggah Produk Baru', uploadBtn: 'Publikasikan', shipping: 'Pengiriman', total: 'Total', subtotal: 'Subtotal', destLabel: 'Tujuan Pengiriman:', optItaly: 'Italia (Gratis)', optEur: 'Eropa (€10.00)', optUsa: 'Amerika Serikat (€20.00)', optWorld: 'Se dunia (€35.00)', catAll: 'Semua', catElec: 'Elektronik', catCloth: 'Pakaian', catHome: 'Rumah', catJewels: 'Perhiasan - Made in Italy', catSport: 'Olahraga' },
+            'ur': { cart: 'کارٹ', register: 'رجستر', upload: 'پروڈکٹ اپ لوڈ کریں', add: 'شامل کریں', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'ای میل: Lucianocirillo14@gmail.com', modalTitle: 'کارٹ', emptyCart: 'خالی ہے', waBtn: 'آرڈر بھیجیں', closeBtn: 'بند کریں', authTitle: 'رجسٹریشن', authSubmit: 'تصدیق', regSuccess: 'کامیاب!', uploadTitle: 'نئی پروڈکٹ اپ لوڈ کریں', uploadBtn: 'شائع کریں', shipping: 'ترسیل', total: 'کل رقم', subtotal: 'ذیلی کل', destLabel: 'منزل مقصود:', optItaly: 'اٹلی (مفت)', optEur: 'یورپ (€10.00)', optUsa: 'امریکہ (€20.00)', optWorld: 'باقی دنیا (€35.00)', catAll: 'سب', catElec: 'الیکٹرانکس', catCloth: 'ملبوسات', catHome: 'گھر', catJewels: 'زیورات - Made in Italy', catSport: 'کھیل' },
+            'en-us': { cart: 'Cart', register: 'Register', upload: 'Upload Product', add: 'Add to Cart', copy: '&copy; 2026 Smazon - All rights reserved', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: Lucianocirillo14@gmail.com', modalTitle: 'Your Cart', emptyCart: 'Your cart is empty.', waBtn: 'Send Order via WhatsApp', closeBtn: 'Close', authTitle: 'User Registration', authSubmit: 'Confirm Registration', regSuccess: 'Registration successful!', uploadTitle: 'Upload New Product', uploadBtn: 'Publish Product', shipping: 'Shipping', total: 'Total', subtotal: 'Subtotal', destLabel: 'Shipping Destination:', optItaly: 'Italy (Free)', optEur: 'Europe (Standard: €10.00)', optUsa: 'USA / North America (€20.00)', optWorld: 'Rest of World (€35.00)', catAll: 'All', catElec: 'Electronics', catCloth: 'Clothing', catHome: 'Home & Kitchen', catJewels: 'Jewelry - Made in Italy', catSport: 'Sports & Outdoors' }
         };
 
         function getLangKey(selectValue) {
@@ -632,6 +785,15 @@
             document.getElementById('auth-submit').innerText = t.authSubmit;
             document.getElementById('upload-title').innerText = t.uploadTitle;
             document.getElementById('upload-submit-btn').innerText = t.uploadBtn;
+            document.getElementById('dest-label').innerText = t.destLabel;
+
+            const destSelect = document.getElementById('shipping-dest');
+            if (destSelect) {
+                destSelect.options[0].text = t.optItaly;
+                destSelect.options[1].text = t.optEur;
+                destSelect.options[2].text = t.optUsa;
+                destSelect.options[3].text = t.optWorld;
+            }
 
             document.getElementById('cat-all').innerText = t.catAll;
             document.getElementById('cat-elec').innerText = t.catElec;
@@ -719,6 +881,25 @@
             }
         }
 
+        function rateProduct(starElement, ratingValue) {
+            const card = starElement.closest('.product-card');
+            const avgEl = card.querySelector('.avg-rating');
+            const countEl = card.querySelector('.review-count');
+
+            let currentAvg = parseFloat(avgEl.innerText);
+            let currentCount = parseInt(countEl.innerText);
+
+            // Calcola la nuova media ponderata
+            let newTotalScore = (currentAvg * currentCount) + ratingValue;
+            let newCount = currentCount + 1;
+            let newAvg = (newTotalScore / newCount).toFixed(1);
+
+            avgEl.innerText = newAvg;
+            countEl.innerText = newCount;
+
+            alert(`Grazie per la tua recensione di ${ratingValue} stelle! Valutazione aggiornata.`);
+        }
+
         function addNewProduct() {
             const name = document.getElementById('new-prod-name').value;
             const desc = document.getElementById('new-prod-desc').value;
@@ -746,6 +927,12 @@
                         <img src="${imgSrc}" alt="${name}" class="product-img">
                         <h3 class="prod-title">${name}</h3>
                         <p class="prod-desc">${desc || 'Nessuna descrizione inserita.'}</p>
+                        <div class="rating-box" onclick="event.stopPropagation()">
+                            <div class="stars" onclick="event.stopPropagation()">
+                                <span onclick="rateProduct(this, 5)">★</span><span onclick="rateProduct(this, 4)">★</span><span onclick="rateProduct(this, 3)">★</span><span onclick="rateProduct(this, 2)">★</span><span onclick="rateProduct(this, 1)">★</span>
+                            </div>
+                            <span class="rating-text"><strong class="avg-rating">5.0</strong> (<span class="review-count">1</span>)</span>
+                        </div>
                     </div>
                     <div>
                         <div class="price" data-price="${price}">€${price.toFixed(2)}</div>
@@ -829,6 +1016,14 @@
             }
         }
 
+        function getShippingCost() {
+            const dest = document.getElementById('shipping-dest').value;
+            if (dest === 'europe') return 10.00;
+            if (dest === 'usa') return 20.00;
+            if (dest === 'world') return 35.00;
+            return 0.00; // Italia gratuita
+        }
+
         function openCart() {
             const selectVal = document.getElementById('lang-select').value;
             const t = translations[getLangKey(selectVal)] || translations['it'];
@@ -849,11 +1044,11 @@
                 html += '</ul>';
                 listContainer.innerHTML = html;
 
-                let shippingCost = 5.00;
+                let shippingCost = getShippingCost();
                 let grandTotal = subtotal + shippingCost;
 
                 totalsContainer.innerHTML = `
-                    <div class="cart-summary"><span>Subtotale:</span> <span>${formatPrice(subtotal)}</span></div>
+                    <div class="cart-summary"><span>${t.subtotal || 'Subtotale'}:</span> <span>${formatPrice(subtotal)}</span></div>
                     <div class="cart-summary"><span>${t.shipping}:</span> <span>${formatPrice(shippingCost)}</span></div>
                     <div class="cart-summary" style="font-weight: bold; margin-top: 5px;"><span>${t.total}:</span> <span>${formatPrice(grandTotal)}</span></div>
                 `;
@@ -872,6 +1067,7 @@
             }
             const selectVal = document.getElementById('lang-select').value;
             const t = translations[getLangKey(selectVal)] || translations['it'];
+            const destText = document.getElementById('shipping-dest').selectedOptions[0].text;
 
             let message = "Salve, vorrei ordinare i seguenti prodotti da Smazon:\n";
             let subtotal = 0;
@@ -879,9 +1075,10 @@
                 message += `- ${item.name} (${formatPrice(item.price)})\n`;
                 subtotal += item.price;
             });
-            let shippingCost = 5.00;
+            let shippingCost = getShippingCost();
             let grandTotal = subtotal + shippingCost;
 
+            message += `\nDestinazione: ${destText}`;
             message += `\n${t.shipping}: ${formatPrice(shippingCost)}`;
             message += `\n${t.total}: ${formatPrice(grandTotal)}`;
             
