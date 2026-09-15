@@ -3,1015 +3,1445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smason Store - FOI Enterprise Edition v4 Global</title>
     
-    <!-- SEO e Meta Tag -->
-    <title>Smazon - Catalogo E-commerce Multilingua e Ordini WhatsApp</title>
-    <meta name="description" content="Smazon è il tuo negozio e-commerce online di fiducia. Scopri elettronica, abbigliamento, casa, sport e gioielli Made in Italy. Ordina facilmente tramite WhatsApp.">
-    <meta name="keywords" content="Smazon, e-commerce, shopping online, elettronica, abbigliamento, gioielli Made in Italy, casa, sport, ordini whatsapp, tiktok shop">
-    <meta name="author" content="Luciano Cirillo">
-    <meta name="robots" content="index, follow">
+    <!-- MANIFEST PWA INTEGRATO -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Smason%20Store%22%2C%22short_name%22%3A%22Smason%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ff7f00%22%2C%22theme_color%22%3A%22%23111111%22%7D">
 
     <style>
         :root {
-            --primary-color: #232f3e;
-            --secondary-color: #febd69;
-            --background-color: #eaeded;
-            --text-color: #0F1111;
-            --white: #ffffff;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
+            --primary-bg: #ff7f00;
+            --dark-bg: #111;
+            --accent-gold: #d4af37;
+            --toast-bg: #222;
         }
 
         body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            background-color: var(--primary-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #111;
         }
 
-        header {
-            background-color: var(--primary-color);
-            color: var(--white);
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--secondary-color);
-        }
-
-        .controls {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        select, button {
-            padding: 0.5rem;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .cart-btn {
-            background-color: var(--secondary-color);
-            font-weight: bold;
-        }
-
-        .register-btn {
-            background-color: #ffd814;
-            font-weight: bold;
-        }
-
-        .upload-toggle-btn {
-            background-color: #007185;
+        #network-banner {
+            background-color: #e74c3c;
             color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 14px;
             font-weight: bold;
-        }
-
-        .categories-bar {
-            background-color: #37475a;
-            padding: 0.75rem 2rem;
-            display: flex;
-            gap: 1.5rem;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .category-item {
-            color: var(--white);
-            background: none;
-            border: none;
-            font-size: 0.95rem;
-            cursor: pointer;
-            padding: 0.25rem 0.5rem;
-            border-radius: 2px;
-        }
-
-        .category-item:hover, .category-item.active {
-            background-color: rgba(255,255,255,0.2);
-            color: var(--secondary-color);
-        }
-
-        main {
-            flex: 1;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .auth-section, .upload-section {
-            background-color: var(--white);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             display: none;
         }
+        #network-banner.offline { display: block; }
 
-        .auth-section h2, .upload-section h2 {
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            color: var(--primary-color);
-        }
-
-        .auth-form, .upload-form {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .auth-form input, .upload-form input, .upload-form select {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .upload-form input[type="file"] {
-            border: none;
-            padding: 0.2rem;
-        }
-
-        .auth-form button, .upload-form button {
-            background-color: var(--primary-color);
-            color: var(--white);
+        .shipping-banner {
+            background-color: var(--dark-bg);
+            color: var(--primary-bg);
+            text-align: center;
+            padding: 6px;
+            font-size: 13px;
             font-weight: bold;
-            padding: 0.5rem 1rem;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #333;
         }
 
-        .product-grid {
+        .urgency-timer-banner {
+            background: #fff3cd;
+            color: #856404;
+            text-align: center;
+            padding: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            border-bottom: 1px solid #ffeeba;
+        }
+
+        .smason-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--dark-bg);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .blinking-eye {
+            font-size: 24px;
+            animation: eyeBlink 1.5s infinite;
+        }
+
+        @keyframes eyeBlink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(0.9); }
+        }
+
+        .blinking-smason {
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            animation: smasonFlash 1.2s infinite;
+            margin: 0;
+        }
+
+        @keyframes smasonFlash {
+            0%, 100% { color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
+            50% { color: var(--accent-gold); text-shadow: 0 0 12px rgba(212, 175, 55, 0.9); }
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-advanced-input, .select-control {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background: #222;
+            color: #fff;
+        }
+
+        .action-badge-btn {
+            background: #333;
+            color: #fff;
+            border: 1px solid var(--accent-gold);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+        .action-badge-btn:hover { background: #444; }
+
+        .support-btn-247 {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .support-btn-247:hover { transform: scale(1.05); }
+
+        .email-btn-top {
+            background: #0070ba;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .category-filters {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px 20px 0 20px;
+            flex-wrap: wrap;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .filter-chip {
+            background: rgba(17, 17, 17, 0.8);
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .filter-chip.active, .filter-chip:hover {
+            background: var(--accent-gold);
+            color: #111;
+        }
+
+        .grid-16-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            max-width: 750px;
+            margin: 15px auto 20px auto;
         }
 
-        .product-card {
-            background-color: var(--white);
+        .folder-box {
+            background: #ffffff;
+            padding: 12px 8px;
+            text-align: center;
             border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
             position: relative;
+            min-height: 110px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            border: 2px solid transparent;
+        }
+        .folder-box:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-gold);
+            background: #fffdf4;
         }
 
-        .product-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        .folder-icon {
+            font-size: 28px;
+            margin-bottom: 4px;
         }
 
-        .product-card::after {
-            content: "📷 Clicca per caricare foto";
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            font-size: 0.7rem;
+        .folder-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #111;
+            margin-bottom: 6px;
+        }
+
+        .folder-meta {
+            font-size: 11px;
+            color: #555;
+            background: #f1f1f1;
             padding: 2px 6px;
             border-radius: 4px;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .product-card:hover::after {
-            opacity: 1;
-        }
-
-        .delete-prod-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #cc0000;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-        }
-
-        .product-img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-bottom: 0.75rem;
-            background-color: #f0f0f0;
-        }
-
-        .product-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .product-card p {
-            color: #565959;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .rating-box {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.85rem;
-            color: #007185;
-        }
-
-        .stars {
-            color: #ffa41c;
-            cursor: pointer;
-            letter-spacing: 1px;
-            unicode-bidi: bidi-override;
-            direction: rtl;
-            text-align: left;
-        }
-
-        .stars > span {
             display: inline-block;
-            position: relative;
-            unicode-bidi: bidi-override;
-            direction: ltr;
-        }
-        .stars > span:hover:before,
-        .stars > span:hover ~ span:before {
-            color: #ffa41c;
+            margin: 0 auto;
         }
 
-        .price {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #B12704;
-            margin-bottom: 1rem;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .add-to-cart {
-            background-color: #ffd814;
-            border: 1px solid #fcd200;
-            border-radius: 20px;
-            padding: 0.5rem 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            flex: 1;
-        }
-
-        .add-to-cart:hover {
-            background-color: #f7ca00;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            padding: 2rem;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .modal-content h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .cart-items-list {
-            max-height: 180px;
-            overflow-y: auto;
-            margin-bottom: 1rem;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-            padding: 0.5rem 0;
-        }
-
-        .cart-item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .cart-item-controls button {
-            background-color: #ddd;
-            padding: 0.2rem 0.5rem;
-            font-weight: bold;
-            border-radius: 3px;
-        }
-
-        .shipping-calculator {
-            margin-bottom: 1rem;
-            background: #f8f9fa;
-            padding: 0.75rem;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        .shipping-calculator label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-bottom: 0.3rem;
-            color: var(--primary-color);
-        }
-
-        .shipping-calculator select {
-            width: 100%;
-            padding: 0.4rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .cart-summary {
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .whatsapp-order-btn {
-            background-color: #25d366;
-            color: white;
-            font-weight: bold;
-            width: 100%;
-            padding: 0.75rem;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-
-        .close-modal {
-            background-color: #ccc;
-            width: 100%;
-            padding: 0.5rem;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
-        footer {
-            background-color: var(--primary-color);
-            color: var(--white);
+        .info-section {
+            max-width: 750px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             text-align: center;
-            padding: 1.5rem;
-            margin-top: auto;
         }
 
-        .footer-links {
-            margin-top: 0.5rem;
+        .shipping-selector-group {
             display: flex;
+            gap: 10px;
             justify-content: center;
-            gap: 1.5rem;
+            margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
-        .footer-links a {
-            color: var(--secondary-color);
-            text-decoration: none;
+        .shipping-select, .shipping-input-field {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+            outline: none;
+            background: #f9f9f9;
+        }
+
+        .shipping-counter-box {
+            background: #f9f9f9;
+            border: 1px dashed var(--accent-gold);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .coupon-box {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .coupon-input {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .payment-methods-grid {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .payment-btn {
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .payment-btn.paypal { background: #0070ba; color: #fff; }
+        .payment-btn.klarna { background: #ffb3c6; color: #000; }
+        .payment-btn.scalapay { background: #ccff00; color: #000; }
+        .payment-btn.mastercard { background: #eb001b; color: #fff; }
+        .payment-btn.bank { background: #003366; color: #fff; }
+
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background: #222;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-size: 13px;
+            border-left: 4px solid var(--accent-gold);
+            animation: fadeInOut 3s forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .modal-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: left;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-card h3 { margin-top: 0; color: #111; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        
+        .folder-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .folder-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Input file nascosto per la galleria associato alle card esistenti -->
-    <input type="file" id="quick-file-input" accept="image/*" style="display: none;" onchange="handleQuickImageUpload(event)">
+    <div id="network-banner" role="status" aria-live="polite">⚠️ Connessione assente. Modalità offline attiva: le transazioni verranno accodate e sincronizzate automaticamente.</div>
+    <div class="shipping-banner" id="banner-shipping-text">🚚 SPEDIZIONE CON CALCOLO FISCALE, CAP & DAZI DOGANALI INCLUSI (DDP)</div>
+    <div class="urgency-timer-banner" id="urgency-timer-display" role="timer" aria-live="off">⏳ <span id="txt-timer-label">Articoli riservati nel carrello per</span>: <span id="timer-countdown">15:00</span></div>
 
-    <header>
-        <div class="logo" id="logo-text">Smazon</div>
-        <div class="controls">
-            <select id="lang-select" onchange="changeLanguage()">
-                <optgroup label="Italiano">
-                    <option value="it">Italiano (Standard)</option>
-                </optgroup>
-                <optgroup label="Deutsch (Germania e Regioni)">
-                    <option value="de">Deutsch (Standard)</option>
-                    <option value="de-by">Bayern (Baviera)</option>
-                    <option value="de-nw">Nordrhein-Westfalen</option>
-                    <option value="de-bw">Baden-Württemberg</option>
-                </optgroup>
-                <optgroup label="Français (Francia e Regioni)">
-                    <option value="fr">Français (Standard)</option>
-                    <option value="fr-idf">Île-de-France</option>
-                    <option value="fr-pac">Provence-Alpes-Côte d'Azur</option>
-                    <option value="fr-ara">Auvergne-Rhône-Alpes</option>
-                </optgroup>
-                <optgroup label="Русский (Russia e Regioni)">
-                    <option value="ru">Русский (Standard)</option>
-                    <option value="ru-mos">Москва (Mosca)</option>
-                    <option value="ru-spb">Санкт-Петербург</option>
-                </optgroup>
-                <optgroup label="中文 (Cina e Regioni)">
-                    <option value="zh">中文 (Mandarino)</option>
-                    <option value="zh-gd">广东 (Guangdong)</option>
-                    <option value="zh-zj">浙江 (Zhejiang)</option>
-                    <option value="zh-sc">四川 (Sichuan)</option>
-                </optgroup>
-                <optgroup label="Bahasa Indonesia (Indonesia e Regioni)">
-                    <option value="id">Indonesia (Standard)</option>
-                    <option value="id-jkt">DKI Jakarta</option>
-                    <option value="id-jb">Jawa Barat</option>
-                    <option value="id-ji">Jawa Timur</option>
-                </optgroup>
-                <optgroup label="اردو / ਪੰਜਾਬੀ (Pakistan e Regioni)">
-                    <option value="ur">اردو / Pakistani (Standard)</option>
-                    <option value="ur-pun">پنجاب (Punjab)</option>
-                    <option value="ur-sin">سندھ (Sindh)</option>
-                    <option value="ur-kpk">خیبر پختونخوا (KPK)</option>
-                </optgroup>
-                <optgroup label="English (Stati Uniti e Regioni)">
-                    <option value="en-us">English (US Standard)</option>
-                    <option value="en-ny">New York State</option>
-                    <option value="en-ca">California</option>
-                    <option value="en-tx">Texas</option>
-                    <option value="en-fl">Florida</option>
-                </optgroup>
-            </select>
-
-            <select id="currency-select" onchange="changeCurrency()">
+    <header class="smason-header">
+        <div class="logo-container" onclick="SmasonApp.openSettingsModal()" title="Apri Pannello Admin" role="button" tabindex="0" aria-label="Apri Pannello Admin">
+            <span class="blinking-eye" aria-hidden="true">👁️</span>
+            <h1 class="blinking-smason">Smason</h1>
+        </div>
+        
+        <div class="header-controls">
+            <!-- SELETTORE VALUTE ESTESO -->
+            <select id="currency-select" class="select-control" onchange="SmasonApp.changeCurrency(this.value)" aria-label="Seleziona Valuta">
                 <option value="EUR">EUR (€)</option>
                 <option value="USD">USD ($)</option>
                 <option value="GBP">GBP (£)</option>
-                <option value="RUB">RUB (₽)</option>
                 <option value="CNY">CNY (¥)</option>
+                <option value="RUB">RUB (₽)</option>
                 <option value="IDR">IDR (Rp)</option>
                 <option value="PKR">PKR (Rs)</option>
             </select>
+            
+            <!-- SELETTORE LINGUE ESTESO -->
+            <select id="lang-select" class="select-control" onchange="SmasonApp.changeLanguage(this.value)" aria-label="Seleziona Lingua">
+                <option value="it">ITA (Italiano)</option>
+                <option value="en">ENG (English)</option>
+                <option value="us">US (American English)</option>
+                <option value="es">ESP (Español)</option>
+                <option value="de">DEU (Deutsch)</option>
+                <option value="fr">FRA (Français)</option>
+                <option value="zh">ZHO (中文)</option>
+                <option value="ru">RUS (Русский)</option>
+                <option value="id">IND (Indonesian)</option>
+                <option value="ur">PAK (Urdu / پاکستانی)</option>
+            </select>
 
-            <button class="upload-toggle-btn" onclick="toggleUpload()" id="upload-toggle-text">Carica Prodotto</button>
-            <button class="register-btn" onclick="toggleAuth()" id="reg-btn-text">Registrati</button>
-            <button class="cart-btn" onclick="openCart()" id="cart-btn-text">Carrello (<span id="cart-count">0</span>)</button>
+            <input type="text" id="search-input" class="search-advanced-input" placeholder="Cerca cartelle..." oninput="SmasonApp.handleLiveSearch(this.value)" aria-label="Cerca cartelle">
+            <button class="action-badge-btn" onclick="SmasonApp.viewFavoritesModal()" aria-label="Visualizza preferiti">❤️ <span id="fav-counter">0</span></button>
+            <button class="action-badge-btn" onclick="SmasonApp.openSettingsModal()" aria-label="Apri impostazioni admin">⚙️ Admin</button>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <a href="mailto:support@smasonstore.com" class="email-btn-top" id="btn-email-text" aria-label="Invia email di supporto">✉️ Email</a>
+            <button class="support-btn-247" onclick="SmasonApp.openSupportChat()" id="btn-chat-text" aria-label="Apri chat di supporto WhatsApp">💬 Chat WhatsApp</button>
         </div>
     </header>
 
-    <nav class="categories-bar">
-        <button class="category-item active" onclick="filterCategory('all', this)" id="cat-all">Tutti</button>
-        <button class="category-item" onclick="filterCategory('elettronica', this)" id="cat-elec">Elettronica</button>
-        <button class="category-item" onclick="filterCategory('abbigliamento', this)" id="cat-cloth">Abbigliamento</button>
-        <button class="category-item" onclick="filterCategory('casa', this)" id="cat-home">Casa e Cucina</button>
-        <button class="category-item" onclick="filterCategory('gioielli', this)" id="cat-jewels">Gioielli - Made in Italy</button>
-        <button class="category-item" onclick="filterCategory('sport', this)" id="cat-sport">Sport e Tempo Libero</button>
-    </nav>
-
     <main>
-        <div class="upload-section" id="upload-section">
-            <h2 id="upload-title">Carica Nuovo Prodotto</h2>
-            <div class="upload-form">
-                <input type="text" id="new-prod-name" placeholder="Nome Prodotto">
-                <input type="text" id="new-prod-desc" placeholder="Descrizione breve">
-                <input type="number" step="0.01" id="new-prod-price" placeholder="Prezzo in EUR (€)">
-                <select id="new-prod-cat">
-                    <option value="elettronica">Elettronica</option>
-                    <option value="abbigliamento">Abbigliamento</option>
-                    <option value="casa">Casa e Cucina</option>
-                    <option value="gioielli">Gioielli - Made in Italy</option>
-                    <option value="sport">Sport e Tempo Libero</option>
+        <!-- Filtri Rapidi -->
+        <div class="category-filters" role="region" aria-label="Filtri catalogo cartelle">
+            <button class="filter-chip active" id="filter-all" onclick="SmasonApp.filterByCategory('all', this)">Tutte le Cartelle</button>
+            <button class="filter-chip" id="filter-avail" onclick="SmasonApp.filterByCategory('Disponibile', this)">Disponibili</button>
+            <button class="filter-chip" id="filter-last" onclick="SmasonApp.filterByCategory('Ultimi pezzi', this)">Ultimi Pezzi</button>
+        </div>
+
+        <!-- Griglia a 16 Cartelle Interattive -->
+        <div class="grid-16-container" id="folders-grid-container" role="region" aria-label="Cartelle Prodotti">
+            <!-- Generato dinamicamente via JS -->
+        </div>
+
+        <div class="info-section">
+            <h3 id="txt-payment-title">Metodi di Pagamento & Spedizione</h3>
+            <p id="txt-payment-desc">Scegli come pagare. Inserisci CAP/Città per il controllo zone e dazi doganali prepagati (DDP).</p>
+            
+            <div class="shipping-selector-group">
+                <!-- SELETTORE NAZIONI ESTESO -->
+                <select id="country-select" class="shipping-select" onchange="SmasonApp.updateDestinations()" aria-label="Seleziona nazione di spedizione">
+                    <option value="IT">Italia (IVA 22% inclusa)</option>
+                    <option value="ES">Spagna - España (IVA UE inclusa)</option>
+                    <option value="DE">Germania - Deutschland (IVA UE inclusa)</option>
+                    <option value="FR">Francia - France (IVA UE inclusa)</option>
+                    <option value="US">Stati Uniti - United States (DDP - Dazi Inclusi)</option>
+                    <option value="CN">Cina - 中国 (DDP - Dazi Inclusi)</option>
+                    <option value="RU">Russia - Россия (DDP - Dazi Inclusi)</option>
+                    <option value="ID">Indonesia (DDP - Dazi Inclusi)</option>
+                    <option value="PK">Pakistan - پاکستان (DDP - Dazi Inclusi)</option>
+                    <option value="EU">Unione Europea - Altri Paesi</option>
+                    <option value="INT">Internazionale Extra-UE (DDP - Dazi Inclusi)</option>
                 </select>
-                <input type="file" id="new-prod-img" accept="image/*">
-                <button onclick="addNewProduct()" id="upload-submit-btn">Pubblica Prodotto</button>
-            </div>
-        </div>
 
-        <div class="auth-section" id="auth-section">
-            <h2 id="auth-title">Registrazione Utente</h2>
-            <div class="auth-form">
-                <input type="text" id="username" placeholder="Nome e Cognome">
-                <input type="email" id="useremail" placeholder="Indirizzo Email">
-                <button onclick="registerUser()" id="auth-submit">Conferma Registrazione</button>
-            </div>
-        </div>
+                <select id="region-select" class="shipping-select" onchange="SmasonApp.updateShippingCalculator()" aria-label="Seleziona regione o opzione di spedizione">
+                    <!-- Popolato dinamicamente -->
+                </select>
 
-        <div class="product-grid" id="product-grid">
-            <!-- I prodotti iniziali o salvati verranno iniettati via JavaScript con supporto persistenza -->
+                <input type="text" id="shipping-city" class="shipping-input-field" placeholder="Città / CAP" oninput="SmasonApp.updateShippingCalculator()" style="max-width: 130px;" aria-label="Inserisci città o CAP">
+            </div>
+
+            <!-- Box Codice Coupon Sconto -->
+            <div class="coupon-box">
+                <input type="text" id="coupon-input" class="coupon-input" placeholder="Codice Coupon (es. SMASON10)" aria-label="Codice Coupon Sconto">
+                <button class="mini-btn" id="btn-apply-coupon" style="background:var(--accent-gold); color:#000; font-weight:bold;" onclick="SmasonApp.applyCoupon()">Applica</button>
+            </div>
+
+            <div class="shipping-counter-box" id="shipping-display-box" role="region" aria-live="polite">
+                📦 Calcolo Spedizione in corso...
+            </div>
+
+            <div class="payment-methods-grid">
+                <button class="payment-btn paypal" onclick="SmasonApp.processCheckout('PayPal')" aria-label="Paga con PayPal">PayPal</button>
+                <button class="payment-btn klarna" onclick="SmasonApp.processCheckout('Klarna')" aria-label="Klarna">Klarna (3 rate)</button>
+                <button class="payment-btn scalapay" onclick="SmasonApp.processCheckout('Scalapay')" aria-label="Scalapay">Scalapay (3 rate)</button>
+                <button class="payment-btn mastercard" onclick="SmasonApp.processCheckout('Mastercard')" aria-label="Mastercard">Mastercard</button>
+                <button class="payment-btn bank" onclick="SmasonApp.processCheckout('Bank Transfer')" aria-label="Bonifico">Bonifico</button>
+            </div>
+
+            <div style="font-size: 13px; color: #0070ba; margin-top: 10px;">
+                <span id="txt-cart-items-label">Articoli nel Carrello</span>: <b id="cart-items-count">1</b> | <span id="txt-subtotal-label">Subtotale</span>: <b id="cart-subtotal-display">€90.00</b>
+            </div>
+
+            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <button class="action-badge-btn" style="background:#111; color:#fff;" id="btn-receipt-text" onclick="SmasonApp.generateInvoicePDF()" aria-label="Genera ricevuta ordine">📄 Genera Ricevuta</button>
+                <button class="action-badge-btn" style="background:var(--accent-gold); color:#111; font-weight:bold;" id="btn-share-text" onclick="SmasonApp.shareCartLink()" aria-label="Condividi link del carrello">🔗 Condividi Carrello</button>
+            </div>
+
+            <div class="contact-info-box" style="margin-top: 15px; font-size: 13px;">
+                <span id="txt-email-support">Servizio Clienti Email</span>: <a href="mailto:support@smasonstore.com">support@smasonstore.com</a>
+            </div>
+            
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            
+            <h4 id="txt-social-title" style="margin-bottom: 10px; font-size: 15px;">Seguici sui nostri Social Network</h4>
+            <div class="social-buttons" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <a href="https://instagram.com" target="_blank" class="social-btn instagram" style="background:#d6249f; color:#fff; padding:6px 12px; border-radius:15px; text-decoration:none; font-size:12px; font-weight:bold;" aria-label="Instagram">Instagram</a>
+                <a href="https://tiktok.com" target="_blank" class="social-btn tiktok" style="background:#000; color:#fff; padding:6px 12px; border-radius:15px; text-decoration:none; font-size:12px; font-weight:bold;" aria-label="TikTok">TikTok</a>
+                <a href="https://facebook.com" target="_blank" class="social-btn facebook" style="background:#1877F2; color:#fff; padding:6px 12px; border-radius:15px; text-decoration:none; font-size:12px; font-weight:bold;" aria-label="Facebook">Facebook</a>
+            </div>
         </div>
     </main>
 
-    <div class="modal" id="cartModal">
-        <div class="modal-content">
-            <h3 id="modal-title">Il tuo Carrello</h3>
-            <div class="cart-items-list" id="cart-items-list">
-                <p>Il carrello è vuoto.</p>
+    <!-- Modale Apertura Cartella -->
+    <div id="folder-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="folder-modal-title">
+        <div class="modal-card">
+            <h3 id="folder-modal-title">📂 Contenuto Cartella</h3>
+            <p id="folder-modal-desc" style="font-size: 13px; color: #555; margin-top: -5px;"></p>
+            <div class="folder-items-list" id="folder-items-container">
+                <!-- Articoli interni alla cartella -->
             </div>
-            
-            <div class="shipping-calculator">
-                <label id="dest-label" for="shipping-dest">Destinazione Spedizione:</label>
-                <select id="shipping-dest" onchange="openCart()">
-                    <option value="italy">Italia (Gratuita)</option>
-                    <option value="europe">Europa (Standard: €10.00)</option>
-                    <option value="usa">Stati Uniti / Nord America (€20.00)</option>
-                    <option value="world">Resto del Mondo (€35.00)</option>
-                </select>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button class="mini-btn" id="btn-close-modal" style="background:#ccc; color:#000; padding:6px 14px;" onclick="SmasonApp.closeFolderModal()" aria-label="Chiudi cartella">Chiudi</button>
             </div>
-
-            <div id="cart-totals-container"></div>
-            <button class="whatsapp-order-btn" onclick="sendOrderWhatsApp()" id="wa-order-btn">Invia Ordine via WhatsApp</button>
-            <button class="close-modal" onclick="closeCart()" id="close-modal-btn">Chiudi</button>
         </div>
     </div>
 
-    <footer>
-        <p id="footer-copy">&copy; 2026 Smazon - Tutti i diritti riservati</p>
-        <div class="footer-links">
-            <a href="https://wa.me/393494605029" target="_blank" id="wa-link">WhatsApp: +39 349 460 5029</a>
-            <a href="mailto:Lucianocirillo14@gmail.com" id="contact-link">Email: Lucianocirillo14@gmail.com</a>
-            <a href="https://www.tiktok.com" target="_blank" id="tiktok-link">TikTok Shop</a>
-            <a href="https://instagram.com" target="_blank" id="social-link-1">Instagram</a>
-            <a href="https://facebook.com" target="_blank" id="social-link-2">Facebook</a>
+    <!-- Modale Impostazioni Admin -->
+    <div id="settings-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-card">
+            <h3 id="modal-title">⚙️ Pannello Admin & Configurazioni</h3>
+            <div class="form-group">
+                <label id="lbl-wa">Numero WhatsApp Supporto:</label>
+                <input type="text" id="setting-whatsapp" value="393400000000" aria-label="Numero WhatsApp Supporto">
+            </div>
+            <div class="form-group">
+                <label id="lbl-extra-ship">Margine Extra Spedizione (€):</label>
+                <input type="number" id="setting-extra-shipping" value="1.50" step="0.5" aria-label="Margine Extra Spedizione">
+            </div>
+            <div class="form-group">
+                <label id="lbl-glob-disc">Sconto Globale Fisso (%):</label>
+                <input type="number" id="setting-discount" value="0" min="0" max="50" aria-label="Sconto Globale Fisso">
+            </div>
+            <div class="form-group">
+                <label id="lbl-logs">Log Errori & Sincronizzazione Offline:</label>
+                <textarea id="setting-logs" readonly style="width:100%; height:70px; font-size:11px; background:#f4f4f4; border:1px solid #ccc; border-radius:4px;" aria-label="Log Errori"></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button class="mini-btn" id="btn-settings-close" style="background:#ccc; color:#000;" onclick="SmasonApp.closeSettingsModal()" aria-label="Chiudi modale">Chiudi</button>
+                <button class="mini-btn" id="btn-settings-save" style="background:var(--accent-gold); color:#000; font-weight:bold;" onclick="SmasonApp.saveSettingsModal()" aria-label="Salva modifiche admin">Salva Modifiche</button>
+            </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- Container Toast Notifiche -->
+    <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
     <script>
-        let activeCardForImage = null;
+        const SmasonApp = {
+            state: {
+                cart: JSON.parse(localStorage.getItem('smason_cart')) || [{ id: 1, name: 'Prodotto in Cartella #1', price: 90.00, quantity: 1 }],
+                favorites: JSON.parse(localStorage.getItem('smason_favorites')) || [],
+                settings: JSON.parse(localStorage.getItem('smason_settings')) || { whatsapp: '393400000000', extraShipping: 1.50, globalDiscount: 0 },
+                activeCoupon: localStorage.getItem('smason_coupon') || null,
+                couponDiscountPercent: parseFloat(localStorage.getItem('smason_coupon_val')) || 0,
+                offlineQueue: JSON.parse(localStorage.getItem('smason_queue')) || [],
+                errorLogs: JSON.parse(localStorage.getItem('smason_errors')) || [],
+                currency: localStorage.getItem('smason_currency') || 'EUR',
+                language: localStorage.getItem('smason_lang') || 'it',
+                country: 'IT',
+                region: 'Nord',
+                currentFilter: 'all',
+                searchQuery: '',
+                timerSeconds: 900
+            },
 
-        const defaultProducts = [
-            { id: 1, name: 'Smartphone X1', desc: 'Dispositivo mobile di ultima generazione.', price: 349.99, category: 'elettronica', img: '', avgRating: 4.5, reviewCount: 12, isCustom: false },
-            { id: 2, name: 'Auricolari Wireless', desc: 'Audio ad alta fedeltà con cancellazione rumore.', price: 79.99, category: 'elettronica', img: '', avgRating: 4.2, reviewCount: 8, isCustom: false },
-            { id: 3, name: 'Smartwatch Sport', desc: 'Monitoraggio fitness e notifiche smart.', price: 129.50, category: 'elettronica', img: '', avgRating: 4.7, reviewCount: 19, isCustom: false },
-            { id: 4, name: 'Felpa con Cappuccio', desc: 'Comoda felpa in cotone felpato.', price: 45.00, category: 'abbigliamento', img: '', avgRating: 4.0, reviewCount: 5, isCustom: false },
-            { id: 5, name: 'Giacca Impermeabile', desc: 'Ideale per tutte le condizioni atmosferiche.', price: 89.90, category: 'abbigliamento', img: '', avgRating: 4.4, reviewCount: 10, isCustom: false },
-            { id: 6, name: 'Scarpe da Ginnastica', desc: 'Calzature ammortizzate per la corsa.', price: 69.99, category: 'abbigliamento', img: '', avgRating: 4.6, reviewCount: 14, isCustom: false },
-            { id: 7, name: 'Robot Aspirapolvere', desc: 'Pulizia intelligente autonoma per casa.', price: 199.00, category: 'casa', img: '', avgRating: 4.8, reviewCount: 22, isCustom: false },
-            { id: 8, name: 'Macchina Caffè Espresso', desc: 'Gusta un ottimo caffè cremoso ogni mattina.', price: 110.00, category: 'casa', img: '', avgRating: 4.3, reviewCount: 11, isCustom: false },
-            { id: 9, name: 'Collana in Argento', desc: 'Elegante gioiello artigianale rifinito a mano.', price: 55.00, category: 'gioielli', img: '', avgRating: 4.9, reviewCount: 30, isCustom: false },
-            { id: 10, name: 'Bracciale con Pietre', desc: 'Design esclusivo e materiali pregiati.', price: 75.00, category: 'gioielli', img: '', avgRating: 4.5, reviewCount: 16, isCustom: false },
-            { id: 11, name: 'Tappetino Yoga Antiscivolo', desc: 'Perfetto per pilates, fitness e stretching.', price: 25.00, category: 'sport', img: '', avgRating: 4.1, reviewCount: 7, isCustom: false },
-            { id: 12, name: 'Set Manubri Regolabili', desc: 'Attrezzatura ideale per allenamento a casa.', price: 99.99, category: 'sport', img: '', avgRating: 4.4, reviewCount: 9, isCustom: false }
-        ];
+            rates: { 
+                EUR: 1.0, 
+                USD: 1.08, 
+                GBP: 0.85, 
+                CNY: 7.85, 
+                RUB: 98.0, 
+                IDR: 17000.0, 
+                PKR: 300.0 
+            },
 
-        let products = JSON.parse(localStorage.getItem('smazon_products')) || defaultProducts;
-        let cart = JSON.parse(localStorage.getItem('smazon_cart')) || [];
+            folders: Array.from({ length: 16 }, (_, i) => ({
+                id: i + 1,
+                name: `Cartella #${i + 1}`,
+                category: i % 3 === 0 ? 'Disponibile' : (i % 3 === 1 ? 'Ultimi pezzi' : 'Disponibile'),
+                items: [
+                    { id: (i * 2) + 1, name: `Articolo Principale #${i + 1}`, price: 45.00 + (i * 10) },
+                    { id: (i * 2) + 2, name: `Accessorio Extra #${i + 1}`, price: 15.00 + (i * 5) }
+                ]
+            })),
 
-        const translations = {
-            'it': { cart: 'Carrello', register: 'Registrati', upload: 'Carica Prodotto', add: 'Aggiungi al carrello', copy: '&copy; 2026 Smazon - Tutti i diritti riservati', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: Lucianocirillo14@gmail.com', tiktok: 'TikTok Shop', modalTitle: 'Il tuo Carrello', emptyCart: 'Il carrello è vuoto.', waBtn: 'Invia Ordine via WhatsApp', closeBtn: 'Chiudi', authTitle: 'Registrazione Utente', authSubmit: 'Conferma Registrazione', regSuccess: 'Registrazione completata con successo!', uploadTitle: 'Carica Nuovo Prodotto', uploadBtn: 'Pubblica Prodotto', shipping: 'Spedizione', total: 'Totale', subtotal: 'Subtotale', destLabel: 'Destinazione Spedizione:', optItaly: 'Italia (Gratuita)', optEur: 'Europa (Standard: €10.00)', optUsa: 'Stati Uniti / Nord America (€20.00)', optWorld: 'Resto del Mondo (€35.00)', catAll: 'Tutti', catElec: 'Elettronica', catCloth: 'Abbigliamento', catHome: 'Casa e Cucina', catJewels: 'Gioielli - Made in Italy', catSport: 'Sport e Tempo Libero' },
-            'de': { cart: 'Warenkorb', register: 'Registrieren', upload: 'Produkt hochladen', add: 'In den Warenkorb', copy: '&copy; 2026 Smazon - Alle Rechte vorbehalten', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'E-Mail: Lucianocirillo14@gmail.com', tiktok: 'TikTok Shop', modalTitle: 'Ihr Warenkorb', emptyCart: 'Der Warenkorb ist leer.', waBtn: 'Bestellung via WhatsApp senden', closeBtn: 'Schließen', authTitle: 'Benutzerregistrierung', authSubmit: 'Registrierung bestätigen', regSuccess: 'Registrierung erfolgreich!', uploadTitle: 'Neues Produkt hochladen', uploadBtn: 'Veröffentlichen', shipping: 'Versand', total: 'Gesamt', subtotal: 'Zwischensumme', destLabel: 'Versandziel:', optItaly: 'Italien (Kostenlos)', optEur: 'Europa (Standard: €10.00)', optUsa: 'USA / Nordamerika (€20.00)', optWorld: 'Rest der Welt (€35.00)', catAll: 'Alle', catElec: 'Elektronik', catCloth: 'Kleidung', catHome: 'Haus & Küche', catJewels: 'Schmuck - Made in Italy', catSport: 'Sport & Freizeit' },
-            'de-by': { cart: 'Warenkorb (Bay)', register: 'Registrieren (Bayern)', upload: 'Produkt hochladen', add: 'In den Warenkorb', copy: '&copy; 2026 Smazon Bayern', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'E-Mail: Lucianocirillo14@gmail.com', tiktok: 'TikTok Shop', modalTitle: 'Ihr Warenkorb (Bayern)', emptyCart: 'Leer.', waBtn: 'Bestellung senden', closeBtn: 'Schließen', authTitle: 'Registrierung Bayern', authSubmit: 'Registrieren', regSuccess: 'Erfolgreich!', uploadTitle: 'Produkt hochladen', uploadBtn: 'Veröffentlichen', shipping: 'Versand', total: 'Gesamt', subtotal: 'Zwischensumme', destLabel: 'Versandziel:', optItaly: 'Italien (Kostenlos)', optEur: 'Europa (€10.00)', optUsa: 'USA (€20.00)', optWorld: 'Welt (€35.00)', catAll: 'Alle', catElec: 'Elektronik', catCloth: 'Kleidung', catHome: 'Haus', catJewels: 'Schmuck - Made in Italy', catSport: 'Sport' },
-            'fr': { cart: 'Panier', register: "S'inscrire", upload: 'Ajouter Produit', add: 'Ajouter au panier', copy: '&copy; 2026 Smazon - Tous droits réservés', whatsapp: 'WhatsApp : +39 349 460 5029', contact: 'E-mail : Lucianocirillo14@gmail.com', tiktok: 'TikTok Shop', modalTitle: 'Votre Panier', emptyCart: 'Le panier est vide.', waBtn: 'Envoyer via WhatsApp', closeBtn: 'Fermer', authTitle: 'Enregistrement', authSubmit: "Valider", regSuccess: 'Réussi !', uploadTitle: 'Ajouter un produit', uploadBtn: 'Publier', shipping: 'Livraison', total: 'Total', subtotal: 'Sous-total', destLabel: 'Destination de livraison :', optItaly: 'Italie (Gratuite)', optEur: 'Europe (Standard : €10.00)', optUsa: 'États-Unis (€20.00)', optWorld: 'Reste du monde (€35.00)', catAll: 'Tous', catElec: 'Électronique', catCloth: 'Vêtements', catHome: 'Maison', catJewels: 'Bijoux - Made in Italy', catSport: 'Sport' },
-            'ru': { cart: 'Корзина', register: 'Регистрация', upload: 'Загрузить товар', add: 'В корзину', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: Lucianocirillo14@gmail.com', tiktok: 'TikTok Shop', modalTitle: 'Корзина', emptyCart: 'Пусто.', waBtn: 'Заказать', closeBtn: 'Закрыть', authTitle: 'Регистрация', authSubmit: 'OK', regSuccess: 'Успешно!', uploadTitle: 'Загрузить товар', uploadBtn: 'Опубликовать', shipping: 'Доставка', total: 'Итого', subtotal: 'Подытог', destLabel: 'Пункт назначения:', optItaly: 'Италия (Бесплатно)', optEur: 'Европа (€10.00)', optUsa: 'США (€20.00)', optWorld: 'Остальной мир (€35.00)', catAll: 'Все', catElec: 'Электроника', catCloth: 'Одежда', catHome: 'Дом', catJewels: 'Украшения - Made in Italy', catSport: 'Спорт' },
-            'zh': { cart: '购物车', register: '注册', upload: '上传商品', add: '加入购物车', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: '邮箱: Lucianocirillo14@gmail.com', tiktok: 'TikTok 商店', modalTitle: '购物车', emptyCart: '空', waBtn: '发送订单', closeBtn: '关闭', authTitle: '注册', authSubmit: '确定', regSuccess: '成功！', uploadTitle: '上传新商品', uploadBtn: '发布', shipping: '运费', total: '总计', subtotal: '小计', destLabel: '运送目的地:', optItaly: '意大利 (免运费)', optEur: '欧洲 (€10.00)', optUsa: '美国 (€20.00)', optWorld: '其他国家 (€35.00)', catAll: '全部', catElec: '电子产品', catCloth: '服装', catHome: '家居', catJewels: '珠宝 - Made in Italy', catSport: '运动' },
-            'id': { cart: 'Keranjang', register: 'Daftar', upload: 'Unggah Produk', add: 'Tambah', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: Lucianocirillo14@gmail.com', tiktok: 'TikTok Shop', modalTitle: 'Keranjang', emptyCart: 'Kosong.', waBtn: 'Kirim', closeBtn: 'Tutup', authTitle: 'Daftar', authSubmit: 'OK', regSuccess: 'Berhasil!', uploadTitle: 'Unggah Produk Baru', uploadBtn: 'Publikasikan', shipping: 'Pengiriman', total: 'Total', subtotal: 'Subtotal', destLabel: 'Tujuan Pengiriman:', optItaly: 'Italia (Gratis)', optEur: 'Eropa (€10.00)', optUsa: 'Amerika Serikat (€20.00)', optWorld: 'Se dunia (€35.00)', catAll: 'Semua', catElec: 'Elektronik', catCloth: 'Pakaian', catHome: 'Rumah', catJewels: 'Perhiasan - Made in Italy', catSport: 'Olahraga' },
-            'ur': { cart: 'کارٹ', register: 'رجستر', upload: 'پروڈکٹ اپ لوڈ کریں', add: 'شامل کریں', copy: '&copy; 2026 Smazon', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'ای میل: Lucianocirillo14@gmail.com', tiktok: 'TikTok Shop', modalTitle: 'کارٹ', emptyCart: 'خالی ہے', waBtn: 'آرڈر بھیجیں', closeBtn: 'بند کریں', authTitle: 'رجسٹریشن', authSubmit: 'تصدیق', regSuccess: 'کامیاب!', uploadTitle: 'نئی پروڈکٹ اپ لوڈ کریں', uploadBtn: 'شائع کریں', shipping: 'ترسیل', total: 'کل رقم', subtotal: 'ذیلی کل', destLabel: 'منزل مقصود:', optItaly: 'اٹلی (مفت)', optEur: 'یورپ (€10.00)', optUsa: 'امریکہ (€20.00)', optWorld: 'باقی دنیا (€35.00)', catAll: 'سب', catElec: 'الیکٹرانکس', catCloth: 'ملبوسات', catHome: 'گھر', catJewels: 'زیورات - Made in Italy', catSport: 'کھیل' },
-            'en-us': { cart: 'Cart', register: 'Register', upload: 'Upload Product', add: 'Add to Cart', copy: '&copy; 2026 Smazon - All rights reserved', whatsapp: 'WhatsApp: +39 349 460 5029', contact: 'Email: Lucianocirillo14@gmail.com', tiktok: 'TikTok Shop', modalTitle: 'Your Cart', emptyCart: 'Your cart is empty.', waBtn: 'Send Order via WhatsApp', closeBtn: 'Close', authTitle: 'User Registration', authSubmit: 'Confirm Registration', regSuccess: 'Registration successful!', uploadTitle: 'Upload New Product', uploadBtn: 'Publish Product', shipping: 'Shipping', total: 'Total', subtotal: 'Subtotal', destLabel: 'Shipping Destination:', optItaly: 'Italy (Free)', optEur: 'Europe (Standard: €10.00)', optUsa: 'USA / North America (€20.00)', optWorld: 'Rest of World (€35.00)', catAll: 'All', catElec: 'Electronics', catCloth: 'Clothing', catHome: 'Home & Kitchen', catJewels: 'Jewelry - Made in Italy', catSport: 'Sports & Outdoors' }
-        };
+            shippingRatesTable: {
+                IT: { Nord: 7.00, Centro: 7.50, Sud: 8.50, Isole: 11.00 },
+                ES: { Peninsula: 9.00, Islas: 14.00 },
+                DE: { Standard: 8.50, Express: 16.00 },
+                FR: { Metropolitaine: 9.00, OutreMer: 18.00 },
+                US: { StandardUS: 28.00, ExpressUS: 45.00 },
+                CN: { StandardCN: 32.00, ExpressCN: 50.00 },
+                RU: { StandardRU: 30.00 },
+                ID: { StandardID: 35.00 },
+                PK: { StandardPK: 34.00 },
+                EU: { Standard: 15.00, Express: 24.00 },
+                INT: { Mondo: 35.00 }
+            },
 
-        function getLangKey(selectValue) {
-            let base = selectValue.split('-')[0];
-            return translations[selectValue] ? selectValue : (translations[base] ? base : 'it');
-        }
+            regionLabels: {
+                IT: [
+                    { id: 'Nord', name: 'Nord Italia' },
+                    { id: 'Centro', name: 'Centro Italia' },
+                    { id: 'Sud', name: 'Sud Italia' },
+                    { id: 'Isole', name: 'Sicilia e Sardegna' }
+                ],
+                ES: [
+                    { id: 'Peninsula', name: 'España Península' },
+                    { id: 'Islas', name: 'Baleares y Canarias' }
+                ],
+                DE: [
+                    { id: 'Standard', name: 'Deutschland Standard' },
+                    { id: 'Express', name: 'Deutschland Express' }
+                ],
+                FR: [
+                    { id: 'Metropolitaine', name: 'France Métropolitaine' },
+                    { id: 'OutreMer', name: 'DOM-TOM (Outre-Mer)' }
+                ],
+                US: [
+                    { id: 'StandardUS', name: 'United States (Standard DDP)' },
+                    { id: 'ExpressUS', name: 'United States (Express DDP)' }
+                ],
+                CN: [
+                    { id: 'StandardCN', name: '中国 - Mainland China (DDP)' },
+                    { id: 'ExpressCN', name: '中国 - Express Air (DDP)' }
+                ],
+                RU: [
+                    { id: 'StandardRU', name: 'Россия - Standard (DDP)' }
+                ],
+                ID: [
+                    { id: 'StandardID', name: 'Indonesia - Standard (DDP)' }
+                ],
+                PK: [
+                    { id: 'StandardPK', name: 'پاکستان - Standard (DDP)' }
+                ],
+                EU: [
+                    { id: 'Standard', name: 'EU Standard' },
+                    { id: 'Express', name: 'EU Express' }
+                ],
+                INT: [
+                    { id: 'Mondo', name: 'International / Extra-UE (DDP)' }
+                ]
+            },
 
-        function renderProducts() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = '';
-            
-            products.forEach(prod => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.setAttribute('data-category', prod.category);
-                card.setAttribute('onclick', 'triggerCardImageUpload(this, event)');
-                card.setAttribute('data-id', prod.id);
+            translations: {
+                it: {
+                    paymentTitle: "Metodi di Pagamento & Spedizione",
+                    paymentDesc: "Scegli come pagare. Inserisci CAP/Città per il controllo zone e dazi doganali prepagati (DDP).",
+                    socialTitle: "Seguici sui nostri Social Network",
+                    searchPlaceholder: "Cerca cartelle...",
+                    offlineAlert: "Sei offline. La transazione è stata memorizzata nella coda.",
+                    addedFav: "Aggiunto ai preferiti!",
+                    removedFav: "Rimosso dai preferiti.",
+                    settingsSaved: "Impostazioni salvate con successo!",
+                    couponValid: "Coupon applicato con successo (-10%)!",
+                    couponInvalid: "Codice coupon non valido.",
+                    linkCopied: "Link del carrello copiato negli appunti!",
+                    allFolders: "Tutte le Cartelle",
+                    available: "Disponibili",
+                    lastPieces: "Ultimi Pezzi",
+                    timerLabel: "Articoli riservati nel carrello per",
+                    cartItems: "Articoli nel Carrello",
+                    subtotal: "Subtotale",
+                    receiptBtn: "📄 Genera Ricevuta",
+                    shareBtn: "🔗 Condividi Carrello",
+                    emailSupport: "Servizio Clienti Email",
+                    apply: "Applica",
+                    close: "Chiudi",
+                    save: "Salva Modifiche",
+                    adminTitle: "⚙️ Pannello Admin & Configurazioni",
+                    waLabel: "Numero WhatsApp Supporto:",
+                    extraShipLabel: "Margine Extra Spedizione (€):",
+                    discLabel: "Sconto Globale Fisso (%):",
+                    logsLabel: "Log Errori & Sincronizzazione Offline:"
+                },
+                en: {
+                    paymentTitle: "Payment Methods & Shipping",
+                    paymentDesc: "Choose your payment method. Enter City/ZIP for zone checks and prepaid customs duties (DDP).",
+                    socialTitle: "Follow us on our Social Networks",
+                    searchPlaceholder: "Search folders...",
+                    offlineAlert: "You are offline. The transaction has been saved to the queue.",
+                    addedFav: "Added to favorites!",
+                    removedFav: "Removed from favorites.",
+                    settingsSaved: "Settings successfully saved!",
+                    couponValid: "Coupon successfully applied (-10%)!",
+                    couponInvalid: "Invalid coupon code.",
+                    linkCopied: "Cart link copied to clipboard!",
+                    allFolders: "All Folders",
+                    available: "Available",
+                    lastPieces: "Last Pieces",
+                    timerLabel: "Items reserved in cart for",
+                    cartItems: "Items in Cart",
+                    subtotal: "Subtotal",
+                    receiptBtn: "📄 Generate Receipt",
+                    shareBtn: "🔗 Share Cart",
+                    emailSupport: "Customer Support Email",
+                    apply: "Apply",
+                    close: "Close",
+                    save: "Save Changes",
+                    adminTitle: "⚙️ Admin Panel & Settings",
+                    waLabel: "WhatsApp Support Number:",
+                    extraShipLabel: "Extra Shipping Margin (€):",
+                    discLabel: "Fixed Global Discount (%):",
+                    logsLabel: "Error Logs & Offline Sync:"
+                },
+                us: {
+                    paymentTitle: "Payment Methods & Shipping",
+                    paymentDesc: "Choose your payment method. Enter City/ZIP for zone check & prepaid customs (DDP).",
+                    socialTitle: "Follow us on Social Networks",
+                    searchPlaceholder: "Search folders...",
+                    offlineAlert: "You are offline. Transaction saved to offline queue.",
+                    addedFav: "Added to favorites!",
+                    removedFav: "Removed from favorites.",
+                    settingsSaved: "Settings saved successfully!",
+                    couponValid: "Coupon applied successfully (-10%)!",
+                    couponInvalid: "Invalid coupon code.",
+                    linkCopied: "Cart link copied to clipboard!",
+                    allFolders: "All Folders",
+                    available: "Available",
+                    lastPieces: "Last Pieces",
+                    timerLabel: "Items reserved in cart for",
+                    cartItems: "Cart Items",
+                    subtotal: "Subtotal",
+                    receiptBtn: "📄 Generate Receipt",
+                    shareBtn: "🔗 Share Cart",
+                    emailSupport: "Customer Support Email",
+                    apply: "Apply",
+                    close: "Close",
+                    save: "Save Changes",
+                    adminTitle: "⚙️ Admin Panel & Settings",
+                    waLabel: "WhatsApp Support Number:",
+                    extraShipLabel: "Extra Shipping Margin ($):",
+                    discLabel: "Fixed Global Discount (%):",
+                    logsLabel: "Error Logs & Offline Sync:"
+                },
+                es: {
+                    paymentTitle: "Métodos de Pago y Envío",
+                    paymentDesc: "Elige cómo pagar. Introduce Ciudad/Código Postal para aranceles y aduanas prepagadas (DDP).",
+                    socialTitle: "Síguenos en nuestras Redes Sociales",
+                    searchPlaceholder: "Buscar carpetas...",
+                    offlineAlert: "Estás desconectado. La transacción se guardó en la cola.",
+                    addedFav: "¡Añadido a favoritos!",
+                    removedFav: "Eliminado de favoritos.",
+                    settingsSaved: "¡Configuración guardada con éxito!",
+                    couponValid: "¡Cupón aplicado con éxito (-10%)!",
+                    couponInvalid: "Código de cupón no válido.",
+                    linkCopied: "¡Enlace del carrito copiado al portapapeles!",
+                    allFolders: "Todas las Carpetas",
+                    available: "Disponibles",
+                    lastPieces: "Últimas Piezas",
+                    timerLabel: "Artículos reservados en el carrito por",
+                    cartItems: "Artículos en el Carrito",
+                    subtotal: "Subtotal",
+                    receiptBtn: "📄 Generar Recibo",
+                    shareBtn: "🔗 Compartir Carrito",
+                    emailSupport: "Correo de Soporte",
+                    apply: "Aplicar",
+                    close: "Cerrar",
+                    save: "Guardar Cambios",
+                    adminTitle: "⚙️ Panel de Administración",
+                    waLabel: "Número de WhatsApp de Soporte:",
+                    extraShipLabel: "Margen Extra Envío (€):",
+                    discLabel: "Descuento Global Fijo (%):",
+                    logsLabel: "Registro de Errores:"
+                },
+                de: {
+                    paymentTitle: "Zahlungsmethoden & Versand",
+                    paymentDesc: "Wählen Sie Ihre Zahlungsart. PLZ/Stadt für Zollprüfung & vorausbezahlte Abgaben (DDP).",
+                    socialTitle: "Folgen Sie uns auf Social Media",
+                    searchPlaceholder: "Ordner suchen...",
+                    offlineAlert: "Sie sind offline. Transaktion wurde in der Warteschlange gespeichert.",
+                    addedFav: "Zu Favoriten hinzugefügt!",
+                    removedFav: "Aus Favoriten entfernt.",
+                    settingsSaved: "Einstellungen erfolgreich gespeichert!",
+                    couponValid: "Gutschein erfolgreich angewendet (-10%)!",
+                    couponInvalid: "Ungültiger Gutscheincode.",
+                    linkCopied: "Warenkorb-Link in die Zwischenablage kopiert!",
+                    allFolders: "Alle Ordner",
+                    available: "Verfügbar",
+                    lastPieces: "Letzte Stück",
+                    timerLabel: "Artikel reserviert im Warenkorb für",
+                    cartItems: "Artikel im Warenkorb",
+                    subtotal: "Zwischensumme",
+                    receiptBtn: "📄 Beleg generieren",
+                    shareBtn: "🔗 Warenkorb teilen",
+                    emailSupport: "E-Mail-Kundenservice",
+                    apply: "Anwenden",
+                    close: "Schließen",
+                    save: "Änderungen speichern",
+                    adminTitle: "⚙️ Admin-Bereich",
+                    waLabel: "WhatsApp Support-Nummer:",
+                    extraShipLabel: "Extra Versandmarge (€):",
+                    discLabel: "Fester Rabatt (%):",
+                    logsLabel: "Fehlerprotokolle:"
+                },
+                fr: {
+                    paymentTitle: "Méthodes de Paiement & Expédition",
+                    paymentDesc: "Choisissez votre mode de paiement. Entrez Ville/Code postal pour les douanes (DDP).",
+                    socialTitle: "Suivez-nous sur les réseaux sociaux",
+                    searchPlaceholder: "Rechercher des dossiers...",
+                    offlineAlert: "Vous êtes hors ligne. La transaction a été mise en file d'attente.",
+                    addedFav: "Ajouté aux favoris !",
+                    removedFav: "Retiré des favoris.",
+                    settingsSaved: "Paramètres enregistrés avec succès !",
+                    couponValid: "Coupon appliqué avec succès (-10%) !",
+                    couponInvalid: "Code coupon invalide.",
+                    linkCopied: "Lien du panier copié dans le presse-papiers !",
+                    allFolders: "Tous les Dossiers",
+                    available: "Disponibles",
+                    lastPieces: "Dernières Pièces",
+                    timerLabel: "Articles réservés dans le panier pendant",
+                    cartItems: "Articles dans le Panier",
+                    subtotal: "Sous-total",
+                    receiptBtn: "📄 Générer un Reçu",
+                    shareBtn: "🔗 Partager le Panier",
+                    emailSupport: "Email du Support Client",
+                    apply: "Appliquer",
+                    close: "Fermer",
+                    save: "Enregistrer",
+                    adminTitle: "⚙️ Panneau d'Administration",
+                    waLabel: "Numéro WhatsApp du Support :",
+                    extraShipLabel: "Marge d'Expédition Extra (€) :",
+                    discLabel: "Remise Globale Fixe (%) :",
+                    logsLabel: "Journaux d'Erreurs :"
+                },
+                zh: {
+                    paymentTitle: "支付方式与配送",
+                    paymentDesc: "选择付款方式。输入城市/邮编以查询关税和预付关税（DDP）。",
+                    socialTitle: "关注我们的社交媒体",
+                    searchPlaceholder: "搜索文件夹...",
+                    offlineAlert: "您处于离线状态。交易已保存至离线队列。",
+                    addedFav: "已添加至收藏！",
+                    removedFav: "已从收藏中移除。",
+                    settingsSaved: "设置保存成功！",
+                    couponValid: "优惠券使用成功 (-10%)！",
+                    couponInvalid: "无效的优惠券代码。",
+                    linkCopied: "购物车链接已复制到剪贴板！",
+                    allFolders: "所有文件夹",
+                    available: "有现货",
+                    lastPieces: "最后库存",
+                    timerLabel: "购物车保留商品时间",
+                    cartItems: "购物车商品数量",
+                    subtotal: "小计",
+                    receiptBtn: "📄 生成收据",
+                    shareBtn: "🔗 分享购物车",
+                    emailSupport: "客户支持邮箱",
+                    apply: "应用",
+                    close: "关闭",
+                    save: "保存更改",
+                    adminTitle: "⚙️ 管理面板与设置",
+                    waLabel: "客服 WhatsApp 号码：",
+                    extraShipLabel: "额外运费利润 (¥)：",
+                    discLabel: "全局固定折扣 (%)：",
+                    logsLabel: "错误日志与离线同步："
+                },
+                ru: {
+                    paymentTitle: "Способы оплаты и доставки",
+                    paymentDesc: "Выберите способ оплаты. Введите город/индекс для расчета пошлин (DDP).",
+                    socialTitle: "Следите за нами в соцсетях",
+                    searchPlaceholder: "Поиск папок...",
+                    offlineAlert: "Вы офлайн. Транзакция сохранена в очередь.",
+                    addedFav: "Добавлено в избранное!",
+                    removedFav: "Удалено из избранного.",
+                    settingsSaved: "Настройки успешно сохранены!",
+                    couponValid: "Купон успешно применен (-10%)!",
+                    couponInvalid: "Неверный код купона.",
+                    linkCopied: "Ссылка на корзину скопирована!",
+                    allFolders: "Все папки",
+                    available: "Доступно",
+                    lastPieces: "Последние штуки",
+                    timerLabel: "Товары зарезервированы на",
+                    cartItems: "Товаров в корзине",
+                    subtotal: "Итого",
+                    receiptBtn: "📄 Создать квитанцию",
+                    shareBtn: "🔗 Поделиться корзиной",
+                    emailSupport: "Email поддержки",
+                    apply: "Применить",
+                    close: "Закрыть",
+                    save: "Сохранить",
+                    adminTitle: "⚙️ Панель администратора",
+                    waLabel: "WhatsApp поддержки:",
+                    extraShipLabel: "Доп. маржа доставки (₽):",
+                    discLabel: "Фиксированная скидка (%):",
+                    logsLabel: "Журнал ошибок:"
+                },
+                id: {
+                    paymentTitle: "Metode Pembayaran & Pengiriman",
+                    paymentDesc: "Pilih cara pembayaran. Masukkan Kota/Kode Pos untuk bea cukai prabayar (DDP).",
+                    socialTitle: "Ikuti Media Sosial Kami",
+                    searchPlaceholder: "Cari folder...",
+                    offlineAlert: "Anda sedang offline. Transaksi disimpan dalam antrean.",
+                    addedFav: "Ditambahkan ke favorit!",
+                    removedFav: "Dihapus dari favorit.",
+                    settingsSaved: "Pengaturan berhasil disimpan!",
+                    couponValid: "Kupon berhasil diterapkan (-10%)!",
+                    couponInvalid: "Kode kupon tidak valid.",
+                    linkCopied: "Tautan keranjang disalin ke papan klip!",
+                    allFolders: "Semua Folder",
+                    available: "Tersedia",
+                    lastPieces: "Stok Terakhir",
+                    timerLabel: "Barang dicadangkan di keranjang selama",
+                    cartItems: "Item di Keranjang",
+                    subtotal: "Subtotal",
+                    receiptBtn: "📄 Buat Resi",
+                    shareBtn: "🔗 Bagikan Keranjang",
+                    emailSupport: "Email Layanan Pelanggan",
+                    apply: "Terapkan",
+                    close: "Tutup",
+                    save: "Simpan Perubahan",
+                    adminTitle: "⚙️ Panel Admin & Pengaturan",
+                    waLabel: "Nomor WhatsApp Dukungan:",
+                    extraShipLabel: "Margin Pengiriman Extra (Rp):",
+                    discLabel: "Diskon Global Tetap (%):",
+                    logsLabel: "Log Kesalahan & Sinkronisasi:"
+                },
+                ur: {
+                    paymentTitle: "ادائیگی کے طریقے اور ترسیل",
+                    paymentDesc: "ادائیگی کا طریقہ منتخب کریں۔ ڈیوٹی اور کسٹم (DDP) کے لیے شہر/زپ درج کریں۔",
+                    socialTitle: "ہمارے سوشل نیٹ ورکس پر فالو کریں",
+                    searchPlaceholder: "فولڈرز تلاش کریں...",
+                    offlineAlert: "آپ آف لائن ہیں۔ ٹرانزیکشن قطار میں محفوظ کر لی گئی ہے۔",
+                    addedFav: "پسندیدہ میں شامل کر دیا گیا!",
+                    removedFav: "پسندیدہ سے ہٹا دیا گیا۔",
+                    settingsSaved: "ترتیبات کامیابی سے محفوظ ہو گئیں!",
+                    couponValid: "کوپن کامیابی سے لاگو ہو گیا (-10%)!",
+                    couponInvalid: "غلط کوپن کوڈ۔",
+                    linkCopied: "کارٹ کا لنک کاپی ہو گیا!",
+                    allFolders: "تمام فولڈرز",
+                    available: "دستیاب",
+                    lastPieces: "آخری حصے",
+                    timerLabel: "کارٹ میں اشیاء محفوظ کرنے کا وقت",
+                    cartItems: "کارٹ میں اشیاء",
+                    subtotal: "ذیلی کل",
+                    receiptBtn: "📄 رسید بنائیں",
+                    shareBtn: "🔗 کارٹ شیئر کریں",
+                    emailSupport: "کسٹمر سپورٹ ای میل",
+                    apply: "لاگو کریں",
+                    close: "بند کریں",
+                    save: "ترمیم محفوظ کریں",
+                    adminTitle: "⚙️ ایڈمن پینل اور ترتیبات",
+                    waLabel: "واٹس ایپ سپورٹ نمبر:",
+                    extraShipLabel: "اضافی شپنگ مارجن (Rs):",
+                    discLabel: "مقررہ عالمی ڈسکاؤنٹ (%):",
+                    logsLabel: "خرابی کے نوشتہ جات:"
+                }
+            },
 
-                let deleteBtnHTML = prod.isCustom ? `<button class="delete-prod-btn" onclick="event.stopPropagation(); deleteProduct(${prod.id})" title="Elimina prodotto">×</button>` : '';
+            init() {
+                this.initGlobalErrorHandler();
+                this.initNetworkListener();
+                this.initUrgencyTimer();
+                this.initServiceWorker();
+                this.checkUrlCartParam();
+                this.renderFoldersGrid();
+                this.updateFavoritesCounter();
+                this.applySavedPreferences();
+                this.updateDestinations();
+                this.updateCartSummary();
+            },
 
-                const selectVal = document.getElementById('lang-select').value;
-                const t = translations[getLangKey(selectVal)] || translations['it'];
+            checkUrlCartParam() {
+                const params = new URLSearchParams(window.location.search);
+                const cartParam = params.get('cart');
+                if (cartParam) {
+                    try {
+                        const decodedCart = JSON.parse(atob(cartParam));
+                        if (Array.isArray(decodedCart) && decodedCart.length > 0) {
+                            this.state.cart = decodedCart;
+                            this.saveState();
+                            this.showToast("Carrello condiviso caricato con successo!");
+                        }
+                    } catch (e) {
+                        console.error("Errore decodifica carrello URL");
+                    }
+                }
+            },
 
-                card.innerHTML = `
-                    ${deleteBtnHTML}
-                    <div>
-                        <img src="${prod.img || ''}" alt="${prod.name}" class="product-img">
-                        <h3 class="prod-title">${prod.name}</h3>
-                        <p class="prod-desc">${prod.desc}</p>
-                        <div class="rating-box" onclick="event.stopPropagation()">
-                            <div class="stars" onclick="event.stopPropagation()">
-                                <span onclick="rateProduct(this, ${prod.id}, 5)">★</span><span onclick="rateProduct(this, ${prod.id}, 4)">★</span><span onclick="rateProduct(this, ${prod.id}, 3)">★</span><span onclick="rateProduct(this, ${prod.id}, 2)">★</span><span onclick="rateProduct(this, ${prod.id}, 1)">★</span>
-                            </div>
-                            <span class="rating-text"><strong class="avg-rating">${prod.avgRating.toFixed(1)}</strong> (<span class="review-count">${prod.reviewCount}</span>)</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="price" data-price="${prod.price}">${formatPrice(prod.price)}</div>
-                        <div class="card-actions">
-                            <button class="add-to-cart btn-text" onclick="event.stopPropagation(); addToCart(${prod.id})">${t.add}</button>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-
-            const activeCatBtn = document.querySelector('.category-item.active');
-            if (activeCatBtn) {
-                let activeId = activeCatBtn.id;
-                let catKey = 'all';
-                if (activeId === 'cat-elec') catKey = 'elettronica';
-                if (activeId === 'cat-cloth') catKey = 'abbigliamento';
-                if (activeId === 'cat-home') catKey = 'casa';
-                if (activeId === 'cat-jewels') catKey = 'gioielli';
-                if (activeId === 'cat-sport') catKey = 'sport';
-                filterCategory(catKey, activeCatBtn);
-            }
-        }
-
-        function changeLanguage() {
-            const selectVal = document.getElementById('lang-select').value;
-            const t = translations[getLangKey(selectVal)] || translations['it'];
-
-            document.getElementById('cart-btn-text').innerHTML = `${t.cart} (<span id="cart-count">${cart.reduce((sum, item) => sum + item.quantity, 0)}</span>)`;
-            document.getElementById('reg-btn-text').innerText = t.register;
-            document.getElementById('upload-toggle-text').innerText = t.upload;
-            document.getElementById('footer-copy').innerHTML = t.copy;
-            document.getElementById('wa-link').innerText = t.whatsapp;
-            document.getElementById('contact-link').innerText = t.contact;
-            document.getElementById('tiktok-link').innerText = t.tiktok;
-            document.getElementById('modal-title').innerText = t.modalTitle;
-            document.getElementById('wa-order-btn').innerText = t.waBtn;
-            document.getElementById('close-modal-btn').innerText = t.closeBtn;
-            document.getElementById('auth-title').innerText = t.authTitle;
-            document.getElementById('auth-submit').innerText = t.authSubmit;
-            document.getElementById('upload-title').innerText = t.uploadTitle;
-            document.getElementById('upload-submit-btn').innerText = t.uploadBtn;
-            document.getElementById('dest-label').innerText = t.destLabel;
-
-            const destSelect = document.getElementById('shipping-dest');
-            if (destSelect) {
-                destSelect.options[0].text = t.optItaly;
-                destSelect.options[1].text = t.optEur;
-                destSelect.options[2].text = t.optUsa;
-                destSelect.options[3].text = t.optWorld;
-            }
-
-            document.getElementById('cat-all').innerText = t.catAll;
-            document.getElementById('cat-elec').innerText = t.catElec;
-            document.getElementById('cat-cloth').innerText = t.catCloth;
-            document.getElementById('cat-home').innerText = t.catHome;
-            document.getElementById('cat-jewels').innerText = t.catJewels;
-            document.getElementById('cat-sport').innerText = t.catSport;
-
-            const catSelect = document.getElementById('new-prod-cat');
-            if(catSelect) {
-                catSelect.options[0].text = t.catElec;
-                catSelect.options[1].text = t.catCloth;
-                catSelect.options[2].text = t.catHome;
-                catSelect.options[3].text = t.catJewels;
-                catSelect.options[4].text = t.catSport;
-            }
-
-            document.querySelectorAll('.btn-text').forEach(btn => {
-                btn.innerText = t.add;
-            });
-
-            if (document.getElementById('cartModal').style.display === 'flex') {
-                openCart();
-            }
-        }
-
-        function filterCategory(category, btnElement) {
-            document.querySelectorAll('.category-item').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = 'flex';
+            shareCartLink() {
+                const t = this.translations[this.state.language] || this.translations.it;
+                const encodedCart = btoa(JSON.stringify(this.state.cart));
+                const shareUrl = `${window.location.origin}${window.location.pathname}?cart=${encodedCart}`;
+                
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        this.showToast(t.linkCopied);
+                    }).catch(() => {
+                        prompt("Copia il link del carrello:", shareUrl);
+                    });
                 } else {
-                    card.style.display = 'none';
+                    prompt("Copia il link del carrello:", shareUrl);
                 }
-            });
-        }
+            },
 
-        function toggleAuth() {
-            const section = document.getElementById('auth-section');
-            const uploadSec = document.getElementById('upload-section');
-            uploadSec.style.display = 'none';
-            section.style.display = section.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleUpload() {
-            const section = document.getElementById('upload-section');
-            const authSec = document.getElementById('auth-section');
-            authSec.style.display = 'none';
-            section.style.display = section.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function registerUser() {
-            const name = document.getElementById('username').value;
-            const selectVal = document.getElementById('lang-select').value;
-            const t = translations[getLangKey(selectVal)] || translations['it'];
-            if(name) {
-                alert(`${t.regSuccess} Benvenuto, ${name}!`);
-                document.getElementById('auth-section').style.display = 'none';
-            } else {
-                alert("Inserisci un nome valido.");
-            }
-        }
-
-        function triggerCardImageUpload(cardElement, event) {
-            activeCardForImage = cardElement;
-            document.getElementById('quick-file-input').click();
-        }
-
-        function handleQuickImageUpload(event) {
-            const fileInput = event.target;
-            if (fileInput.files && fileInput.files[0] && activeCardForImage) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const prodId = parseInt(activeCardForImage.getAttribute('data-id'));
-                    const prod = products.find(p => p.id === prodId);
-                    if (prod) {
-                        prod.img = e.target.result;
-                        localStorage.setItem('smazon_products', JSON.stringify(products));
-                    }
-                    const imgEl = activeCardForImage.querySelector('.product-img');
-                    if (imgEl) {
-                        imgEl.src = e.target.result;
-                    }
-                    activeCardForImage = null;
-                    fileInput.value = '';
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            }
-        }
-
-        function rateProduct(starElement, prodId, ratingValue) {
-            const prod = products.find(p => p.id === prodId);
-            if (prod) {
-                let newTotalScore = (prod.avgRating * prod.reviewCount) + ratingValue;
-                prod.reviewCount += 1;
-                prod.avgRating = newTotalScore / prod.reviewCount;
-                localStorage.setItem('smazon_products', JSON.stringify(products));
-                renderProducts();
-                alert(`Grazie per la tua recensione di ${ratingValue} stelle! Valutazione aggiornata.`);
-            }
-        }
-
-        function addNewProduct() {
-            const name = document.getElementById('new-prod-name').value;
-            const desc = document.getElementById('new-prod-desc').value;
-            const price = parseFloat(document.getElementById('new-prod-price').value);
-            const category = document.getElementById('new-prod-cat').value;
-            const imageInput = document.getElementById('new-prod-img');
-
-            if (!name || isNaN(price)) {
-                alert("Inserisci almeno un nome valido e un prezzo numerico.");
-                return;
-            }
-
-            const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-
-            const saveAndRender = (imgData) => {
-                const newProd = {
-                    id: newId,
-                    name: name,
-                    desc: desc || 'Nessuna descrizione inserita.',
-                    price: price,
-                    category: category,
-                    img: imgData || '',
-                    avgRating: 5.0,
-                    reviewCount: 1,
-                    isCustom: true
-                };
-
-                products.unshift(newProd);
-                localStorage.setItem('smazon_products', JSON.stringify(products));
-                renderProducts();
-
-                document.getElementById('upload-section').style.display = 'none';
-                document.getElementById('new-prod-name').value = '';
-                document.getElementById('new-prod-desc').value = '';
-                document.getElementById('new-prod-price').value = '';
-                document.getElementById('new-prod-img').value = '';
-                alert("Prodotto caricato con successo!");
-            };
-
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    saveAndRender(e.target.result);
-                };
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                saveAndRender('');
-            }
-        }
-
-        function deleteProduct(prodId) {
-            if (confirm("Vuoi davvero eliminare questo prodotto?")) {
-                products = products.filter(p => p.id !== prodId);
-                localStorage.setItem('smazon_products', JSON.stringify(products));
-                renderProducts();
-            }
-        }
-
-        function addToCart(prodId) {
-            const prod = products.find(p => p.id === prodId);
-            if (!prod) return;
-
-            const existing = cart.find(item => item.id === prodId);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ id: prod.id, name: prod.name, price: prod.price, quantity: 1 });
-            }
-
-            localStorage.setItem('smazon_cart', JSON.stringify(cart));
-            updateCartCount();
-            
-            const selectVal = document.getElementById('lang-select').value;
-            const t = translations[getLangKey(selectVal)] || translations['it'];
-            alert(`${prod.name} ${t.add.toLowerCase()}!`);
-        }
-
-        function updateCartQuantity(prodId, change) {
-            const item = cart.find(i => i.id === prodId);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    cart = cart.filter(i => i.id !== prodId);
+            initServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                    const swCode = `
+                        self.addEventListener('install', e => { self.skipWaiting(); });
+                        self.addEventListener('activate', e => { e.waitUntil(clients.claim()); });
+                        self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
+                    `;
+                    const blob = new Blob([swCode], { type: 'application/javascript' });
+                    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
                 }
-            }
-            localStorage.setItem('smazon_cart', JSON.stringify(cart));
-            updateCartCount();
-            openCart();
-        }
+            },
 
-        function updateCartCount() {
-            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-count').innerText = totalCount;
-        }
+            initUrgencyTimer() {
+                setInterval(() => {
+                    if (this.state.timerSeconds > 0) {
+                        this.state.timerSeconds--;
+                        const m = Math.floor(this.state.timerSeconds / 60);
+                        const s = this.state.timerSeconds % 60;
+                        const timerEl = document.getElementById('timer-countdown');
+                        if (timerEl) {
+                            timerEl.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                        }
+                    }
+                }, 1000);
+            },
 
-        function formatPrice(basePrice) {
-            const currency = document.getElementById('currency-select').value;
-            let symbol = '€';
-            let convertedPrice = basePrice;
+            showToast(message) {
+                const container = document.getElementById('toast-container');
+                if (!container) return;
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                container.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            },
 
-            if (currency === 'USD') {
-                convertedPrice = basePrice * 1.1;
-                symbol = '$';
-            } else if (currency === 'GBP') {
-                convertedPrice = basePrice * 0.85;
-                symbol = '£';
-            } else if (currency === 'RUB') {
-                convertedPrice = basePrice * 101.5;
-                symbol = '₽';
-            } else if (currency === 'CNY') {
-                convertedPrice = basePrice * 7.9;
-                symbol = '¥';
-            } else if (currency === 'IDR') {
-                convertedPrice = basePrice * 16900;
-                symbol = 'Rp ';
-            } else if (currency === 'PKR') {
-                convertedPrice = basePrice * 305;
-                symbol = 'Rs ';
-            }
+            saveState() {
+                localStorage.setItem('smason_cart', JSON.stringify(this.state.cart));
+                localStorage.setItem('smason_favorites', JSON.stringify(this.state.favorites));
+                localStorage.setItem('smason_settings', JSON.stringify(this.state.settings));
+                localStorage.setItem('smason_currency', JSON.stringify(this.state.currency));
+                localStorage.setItem('smason_lang', JSON.stringify(this.state.language));
+                localStorage.setItem('smason_coupon', this.state.activeCoupon || '');
+                localStorage.setItem('smason_coupon_val', this.state.couponDiscountPercent);
+                localStorage.setItem('smason_queue', JSON.stringify(this.state.offlineQueue));
+                this.updateFavoritesCounter();
+                this.updateShippingCalculator();
+                this.updateCartSummary();
+            },
 
-            if (currency === 'IDR' || currency === 'PKR') {
-                return symbol + convertedPrice.toLocaleString('it-IT', {maximumFractionDigits: 0});
-            } else {
-                return symbol + convertedPrice.toFixed(2);
-            }
-        }
+            applySavedPreferences() {
+                const currencySelect = document.getElementById('currency-select');
+                const langSelect = document.getElementById('lang-select');
+                if (currencySelect) currencySelect.value = this.state.currency;
+                if (langSelect) langSelect.value = this.state.language;
+                this.updateTexts();
+            },
 
-        function getShippingCost() {
-            const dest = document.getElementById('shipping-dest').value;
-            if (dest === 'europe') return 10.00;
-            if (dest === 'usa') return 20.00;
-            if (dest === 'world') return 35.00;
-            return 0.00;
-        }
+            changeCurrency(newCurrency) {
+                this.state.currency = newCurrency;
+                this.saveState();
+                this.renderFoldersGrid();
+            },
 
-        function openCart() {
-            const selectVal = document.getElementById('lang-select').value;
-            const t = translations[getLangKey(selectVal)] || translations['it'];
-            const listContainer = document.getElementById('cart-items-list');
-            const totalsContainer = document.getElementById('cart-totals-container');
-            
-            listContainer.innerHTML = '';
-            if (cart.length === 0) {
-                listContainer.innerHTML = `<p>${t.emptyCart}</p>`;
-                totalsContainer.innerHTML = '';
-            } else {
-                let html = '';
-                let subtotal = 0;
-                cart.forEach((item) => {
-                    html += `
-                        <div class="cart-item-row">
-                            <span>${item.name} (${formatPrice(item.price)})</span>
-                            <div class="cart-item-controls">
-                                <button onclick="updateCartQuantity(${item.id}, -1)">-</button>
-                                <span>${item.quantity}</span>
-                                <button onclick="updateCartQuantity(${item.id}, 1)">+</button>
-                            </div>
+            changeLanguage(newLang) {
+                this.state.language = newLang;
+                this.saveState();
+                this.updateTexts();
+            },
+
+            updateTexts() {
+                const t = this.translations[this.state.language] || this.translations.it;
+                
+                document.getElementById('txt-payment-title').textContent = t.paymentTitle;
+                document.getElementById('txt-payment-desc').textContent = t.paymentDesc;
+                document.getElementById('txt-social-title').textContent = t.socialTitle;
+                document.getElementById('search-input').placeholder = t.searchPlaceholder;
+                document.getElementById('filter-all').textContent = t.allFolders;
+                document.getElementById('filter-avail').textContent = t.available;
+                document.getElementById('filter-last').textContent = t.lastPieces;
+                document.getElementById('txt-timer-label').textContent = t.timerLabel;
+                document.getElementById('txt-cart-items-label').textContent = t.cartItems;
+                document.getElementById('txt-subtotal-label').textContent = t.subtotal;
+                document.getElementById('btn-receipt-text').textContent = t.receiptBtn;
+                document.getElementById('btn-share-text').textContent = t.shareBtn;
+                document.getElementById('txt-email-support').textContent = t.emailSupport;
+                document.getElementById('btn-apply-coupon').textContent = t.apply;
+                document.getElementById('btn-close-modal').textContent = t.close;
+                document.getElementById('modal-title').textContent = t.adminTitle;
+                document.getElementById('lbl-wa').textContent = t.waLabel;
+                document.getElementById('lbl-extra-ship').textContent = t.extraShipLabel;
+                document.getElementById('lbl-glob-disc').textContent = t.discLabel;
+                document.getElementById('lbl-logs').textContent = t.logsLabel;
+                document.getElementById('btn-settings-close').textContent = t.close;
+                document.getElementById('btn-settings-save').textContent = t.save;
+            },
+
+            filterByCategory(category, btnElement) {
+                this.state.currentFilter = category;
+                document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+                if (btnElement) btnElement.classList.add('active');
+                this.renderFoldersGrid(this.state.searchQuery);
+            },
+
+            renderFoldersGrid(filterText = '') {
+                this.state.searchQuery = filterText;
+                const container = document.getElementById('folders-grid-container');
+                if (!container) return;
+                container.innerHTML = '';
+
+                const cleanFilter = filterText.replace(/[^a-zA-Z0-9 #\u4e00-\u9fa5\u0400-\u04ff]/g, '');
+
+                const filtered = this.folders.filter(f => {
+                    const matchesSearch = f.name.toLowerCase().includes(cleanFilter.toLowerCase());
+                    const matchesCategory = this.state.currentFilter === 'all' || f.category === this.state.currentFilter;
+                    return matchesSearch && matchesCategory;
+                });
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 20px; font-size: 13px; color: #111;">Nessuna cartella trovata.</div>`;
+                    return;
+                }
+
+                filtered.forEach(folder => {
+                    const card = document.createElement('div');
+                    card.className = 'folder-box';
+                    card.onclick = () => SmasonApp.openFolder(folder.id);
+                    card.innerHTML = `
+                        <div>
+                            <div class="folder-icon" aria-hidden="true">📁</div>
+                            <div class="folder-title">${folder.name}</div>
+                        </div>
+                        <div>
+                            <span class="folder-meta">${folder.items.length} articoli</span>
                         </div>
                     `;
-                    subtotal += item.price * item.quantity;
+                    container.appendChild(card);
                 });
-                listContainer.innerHTML = html;
+            },
 
-                let shippingCost = getShippingCost();
-                let grandTotal = subtotal + shippingCost;
+            getCurrencySymbol(curr) {
+                switch(curr) {
+                    case 'USD': return '$';
+                    case 'GBP': return '£';
+                    case 'CNY': return '¥';
+                    case 'RUB': return '₽';
+                    case 'IDR': return 'Rp';
+                    case 'PKR': return 'Rs';
+                    default: return '€';
+                }
+            },
 
-                totalsContainer.innerHTML = `
-                    <div class="cart-summary"><span>${t.subtotal || 'Subtotale'}:</span> <span>${formatPrice(subtotal)}</span></div>
-                    <div class="cart-summary"><span>${t.shipping}:</span> <span>${formatPrice(shippingCost)}</span></div>
-                    <div class="cart-summary" style="font-weight: bold; margin-top: 5px;"><span>${t.total}:</span> <span>${formatPrice(grandTotal)}</span></div>
-                `;
+            openFolder(folderId) {
+                const folder = this.folders.find(f => f.id === folderId);
+                if (!folder) return;
+
+                document.getElementById('folder-modal-title').textContent = `📁 ${folder.name}`;
+                document.getElementById('folder-modal-desc').textContent = `Seleziona gli articoli contenuti in questa cartella per aggiungerli al carrello.`;
+
+                const itemsContainer = document.getElementById('folder-items-container');
+                itemsContainer.innerHTML = '';
+
+                const rate = this.rates[this.state.currency] || 1.0;
+                const symbol = this.getCurrencySymbol(this.state.currency);
+
+                folder.items.forEach(item => {
+                    const priceConv = (item.price * rate).toFixed(2);
+                    const row = document.createElement('div');
+                    row.className = 'folder-item-row';
+                    row.innerHTML = `
+                        <span><b>${item.name}</b><br><span style="color:#0070ba; font-weight:bold;">${symbol}${priceConv}</span></span>
+                        <button class="mini-btn" style="background:#111; color:#fff;" onclick="SmasonApp.addToCart(${item.id}, '${item.name.replace(/'/g, "\\'")}', ${item.price})">🛒 Aggiungi</button>
+                    `;
+                    itemsContainer.appendChild(row);
+                });
+
+                document.getElementById('folder-modal').style.display = 'flex';
+            },
+
+            closeFolderModal() {
+                document.getElementById('folder-modal').style.display = 'none';
+            },
+
+            addToCart(id, name, price) {
+                const existing = this.state.cart.find(item => item.id === id);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    this.state.cart.push({ id, name, price, quantity: 1 });
+                }
+                this.saveState();
+                this.showToast(`Aggiunto al carrello: ${name}`);
+            },
+
+            applyCoupon() {
+                const input = document.getElementById('coupon-input');
+                const t = this.translations[this.state.language] || this.translations.it;
+                if (!input) return;
+
+                const code = input.value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+                if (code === 'SMASON10') {
+                    this.state.activeCoupon = code;
+                    this.state.couponDiscountPercent = 10;
+                    this.saveState();
+                    this.showToast(t.couponValid);
+                } else {
+                    this.showToast(t.couponInvalid);
+                }
+            },
+
+            updateCartSummary() {
+                const countEl = document.getElementById('cart-items-count');
+                const subtotalEl = document.getElementById('cart-subtotal-display');
+                if (!countEl || !subtotalEl) return;
+
+                const totalItems = this.state.cart.reduce((sum, item) => sum + item.quantity, 0);
+                const rawSubtotal = this.state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                const globalDisc = this.state.settings.globalDiscount || 0;
+                const couponDisc = this.state.couponDiscountPercent || 0;
+                const discountedSubtotal = rawSubtotal * (1 - ((globalDisc + couponDisc) / 100));
+                
+                const rate = this.rates[this.state.currency] || 1.0;
+                const symbol = this.getCurrencySymbol(this.state.currency);
+
+                countEl.textContent = totalItems;
+                subtotalEl.textContent = `${symbol}${(discountedSubtotal * rate).toFixed(2)}`;
+            },
+
+            updateDestinations() {
+                const countrySelect = document.getElementById('country-select');
+                const regionSelect = document.getElementById('region-select');
+                if (!countrySelect || !regionSelect) return;
+
+                this.state.country = countrySelect.value;
+                const availableRegions = this.regionLabels[this.state.country] || [];
+
+                regionSelect.innerHTML = '';
+                availableRegions.forEach(reg => {
+                    const opt = document.createElement('option');
+                    opt.value = reg.id;
+                    opt.textContent = reg.name;
+                    regionSelect.appendChild(opt);
+                });
+
+                if (availableRegions.length > 0) {
+                    this.state.region = availableRegions[0].id;
+                }
+                this.updateShippingCalculator();
+            },
+
+            calculateShippingCost() {
+                const regionSelect = document.getElementById('region-select');
+                if (regionSelect && regionSelect.value) this.state.region = regionSelect.value;
+
+                const countryTable = this.shippingRatesTable[this.state.country] || this.shippingRatesTable.IT;
+                let baseShipping = countryTable[this.state.region] || 7.00;
+                
+                const cityInput = document.getElementById('shipping-city');
+                let remoteZoneFee = 0;
+                if (cityInput && cityInput.value.trim().length > 0) {
+                    const textVal = cityInput.value.trim().toLowerCase().replace(/[^a-z0-9 ]/g, '');
+                    if (textVal.includes('venezia') || textVal.includes('capri') || textVal.includes('elba') || textVal.startsWith('301')) {
+                        remoteZoneFee = 4.50; 
+                    }
+                }
+
+                baseShipping += remoteZoneFee;
+
+                if (['US', 'CN', 'RU', 'ID', 'PK', 'INT'].includes(this.state.country)) {
+                    const rawSubtotal = this.state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                    const totalDisc = (this.state.settings.globalDiscount || 0) + (this.state.couponDiscountPercent || 0);
+                    const discountedSubtotal = rawSubtotal * (1 - (totalDisc / 100));
+                    baseShipping += (discountedSubtotal * 0.12);
+                }
+
+                const totalItems = this.state.cart.reduce((sum, item) => sum + item.quantity, 0);
+                const extra = parseFloat(this.state.settings.extraShipping) || 1.50;
+                return baseShipping + ((totalItems - 1 > 0 ? totalItems - 1 : 0) * extra);
+            },
+
+            updateShippingCalculator() {
+                const box = document.getElementById('shipping-display-box');
+                if (!box) return;
+
+                const rate = this.rates[this.state.currency] || 1.0;
+                const symbol = this.getCurrencySymbol(this.state.currency);
+                const shippingCost = this.calculateShippingCost() * rate;
+
+                const cityVal = document.getElementById('shipping-city')?.value.trim().replace(/[^a-zA-Z0-9 ]/g, '');
+                const citySuffix = cityVal ? ` (${cityVal})` : '';
+
+                box.innerHTML = `📦 Spedizione, CAP & Oneri DDP${citySuffix}: <b>${symbol}${shippingCost.toFixed(2)}</b>`;
+            },
+
+            openSettingsModal() {
+                document.getElementById('setting-whatsapp').value = this.state.settings.whatsapp;
+                document.getElementById('setting-extra-shipping').value = this.state.settings.extraShipping;
+                document.getElementById('setting-discount').value = this.state.settings.globalDiscount;
+                
+                const logText = this.state.errorLogs.map(l => `[${l.time}] ${l.message}`).join('\n') || 'Nessun errore registrato.';
+                document.getElementById('setting-logs').value = logText;
+                
+                document.getElementById('settings-modal').style.display = 'flex';
+            },
+
+            closeSettingsModal() {
+                document.getElementById('settings-modal').style.display = 'none';
+            },
+
+            saveSettingsModal() {
+                this.state.settings.whatsapp = document.getElementById('setting-whatsapp').value.replace(/[^0-9]/g, '');
+                this.state.settings.extraShipping = parseFloat(document.getElementById('setting-extra-shipping').value) || 1.50;
+                this.state.settings.globalDiscount = parseFloat(document.getElementById('setting-discount').value) || 0;
+                this.saveState();
+                this.closeSettingsModal();
+                const t = this.translations[this.state.language] || this.translations.it;
+                this.showToast(t.settingsSaved);
+            },
+
+            initGlobalErrorHandler() {
+                window.onerror = (msg, url, lineNo) => {
+                    this.state.errorLogs.push({ message: msg, lineNo, time: new Date().toLocaleTimeString() });
+                    localStorage.setItem('smason_errors', JSON.stringify(this.state.errorLogs));
+                    return false;
+                };
+            },
+
+            initNetworkListener() {
+                const banner = document.getElementById('network-banner');
+                const updateStatus = () => {
+                    if (!navigator.onLine) {
+                        banner.classList.add('offline');
+                    } else {
+                        banner.classList.remove('offline');
+                        if (this.state.offlineQueue.length > 0) {
+                            this.showToast(`Connessione ripristinata: sincronizzati ${this.state.offlineQueue.length} elementi.`);
+                            this.state.offlineQueue = [];
+                            this.saveState();
+                        }
+                    }
+                };
+                window.addEventListener('online', updateStatus);
+                window.addEventListener('offline', updateStatus);
+                updateStatus();
+            },
+
+            openSupportChat() {
+                const num = this.state.settings.whatsapp || "393400000000";
+                const message = "Salve, avrei bisogno di assistenza sullo store Smason riguardo il mio ordine.";
+                window.open(`https://wa.me/${num}?text=${encodeURIComponent(message)}`, '_blank');
+            },
+
+            generateInvoicePDF() {
+                let report = `=== RICEVUTA ORDINE UFFICIALE SMASON STORE ===\n\n`;
+                this.state.cart.forEach(item => {
+                    report += `- ${item.name} (x${item.quantity}) - Subtot: €${(item.price * item.quantity).toFixed(2)}\n`;
+                });
+                report += `\nSpedizione, CAP & Oneri Doganali DDP: €${this.calculateShippingCost().toFixed(2)}`;
+                report += `\nValuta attiva: ${this.state.currency}`;
+                report += `\nData: ${new Date().toLocaleDateString()}\n\nGrazie per aver scelto Smason!`;
+
+                const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `Ricevuta_Smason_${Date.now()}.txt`;
+                a.click();
+                this.showToast("Ricevuta generata e scaricata con successo!");
+            },
+
+            processCheckout(methodName) {
+                const t = this.translations[this.state.language] || this.translations.it;
+                if (this.state.cart.length === 0) {
+                    this.state.cart.push({ id: 1, name: 'Prodotto in Cartella #1', price: 90.00, quantity: 1 });
+                }
+
+                const rawTotal = this.state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const totalDisc = (this.state.settings.globalDiscount || 0) + (this.state.couponDiscountPercent || 0);
+                const merchandiseTotal = rawTotal * (1 - (totalDisc / 100));
+
+                const rate = this.rates[this.state.currency] || 1.0;
+                const symbol = this.getCurrencySymbol(this.state.currency);
+                
+                const shippingConverted = this.calculateShippingCost() * rate;
+                const merchandiseConverted = merchandiseTotal * rate;
+                const grandTotal = merchandiseConverted + shippingConverted;
+
+                const countrySelectEl = document.getElementById('country-select');
+                const regionSelectEl = document.getElementById('region-select');
+                const countryName = countrySelectEl ? countrySelectEl.selectedOptions[0].textContent : 'Italia';
+                const regionName = regionSelectEl ? regionSelectEl.selectedOptions[0].textContent : 'Nord';
+                const cityVal = document.getElementById('shipping-city')?.value.trim().replace(/[^a-zA-Z0-9 ]/g, '') || 'Non specificata';
+
+                let summary = `💳 *Richiesta Ordine (${methodName}) - Smason*\n\n`;
+                this.state.cart.forEach(item => {
+                    const itemPrice = (item.price * rate).toFixed(2);
+                    summary += `- ${item.name} (x${item.quantity}) : ${symbol}${itemPrice}\n`;
+                });
+                if (totalDisc > 0) {
+                    summary += `\n*Sconto Totale Applicato:* ${totalDisc}%\n`;
+                }
+                summary += `\n*Totale Articoli:* ${symbol}${merchandiseConverted.toFixed(2)}`;
+                summary += `\n*Destinazione:* ${countryName} (${regionName}) - Città/CAP: ${cityVal}`;
+                summary += `\n*Spedizione, CAP & Dazi DDP:* ${symbol}${shippingConverted.toFixed(2)}`;
+                summary += `\n*Totale Complessivo:* ${symbol}${grandTotal.toFixed(2)}`;
+                summary += `\n*Metodo Scelto:* ${methodName}`;
+
+                if (!navigator.onLine) {
+                    this.state.offlineQueue.push({ summary, time: new Date().toISOString() });
+                    this.saveState();
+                    alert(t.offlineAlert);
+                    return;
+                }
+
+                const num = this.state.settings.whatsapp || "393400000000";
+                window.open(`https://wa.me/${num}?text=${encodeURIComponent(summary)}`, '_blank');
+            },
+
+            handleLiveSearch(query) {
+                this.renderFoldersGrid(query.trim());
+            },
+
+            toggleFavorite(productId) {
+                const index = this.state.favorites.indexOf(productId);
+                const t = this.translations[this.state.language] || this.translations.it;
+                if (index > -1) {
+                    this.state.favorites.splice(index, 1);
+                    this.showToast(t.removedFav);
+                } else {
+                    this.state.favorites.push(productId);
+                    this.showToast(t.addedFav);
+                }
+                this.saveState();
+            },
+
+            updateFavoritesCounter() {
+                const counterEl = document.getElementById('fav-counter');
+                if (counterEl) counterEl.textContent = this.state.favorites.length;
+            },
+
+            viewFavoritesModal() {
+                alert(`Preferiti salvati (${this.state.favorites.length}): ${this.state.favorites.join(', ') || 'Nessun preferito'}`);
             }
-            document.getElementById('cartModal').style.display = 'flex';
-        }
-
-        function closeCart() {
-            document.getElementById('cartModal').style.display = 'none';
-        }
-
-        function sendOrderWhatsApp() {
-            if (cart.length === 0) {
-                alert("Il carrello è vuoto.");
-                return;
-            }
-            const selectVal = document.getElementById('lang-select').value;
-            const t = translations[getLangKey(selectVal)] || translations['it'];
-            const destText = document.getElementById('shipping-dest').selectedOptions[0].text;
-
-            let message = "Salve, vorrei ordinare i seguenti prodotti da Smazon (TikTok Shop):\n";
-            let subtotal = 0;
-            cart.forEach(item => {
-                message += `- ${item.name} x${item.quantity} (${formatPrice(item.price * item.quantity)})\n`;
-                subtotal += item.price * item.quantity;
-            });
-            let shippingCost = getShippingCost();
-            let grandTotal = subtotal + shippingCost;
-
-            message += `\nDestinazione: ${destText}`;
-            message += `\n${t.shipping}: ${formatPrice(shippingCost)}`;
-            message += `\n${t.total}: ${formatPrice(grandTotal)}`;
-            
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/393494605029?text=${encodedMessage}`, '_blank');
-        }
-
-        function changeCurrency() {
-            const priceElements = document.querySelectorAll('.price');
-            priceElements.forEach(el => {
-                let basePrice = parseFloat(el.getAttribute('data-price'));
-                el.innerText = formatPrice(basePrice);
-            });
-
-            if (document.getElementById('cartModal').style.display === 'flex') {
-                openCart();
-            }
-        }
-
-        // Inizializzazione al caricamento della pagina
-        window.onload = function() {
-            renderProducts();
-            updateCartCount();
         };
+
+        document.addEventListener('DOMContentLoaded', () => { SmasonApp.init(); });
     </script>
 </body>
 </html>
