@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smason Store - FOI Enterprise Edition v4 Global</title>
     
+    <!-- META TAG SEO E INDICIZZAZIONE GLOBALE -->
+    <meta name="description" content="Smason Store - E-commerce globale con spedizioni DDP, calcolo doganale, multilingua e pagamenti sicuri in tutto il mondo.">
+    <meta name="keywords" content="Smason Store, global e-commerce, DDP shipping, FOI Enterprise, international shopping">
+    <meta name="author" content="Smason Store">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+    <!-- TAG HREFLANG INTERNAZIONALI PER TUTTI I PAESI E LINGUE CONFIGURATI -->
+    <link rel="alternate" hreflang="it" href="https://smasonstore.com/?lang=it">
+    <link rel="alternate" hreflang="en" href="https://smasonstore.com/?lang=en">
+    <link rel="alternate" hreflang="en-US" href="https://smasonstore.com/?lang=us">
+    <link rel="alternate" hreflang="es" href="https://smasonstore.com/?lang=es">
+    <link rel="alternate" hreflang="de" href="https://smasonstore.com/?lang=de">
+    <link rel="alternate" hreflang="fr" href="https://smasonstore.com/?lang=fr">
+    <link rel="alternate" hreflang="zh-CN" href="https://smasonstore.com/?lang=zh">
+    <link rel="alternate" hreflang="ru" href="https://smasonstore.com/?lang=ru">
+    <link rel="alternate" hreflang="id" href="https://smasonstore.com/?lang=id">
+    <link rel="alternate" hreflang="ur" href="https://smasonstore.com/?lang=ur">
+    <link rel="alternate" hreflang="x-default" href="https://smasonstore.com/">
+
+    <!-- OPEN GRAPH & SOCIAL PREVIEWS GLOBALI -->
+    <meta property="og:title" content="Smason Store - FOI Enterprise Edition v4 Global">
+    <meta property="og:description" content="Scopri il catalogo globale Smason con spedizioni incluse di dazi (DDP) e assistenza WhatsApp 24/7.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smasonstore.com">
+    <meta property="og:image" content="https://smasonstore.com/preview-image.jpg">
+    
+    <!-- TWITTER CARD -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Smason Store - FOI Enterprise Edition v4 Global">
+    <meta name="twitter:description" content="E-commerce globale con supporto multilingua e chat 24/7.">
+
     <!-- MANIFEST PWA INTEGRATO -->
     <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Smason%20Store%22%2C%22short_name%22%3A%22Smason%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ff7f00%22%2C%22theme_color%22%3A%22%23111111%22%7D">
 
@@ -387,7 +418,7 @@
         </div>
         
         <div class="header-controls">
-            <!-- SELETTORE VALUTE ESTESO -->
+            <!-- SELETTORE VALUTE GLOBALE -->
             <select id="currency-select" class="select-control" onchange="SmasonApp.changeCurrency(this.value)" aria-label="Seleziona Valuta">
                 <option value="EUR">EUR (€)</option>
                 <option value="USD">USD ($)</option>
@@ -398,7 +429,7 @@
                 <option value="PKR">PKR (Rs)</option>
             </select>
             
-            <!-- SELETTORE LINGUE ESTESO -->
+            <!-- SELETTORE LINGUE MULTINAZIONALE -->
             <select id="lang-select" class="select-control" onchange="SmasonApp.changeLanguage(this.value)" aria-label="Seleziona Lingua">
                 <option value="it">ITA (Italiano)</option>
                 <option value="en">ENG (English)</option>
@@ -419,7 +450,7 @@
 
         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <a href="mailto:support@smasonstore.com" class="email-btn-top" id="btn-email-text" aria-label="Invia email di supporto">✉️ Email</a>
-            <button class="support-btn-247" onclick="SmasonApp.openSupportChat()" id="btn-chat-text" aria-label="Apri chat di supporto WhatsApp">💬 Chat WhatsApp</button>
+            <button class="support-btn-247" onclick="SmasonApp.openSupportChat()" id="btn-chat-text" aria-label="Apri chat di supporto WhatsApp 24/7">💬 Chat WhatsApp 24/7</button>
         </div>
     </header>
 
@@ -441,7 +472,7 @@
             <p id="txt-payment-desc">Scegli come pagare. Inserisci CAP/Città per il controllo zone e dazi doganali prepagati (DDP).</p>
             
             <div class="shipping-selector-group">
-                <!-- SELETTORE NAZIONI ESTESO -->
+                <!-- SELETTORE NAZIONI CON CAMBIO LINGUA E GEOTARGETING AUTOMATICO -->
                 <select id="country-select" class="shipping-select" onchange="SmasonApp.updateDestinations()" aria-label="Seleziona nazione di spedizione">
                     <option value="IT">Italia (IVA 22% inclusa)</option>
                     <option value="ES">Spagna - España (IVA UE inclusa)</option>
@@ -498,8 +529,8 @@
             
             <h4 id="txt-social-title" style="margin-bottom: 10px; font-size: 15px;">Seguici sui nostri Social Network</h4>
             <div class="social-buttons" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <a href="https://tiktok.com" target="_blank" class="social-btn tiktok" style="background:#000; color:#fff; padding:6px 12px; border-radius:15px; text-decoration:none; font-size:12px; font-weight:bold;" aria-label="TikTok">TikTok 🎵</a>
                 <a href="https://instagram.com" target="_blank" class="social-btn instagram" style="background:#d6249f; color:#fff; padding:6px 12px; border-radius:15px; text-decoration:none; font-size:12px; font-weight:bold;" aria-label="Instagram">Instagram</a>
-                <a href="https://tiktok.com" target="_blank" class="social-btn tiktok" style="background:#000; color:#fff; padding:6px 12px; border-radius:15px; text-decoration:none; font-size:12px; font-weight:bold;" aria-label="TikTok">TikTok</a>
                 <a href="https://facebook.com" target="_blank" class="social-btn facebook" style="background:#1877F2; color:#fff; padding:6px 12px; border-radius:15px; text-decoration:none; font-size:12px; font-weight:bold;" aria-label="Facebook">Facebook</a>
             </div>
         </div>
@@ -524,7 +555,7 @@
         <div class="modal-card">
             <h3 id="modal-title">⚙️ Pannello Admin & Configurazioni</h3>
             <div class="form-group">
-                <label id="lbl-wa">Numero WhatsApp Supporto:</label>
+                <label id="lbl-wa">Numero WhatsApp Supporto (24/7):</label>
                 <input type="text" id="setting-whatsapp" value="393400000000" aria-label="Numero WhatsApp Supporto">
             </div>
             <div class="form-group">
@@ -576,6 +607,20 @@
                 RUB: 98.0, 
                 IDR: 17000.0, 
                 PKR: 300.0 
+            },
+
+            countryToLanguageMap: {
+                IT: 'it',
+                ES: 'es',
+                DE: 'de',
+                FR: 'fr',
+                US: 'us',
+                CN: 'zh',
+                RU: 'ru',
+                ID: 'id',
+                PK: 'ur',
+                EU: 'en',
+                INT: 'en'
             },
 
             folders: Array.from({ length: 16 }, (_, i) => ({
@@ -673,7 +718,7 @@
                     close: "Chiudi",
                     save: "Salva Modifiche",
                     adminTitle: "⚙️ Pannello Admin & Configurazioni",
-                    waLabel: "Numero WhatsApp Supporto:",
+                    waLabel: "Numero WhatsApp Supporto (24/7):",
                     extraShipLabel: "Margine Extra Spedizione (€):",
                     discLabel: "Sconto Globale Fisso (%):",
                     logsLabel: "Log Errori & Sincronizzazione Offline:"
@@ -703,7 +748,7 @@
                     close: "Close",
                     save: "Save Changes",
                     adminTitle: "⚙️ Admin Panel & Settings",
-                    waLabel: "WhatsApp Support Number:",
+                    waLabel: "WhatsApp Support Number (24/7):",
                     extraShipLabel: "Extra Shipping Margin (€):",
                     discLabel: "Fixed Global Discount (%):",
                     logsLabel: "Error Logs & Offline Sync:"
@@ -733,7 +778,7 @@
                     close: "Close",
                     save: "Save Changes",
                     adminTitle: "⚙️ Admin Panel & Settings",
-                    waLabel: "WhatsApp Support Number:",
+                    waLabel: "WhatsApp Support Number (24/7):",
                     extraShipLabel: "Extra Shipping Margin ($):",
                     discLabel: "Fixed Global Discount (%):",
                     logsLabel: "Error Logs & Offline Sync:"
@@ -763,7 +808,7 @@
                     close: "Cerrar",
                     save: "Guardar Cambios",
                     adminTitle: "⚙️ Panel de Administración",
-                    waLabel: "Número de WhatsApp de Soporte:",
+                    waLabel: "Número de WhatsApp de Soporte (24/7):",
                     extraShipLabel: "Margen Extra Envío (€):",
                     discLabel: "Descuento Global Fijo (%):",
                     logsLabel: "Registro de Errores:"
@@ -793,7 +838,7 @@
                     close: "Schließen",
                     save: "Änderungen speichern",
                     adminTitle: "⚙️ Admin-Bereich",
-                    waLabel: "WhatsApp Support-Nummer:",
+                    waLabel: "WhatsApp Support-Nummer (24/7):",
                     extraShipLabel: "Extra Versandmarge (€):",
                     discLabel: "Fester Rabatt (%):",
                     logsLabel: "Fehlerprotokolle:"
@@ -823,7 +868,7 @@
                     close: "Fermer",
                     save: "Enregistrer",
                     adminTitle: "⚙️ Panneau d'Administration",
-                    waLabel: "Numéro WhatsApp du Support :",
+                    waLabel: "Numéro WhatsApp du Support (24/7) :",
                     extraShipLabel: "Marge d'Expédition Extra (€) :",
                     discLabel: "Remise Globale Fixe (%) :",
                     logsLabel: "Journaux d'Erreurs :"
@@ -853,7 +898,7 @@
                     close: "关闭",
                     save: "保存更改",
                     adminTitle: "⚙️ 管理面板与设置",
-                    waLabel: "客服 WhatsApp 号码：",
+                    waLabel: "客服 WhatsApp 号码 (24/7)：",
                     extraShipLabel: "额外运费利润 (¥)：",
                     discLabel: "全局固定折扣 (%)：",
                     logsLabel: "错误日志与离线同步："
@@ -883,7 +928,7 @@
                     close: "Закрыть",
                     save: "Сохранить",
                     adminTitle: "⚙️ Панель администратора",
-                    waLabel: "WhatsApp поддержки:",
+                    waLabel: "WhatsApp поддержки (24/7):",
                     extraShipLabel: "Доп. маржа доставки (₽):",
                     discLabel: "Фиксированная скидка (%):",
                     logsLabel: "Журнал ошибок:"
@@ -913,7 +958,7 @@
                     close: "Tutup",
                     save: "Simpan Perubahan",
                     adminTitle: "⚙️ Panel Admin & Pengaturan",
-                    waLabel: "Nomor WhatsApp Dukungan:",
+                    waLabel: "Nomor WhatsApp Dukungan (24/7):",
                     extraShipLabel: "Margin Pengiriman Extra (Rp):",
                     discLabel: "Diskon Global Tetap (%):",
                     logsLabel: "Log Kesalahan & Sinkronisasi:"
@@ -943,7 +988,7 @@
                     close: "بند کریں",
                     save: "ترمیم محفوظ کریں",
                     adminTitle: "⚙️ ایڈمن پینل اور ترتیبات",
-                    waLabel: "واٹس ایپ سپورٹ نمبر:",
+                    waLabel: "واٹس ایپ سپورٹ نمبر (24/7):",
                     extraShipLabel: "اضافی شپنگ مارجن (Rs):",
                     discLabel: "مقررہ عالمی ڈسکاؤنٹ (%):",
                     logsLabel: "خرابی کے نوشتہ جات:"
@@ -966,6 +1011,10 @@
             checkUrlCartParam() {
                 const params = new URLSearchParams(window.location.search);
                 const cartParam = params.get('cart');
+                const langParam = params.get('lang');
+                if (langParam && this.translations[langParam]) {
+                    this.state.language = langParam;
+                }
                 if (cartParam) {
                     try {
                         const decodedCart = JSON.parse(atob(cartParam));
@@ -983,7 +1032,7 @@
             shareCartLink() {
                 const t = this.translations[this.state.language] || this.translations.it;
                 const encodedCart = btoa(JSON.stringify(this.state.cart));
-                const shareUrl = `${window.location.origin}${window.location.pathname}?cart=${encodedCart}`;
+                const shareUrl = `${window.location.origin}${window.location.pathname}?lang=${this.state.language}&cart=${encodedCart}`;
                 
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(shareUrl).then(() => {
@@ -1062,6 +1111,13 @@
 
             changeLanguage(newLang) {
                 this.state.language = newLang;
+                const langSelect = document.getElementById('lang-select');
+                if (langSelect) langSelect.value = newLang;
+                
+                // Aggiorna l'attributo lang del tag root per i motori di ricerca
+                const htmlRoot = document.getElementById('html-root');
+                if (htmlRoot) htmlRoot.setAttribute('lang', newLang);
+
                 this.saveState();
                 this.updateTexts();
             },
@@ -1231,6 +1287,13 @@
                 if (!countrySelect || !regionSelect) return;
 
                 this.state.country = countrySelect.value;
+                
+                // CAMBIO LINGUA AUTOMATICO IN BASE ALLO STATO SELEZIONATO
+                const mappedLang = this.countryToLanguageMap[this.state.country];
+                if (mappedLang && mappedLang !== this.state.language) {
+                    this.changeLanguage(mappedLang);
+                }
+
                 const availableRegions = this.regionLabels[this.state.country] || [];
 
                 regionSelect.innerHTML = '';
@@ -1345,7 +1408,7 @@
 
             openSupportChat() {
                 const num = this.state.settings.whatsapp || "393400000000";
-                const message = "Salve, avrei bisogno di assistenza sullo store Smason riguardo il mio ordine.";
+                const message = "Salve, avrei bisogno di assistenza 24/7 sullo store Smason riguardo il mio ordine.";
                 window.open(`https://wa.me/${num}?text=${encodeURIComponent(message)}`, '_blank');
             },
 
