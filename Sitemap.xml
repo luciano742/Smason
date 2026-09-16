@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
-        <loc>https://tuonomeutente.github.io/sma-son/</loc>
+        <loc>https://tuonomeutente.github.io/smason/</loc>
         <lastmod>2026-09-16</lastmod>
-        <changefreq>weekly</changefreq>
+        <changefreq>daily</changefreq>
         <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="it" href="https://tuonomeutente.github.io/smason/?lang=it"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://tuonomeutente.github.io/smason/?lang=en"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://tuonomeutente.github.io/smason/?lang=es"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://tuonomeutente.github.io/smason/?lang=de"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://tuonomeutente.github.io/smason/?lang=fr"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://tuonomeutente.github.io/smason/?lang=zh"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://tuonomeutente.github.io/smason/?lang=ru"/>
+        <xhtml:link rel="alternate" hreflang="id" href="https://tuonomeutente.github.io/smason/?lang=id"/>
+        <xhtml:link rel="alternate" hreflang="ur" href="https://tuonomeutente.github.io/smason/?lang=ur"/>
     </url>
 </urlset>
