@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tuonomeutente.github.io/smason/sitemap.xml
