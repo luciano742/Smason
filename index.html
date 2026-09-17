@@ -1,647 +1,967 @@
 <!DOCTYPE html>
-<html lang="it" dir="ltr">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smason Store - Enterprise Edition</title>
+    <title>SmaSon - E-commerce</title>
+    <!-- SEO Meta Tags per i motori di ricerca globali -->
+    <meta name="description" content="SmaSon - E-commerce multilingua e multivaluta con catalogo prodotti e gestione ordini rapida.">
+    <meta name="keywords" content="e-commerce, shopping, shop, smason">
+    <!-- Font Awesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         :root {
-            --primary-color: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --text-color: #1e293b;
+            --primary-orange: #ff7f00;
+            --bg-color: #ff7f00; /* Sfondo generale arancione */
+            --text-color: #333333;
             --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --danger-color: #ef4444;
-            --success-color: #22c55e;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --header-bg: #ffffff;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.5;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
 
         header {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
+            background-color: var(--header-bg);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #000000; /* Sfondo nero solo sotto la scritta e l'occhiolino */
+            padding: 6px 12px;
+            border-radius: 6px;
         }
 
         .logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-orange);
             text-decoration: none;
-            cursor: pointer;
         }
 
-        .header-actions {
+        .blinking-wink {
+            font-size: 20px;
+            animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        .header-controls {
             display: flex;
-            gap: 1rem;
+            gap: 10px;
             align-items: center;
         }
 
-        .btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
+        select, button {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: #fff;
             cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s;
+            font-size: 14px;
         }
 
-        .btn:hover {
-            background-color: var(--primary-hover);
+        button:hover {
+            background: #f0f0f0;
         }
 
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            position: relative;
+            color: #333;
         }
 
-        .btn-outline:hover {
-            background-color: var(--border-color);
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: red;
             color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
         }
-        .btn-danger:hover {
-            background-color: #dc2626;
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25d366;
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1500;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
         }
 
         main {
             flex: 1;
+            padding: 20px;
             max-width: 1200px;
-            width: 100%;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            width: 100%;
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .folders-grid-container, .products-grid-container {
+        .grid-16 {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .folder-card, .product-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
+        .card-item {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            justify-content: space-between;
+            transition: transform 0.2s;
         }
 
-        .folder-card h3, .product-card h3 {
-            font-size: 1.1rem;
+        .card-item:hover {
+            transform: translateY(-3px);
         }
 
-        .product-price {
-            font-weight: 700;
-            color: var(--primary-color);
-            font-size: 1.15rem;
-        }
-
-        /* Modals & Accessibility Focus Trap Support */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .card-item img {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .card-item h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .card-item p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: var(--primary-orange);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .card-actions button {
+            flex: 1;
+            background: var(--primary-orange);
+            color: white;
+            border: none;
+        }
+
+        .card-actions button:hover {
+            opacity: 0.9;
+        }
+
+        .info-section {
+            background: #fff;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .info-box {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .info-box h4 {
+            margin-bottom: 10px;
+            color: var(--primary-orange);
+        }
+
+        .payment-icons, .social-icons {
             display: flex;
             justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s, visibility 0.2s;
+            gap: 15px;
+            font-size: 24px;
+            margin-top: 10px;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
+        .payment-icons i, .social-icons a {
+            color: #444;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-orange);
         }
 
         .modal {
-            background: var(--card-bg);
-            width: 100%;
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
             max-width: 600px;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
             max-height: 90vh;
             overflow-y: auto;
+            position: relative;
         }
 
-        .cart-item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--border-color);
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-            margin-bottom: 0.75rem;
+        .admin-group {
+            margin-bottom: 15px;
+            text-align: left;
         }
 
-        .form-group label {
-            font-size: 0.875rem;
-            font-weight: 500;
+        .admin-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
         }
 
-        .form-group input, .form-group select {
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.375rem;
-            font-size: 1rem;
+        .admin-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
         footer {
             text-align: center;
-            padding: 1.5rem;
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            font-size: 0.875rem;
-            color: #64748b;
-        }
-
-        .hidden {
-            display: none !important;
+            padding: 15px;
+            background: #fff;
+            font-size: 13px;
+            color: #666;
+            margin-top: 10px;
+            border-top: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
 
+    <!-- Pulsante WhatsApp Fluttuante Dinamico -->
+    <a href="#" id="whatsappFloatBtn" class="whatsapp-float" target="_blank" title="Contattaci su WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
     <header>
-        <a class="logo" id="home-link">Smason Store</a>
-        <div class="header-actions">
-            <button class="btn btn-outline" id="open-cart-btn" aria-expanded="false">Carrello (<span id="cart-count">0</span>)</button>
-            <button class="btn" id="open-admin-btn">Admin / Gestione</button>
+        <div class="logo-container">
+            <a href="#" class="logo">SmaSon</a>
+            <span class="blinking-wink">😉</span>
+        </div>
+        <div class="header-controls">
+            <select id="currencySelector" onchange="changeCurrency()">
+                <option value="EUR">EUR (€)</option>
+                <option value="USD">USD ($)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="CNY">CNY (¥)</option>
+                <option value="IDR">IDR (Rp)</option>
+                <option value="RUB">RUB (₽)</option>
+            </select>
+            <select id="langSelector" onchange="changeLanguage()">
+                <option value="it">Italiano</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="zh">中文</option>
+                <option value="id">Indonesia</option>
+                <option value="ru">Русский</option>
+            </select>
+            <button class="icon-btn" onclick="openWishlist()"><i class="fa-regular fa-heart"></i><span class="badge" id="wishlistCount">0</span></button>
+            <button class="icon-btn" onclick="openCart()"><i class="fa-solid fa-cart-shopping"></i><span class="badge" id="cartCount">0</span></button>
+            <button class="icon-btn" onclick="openAdmin()"><i class="fa-solid fa-gear"></i></button>
         </div>
     </header>
 
     <main>
-        <!-- Vista Categorie (Home) -->
-        <section id="view-folders" aria-label="Catalog Folders">
-            <div class="section-header">
-                <h2>Categorie Prodotti</h2>
-            </div>
-            <div id="folders-grid" class="folders-grid-container">
-                <!-- Generato dinamicamente via JS -->
-            </div>
-        </section>
+        <h2 id="catalogTitle" style="color: #fff; margin-bottom: 15px;">Catalogo Prodotti (16 Caselle)</h2>
+        <div class="grid-16" id="productGrid">
+            <!-- I 16 prodotti vengono generati dinamicamente -->
+        </div>
 
-        <!-- Vista Prodotti di una Categoria -->
-        <section id="view-products" class="hidden" aria-label="Category Products">
-            <div class="section-header">
-                <h2 id="category-title">Prodotti</h2>
-                <button class="btn btn-outline" id="back-to-folders">← Torna alle Categorie</button>
+        <div class="info-section">
+            <div class="info-box">
+                <h4 id="payTitle">Metodi di Pagamento</h4>
+                <p id="payDesc" style="font-size:13px; color:#555;">Accettiamo pagamenti sicuri e rateali:</p>
+                <div class="payment-icons">
+                    <i class="fa-brands fa-paypal" title="PayPal"></i>
+                    <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fa-solid fa-building-columns" title="Bonifico Bancario"></i>
+                    <span style="font-size:12px; font-weight:bold; background:#eee; padding:2px 6px; border-radius:4px;" title="Klarna">Klarna</span>
+                    <span style="font-size:12px; font-weight:bold; background:#eee; padding:2px 6px; border-radius:4px;" title="Scalapay">Scalapay</span>
+                </div>
             </div>
-            <div id="products-grid" class="products-grid-container">
-                <!-- Generato dinamicamente via JS -->
+            <div class="info-box">
+                <h4 id="shipTitle">Spedizioni & Servizi</h4>
+                <p id="shipDesc" style="font-size:13px; color:#555;">Spedizioni rapide e gestione dedicata a carico nostro.</p>
+                <div style="margin-top: 10px; font-size: 13px; font-weight: bold; color: var(--primary-orange);">
+                    <span id="shippingTextLabel">Spedizioni a carico loro:</span> <span id="shippingCounter">0</span>
+                </div>
             </div>
-        </section>
+            <div class="info-box">
+                <h4 id="contactInfoTitle">Contatti & Social</h4>
+                <p id="publicContactInfo" style="font-size:13px; color:#555; margin-bottom:5px;"></p>
+                <div class="social-icons" id="socialLinksContainer">
+                    <!-- Link social dinamici -->
+                </div>
+            </div>
+        </div>
     </main>
 
+    <!-- Modale Carrello -->
+    <div class="modal" id="cartModal" onclick="checkModalClose(event, 'cartModal')">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCart()">&times;</span>
+            <h2 id="cartModalTitle">Carrello</h2>
+            <div id="cartItems" style="margin: 15px 0; max-height: 200px; overflow-y: auto;"></div>
+            <div id="shippingCostInfo" style="font-size: 13px; color: #d9534f; margin-bottom: 10px; font-weight: bold;"></div>
+            <div id="couponSection" style="margin: 10px 0;">
+                <input type="text" id="couponInput" placeholder="Inserisci Coupon (es. SMASON10)" style="padding: 6px; width: 65%;">
+                <button id="applyCouponBtn" onclick="applyCoupon()" style="padding: 6px 10px;">Applica</button>
+            </div>
+            <div id="installments" style="font-size: 13px; color: #555; margin-bottom: 10px;"></div>
+            <div id="cartTotal" style="font-weight: bold; font-size: 18px; margin-bottom: 15px;"></div>
+            <div style="display: flex; gap: 10px;">
+                <button id="clearCartBtn" onclick="clearCart()" style="flex: 1; background: #dc3545; color: white; padding: 10px; border: none; border-radius: 5px;">Svuota Carrello</button>
+                <button id="checkoutBtn" onclick="checkout()" style="flex: 2; background: #28a745; color: white; padding: 10px; border: none; border-radius: 5px;">Procedi all'Ordine</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Wishlist -->
+    <div class="modal" id="wishlistModal" onclick="checkModalClose(event, 'wishlistModal')">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeWishlist()">&times;</span>
+            <h2 id="wishlistModalTitle">Preferiti (Wishlist)</h2>
+            <div id="wishlistItems" style="margin: 15px 0;"></div>
+        </div>
+    </div>
+
+    <!-- Pannello Admin & Impostazioni Visive -->
+    <div class="modal" id="adminModal" onclick="checkModalClose(event, 'adminModal')">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAdmin()">&times;</span>
+            <h2 id="adminModalTitle">Pannello di Controllo & Configurazione</h2>
+            
+            <h3 id="adminContactsTitle" style="margin-top:15px; font-size:15px; color:var(--primary-orange);">Impostazioni Contatti & Social</h3>
+            <div class="admin-group" style="margin-top:10px;">
+                <label id="adminWaLabel">Numero WhatsApp (es. 393331234567):</label>
+                <input type="text" id="settingWhatsapp" placeholder="Inserisci numero WhatsApp">
+            </div>
+            <div class="admin-group">
+                <label id="adminWaTextLabel">Messaggio precompilato WhatsApp:</label>
+                <input type="text" id="settingWhatsappText" placeholder="Es. Salve, vorrei informazioni sui prodotti">
+            </div>
+            <div class="admin-group">
+                <label>Link Facebook:</label>
+                <input type="text" id="settingFacebook" placeholder="https://facebook.com/tuapagina">
+            </div>
+            <div class="admin-group">
+                <label>Link Instagram:</label>
+                <input type="text" id="settingInstagram" placeholder="https://instagram.com/tuaprofilo">
+            </div>
+            <div class="admin-group">
+                <label>Link TikTok:</label>
+                <input type="text" id="settingTiktok" placeholder="https://tiktok.com/@tuoutente">
+            </div>
+
+            <h3 id="adminEmailTitle" style="margin-top:20px; font-size:15px; color:var(--primary-orange);">Configurazione EmailJS (per gli ordini)</h3>
+            <div class="admin-group" style="margin-top:10px;">
+                <label id="adminEmailDestLabel">Tua Email di Destinazione (per ricevere gli ordini):</label>
+                <input type="email" id="settingToEmail" placeholder="tua@email.com">
+            </div>
+            <div class="admin-group">
+                <label>EmailJS Public Key:</label>
+                <input type="text" id="settingEmailPublicKey" placeholder="Inserisci Public Key">
+            </div>
+            <div class="admin-group">
+                <label>EmailJS Service ID:</label>
+                <input type="text" id="settingEmailServiceId" placeholder="Inserisci Service ID">
+            </div>
+            <div class="admin-group">
+                <label>EmailJS Template ID:</label>
+                <input type="text" id="settingEmailTemplateId" placeholder="Inserisci Template ID">
+            </div>
+            <button id="adminSaveSettingsBtn" onclick="saveSiteSettings()" style="width:100%; background:#28a745; color:white; border:none; padding:10px; border-radius:5px; margin-bottom:15px;">Salva Impostazioni Contatti</button>
+
+            <h3 id="adminProductsTitle" style="margin-top:15px; font-size:15px; color:var(--primary-orange);">Gestione Prodotti (16 Caselle - Nome, Prezzo & Immagine)</h3>
+            <div id="adminProductList" style="margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
+            <button id="adminSaveProductsBtn" onclick="saveAllProducts()" style="width:100%; background:#007bff; color:white; border:none; padding:10px; border-radius:5px; margin-top:10px;">Salva Modifiche Prodotti</button>
+            
+            <h3 id="adminOrdersTitle" style="margin-top:20px; font-size:15px; color:var(--primary-orange);">Registro Ordini Ricevuti</h3>
+            <div id="adminOrdersList" style="margin-top: 10px; max-height: 150px; overflow-y: auto; font-size: 12px; background: #f9f9f9; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></div>
+
+            <button id="adminExportBtn" onclick="exportCSV()" style="width:100%; margin-top:15px; background:#17a2b8; color:white; border:none; padding:10px; border-radius:5px;">Esporta Storico Ordini (CSV)</button>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2026 Smason Store - Enterprise Edition. Tutti i diritti riservati.</p>
+        &copy; 2026 SmaSon. Tutti i diritti riservati.
     </footer>
 
-    <!-- Modale Carrello -->
-    <div class="modal-overlay" id="cart-modal" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="modal" tabindex="-1">
-            <h2>Il tuo Carrello</h2>
-            <div id="cart-items-container">Il carrello è vuoto.</div>
-            <div id="cart-total-container" style="font-weight: bold; font-size: 1.1rem; margin-top: 0.5rem; text-align: right;"></div>
-            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
-                <button class="btn btn-outline" id="close-cart-btn">Chiudi</button>
-                <button class="btn" id="checkout-btn">Procedi all'ordine</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modale Admin / Gestione -->
-    <div class="modal-overlay" id="admin-modal" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="modal" tabindex="-1">
-            <h2>Pannello di Gestione (Admin)</h2>
-            <hr style="border: 0; border-top: 1px solid var(--border-color);">
-            <h3>Aggiungi Nuovo Prodotto</h3>
-            <form id="add-product-form">
-                <div class="form-group">
-                    <label for="new-prod-name">Nome Prodotto</label>
-                    <input type="text" id="new-prod-name" required placeholder="Es. Articolo Esempio">
-                </div>
-                <div class="form-group">
-                    <label for="new-prod-category">Categoria</label>
-                    <select id="new-prod-category">
-                        <option value="1">Categoria 1</option>
-                        <option value="2">Categoria 2</option>
-                        <option value="3">Categoria 3</option>
-                        <option value="4">Categoria 4</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="new-prod-price">Prezzo (€)</label>
-                    <input type="number" step="0.01" id="new-prod-price" required placeholder="14.50">
-                </div>
-                <button type="submit" class="btn">Salva Prodotto</button>
-            </form>
-            <hr style="border: 0; border-top: 1px solid var(--border-color); margin-top: 1rem;">
-            <h3>Prodotti Esistenti</h3>
-            <div id="admin-products-list" style="max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;">
-                <!-- Lista admin -->
-            </div>
-            <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
-                <button class="btn btn-outline" id="close-admin-btn">Chiudi Pannello</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Safe localStorage Wrapper
-        const StorageManager = {
-            get(key, fallback) {
-                try {
-                    const item = localStorage.getItem(key);
-                    return item ? JSON.parse(item) : fallback;
-                } catch (e) {
-                    console.warn("Storage read error:", e);
-                    return fallback;
-                }
-            },
-            set(key, value) {
-                try {
-                    localStorage.setItem(key, JSON.stringify(value));
-                } catch (e) {
-                    console.warn("Storage write error:", e);
-                }
-            }
+        let siteSettings = JSON.parse(localStorage.getItem('sma_son_settings')) || {
+            whatsapp: '',
+            whatsappText: '',
+            facebook: '',
+            instagram: '',
+            tiktok: '',
+            toEmail: '',
+            emailPublicKey: '',
+            emailServiceId: '',
+            emailTemplateId: ''
         };
 
-        // Dati Iniziali di Default Generici
-        const defaultFolders = [
-            { id: 1, title: "Categoria 1" },
-            { id: 2, title: "Categoria 2" },
-            { id: 3, title: "Categoria 3" },
-            { id: 4, title: "Categoria 4" }
-        ];
-
-        const defaultProducts = [
-            { id: 101, folderId: 1, title: "Prodotto Standard A", price: 12.50 },
-            { id: 102, folderId: 1, title: "Prodotto Standard B", price: 3.80 },
-            { id: 201, folderId: 2, title: "Articolo Generico X", price: 22.00 },
-            { id: 301, folderId: 3, title: "Dispositivo Tecnologico Y", price: 28.00 },
-            { id: 401, folderId: 4, title: "Accessorio Varie Z", price: 15.00 }
-        ];
-
-        // Inizializzazione State
-        let foldersData = StorageManager.get("smason_folders", defaultFolders);
-        let productsData = StorageManager.get("smason_products", defaultProducts);
-        let cartData = StorageManager.get("smason_cart", []);
-        let currentActiveFolderId = null;
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const gridContainer = document.getElementById("folders-grid");
-            const productsGrid = document.getElementById("products-grid");
-            const viewFolders = document.getElementById("view-folders");
-            const viewProducts = document.getElementById("view-products");
-            const categoryTitle = document.getElementById("category-title");
-            const backToFoldersBtn = document.getElementById("back-to-folders");
-            const homeLink = document.getElementById("home-link");
-
-            // Ritorna alla Home Categorie
-            function showHome() {
-                currentActiveFolderId = null;
-                viewProducts.classList.add("hidden");
-                viewFolders.classList.remove("hidden");
-                renderFolders();
+        function applySettingsToPage() {
+            const waBtn = document.getElementById('whatsappFloatBtn');
+            if (siteSettings.whatsapp) {
+                let encodedText = encodeURIComponent(siteSettings.whatsappText || '');
+                waBtn.href = `https://wa.me/${siteSettings.whatsapp}${encodedText ? '?text=' + encodedText : ''}`;
+                waBtn.style.display = 'flex';
+            } else {
+                waBtn.href = '#';
+                waBtn.style.display = 'none';
             }
 
-            homeLink.addEventListener("click", (e) => {
-                e.preventDefault();
-                showHome();
-            });
+            const publicContactEl = document.getElementById('publicContactInfo');
+            let contactTexts = [];
+            if (siteSettings.whatsapp) contactTexts.push(`WhatsApp: +${siteSettings.whatsapp}`);
+            if (siteSettings.toEmail) contactTexts.push(`Email: ${siteSettings.toEmail}`);
+            publicContactEl.innerText = contactTexts.length > 0 ? contactTexts.join(' | ') : 'Nessun contatto diretto configurato.';
 
-            backToFoldersBtn.addEventListener("click", showHome);
+            const socialContainer = document.getElementById('socialLinksContainer');
+            socialContainer.innerHTML = `
+                <a href="${siteSettings.facebook || '#'}" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                <a href="${siteSettings.instagram || '#'}" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="${siteSettings.tiktok || '#'}" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            `;
 
-            // Renderizza le cartelle/categorie
-            function renderFolders() {
-                gridContainer.innerHTML = "";
-                const fragment = document.createDocumentFragment();
-                
-                foldersData.forEach(folder => {
-                    const count = productsData.filter(p => Number(p.folderId) === Number(folder.id)).length;
-                    const card = document.createElement("div");
-                    card.className = "folder-card";
-                    card.innerHTML = `
-                        <h3>${folder.title}</h3>
-                        <p>${count} prodotti disponibili</p>
-                        <button class="btn" data-folder-id="${folder.id}">Esplora</button>
-                    `;
-                    fragment.appendChild(card);
-                });
-                gridContainer.appendChild(fragment);
+            if (siteSettings.emailPublicKey) {
+                try { emailjs.init(siteSettings.emailPublicKey); } catch(e) {}
             }
+        }
 
-            // Renderizza i prodotti di una specifica cartella
-            function renderProducts(folderId) {
-                currentActiveFolderId = Number(folderId);
-                const folder = foldersData.find(f => Number(f.id) === currentActiveFolderId);
-                if (!folder) return;
+        function saveSiteSettings() {
+            siteSettings.whatsapp = document.getElementById('settingWhatsapp').value.trim();
+            siteSettings.whatsappText = document.getElementById('settingWhatsappText').value.trim();
+            siteSettings.facebook = document.getElementById('settingFacebook').value.trim();
+            siteSettings.instagram = document.getElementById('settingInstagram').value.trim();
+            siteSettings.tiktok = document.getElementById('settingTiktok').value.trim();
+            siteSettings.toEmail = document.getElementById('settingToEmail').value.trim();
+            siteSettings.emailPublicKey = document.getElementById('settingEmailPublicKey').value.trim();
+            siteSettings.emailServiceId = document.getElementById('settingEmailServiceId').value.trim();
+            siteSettings.emailTemplateId = document.getElementById('settingEmailTemplateId').value.trim();
 
-                categoryTitle.textContent = folder.title;
-                productsGrid.innerHTML = "";
-                
-                const filteredProducts = productsData.filter(p => Number(p.folderId) === currentActiveFolderId);
-                
-                if (filteredProducts.length === 0) {
-                    productsGrid.innerHTML = "<p>Nessun prodotto presente in questa categoria.</p>";
-                } else {
-                    const fragment = document.createDocumentFragment();
-                    filteredProducts.forEach(product => {
-                        const card = document.createElement("div");
-                        card.className = "product-card";
-                        card.innerHTML = `
-                            <h3>${product.title}</h3>
-                            <div class="product-price">€ ${Number(product.price).toFixed(2)}</div>
-                            <button class="btn" data-add-cart="${product.id}">Aggiungi al Carrello</button>
-                        `;
-                        fragment.appendChild(card);
-                    });
-                    productsGrid.appendChild(fragment);
-                }
+            localStorage.setItem('sma_son_settings', JSON.stringify(siteSettings));
+            applySettingsToPage();
+            alert('Impostazioni salvate con successo!');
+            closeAdmin();
+        }
 
-                viewFolders.classList.add("hidden");
-                viewProducts.classList.remove("hidden");
-            }
+        const defaultProducts = Array.from({ length: 16 }, (_, index) => ({
+            id: index + 1,
+            name: `Prodotto ${index + 1}`,
+            description: `Descrizione dettagliata per il prodotto ${index + 1} della griglia.`,
+            price: (Math.random() * 50 + 10).toFixed(2),
+            image: `https://picsum.photos/300/200?random=${index + 1}`
+        }));
 
-            // Event delegation sulla griglia categorie
-            gridContainer.addEventListener("click", (e) => {
-                const btn = e.target.closest("button[data-folder-id]");
-                if (btn) {
-                    renderProducts(btn.getAttribute("data-folder-id"));
-                }
-            });
+        let products = JSON.parse(localStorage.getItem('sma_son_products')) || defaultProducts;
+        let cart = JSON.parse(localStorage.getItem('sma_son_cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('sma_son_wishlist')) || [];
+        let shippingCount = parseInt(localStorage.getItem('sma_son_shipping_count')) || 0;
+        let ordersHistory = JSON.parse(localStorage.getItem('sma_son_orders_history')) || [];
+        
+        let currentCurrency = localStorage.getItem('sma_son_currency') || 'EUR';
+        let currentLang = localStorage.getItem('sma_son_lang') || 'it';
+        let discount = 0;
+        
+        const rates = { EUR: 1, USD: 1.1, GBP: 0.85, CNY: 7.8, IDR: 17000, RUB: 100 };
+        const symbols = { EUR: '€', USD: '$', GBP: '£', CNY: '¥', IDR: 'Rp', RUB: '₽' };
 
-            // Event delegation sulla griglia prodotti
-            productsGrid.addEventListener("click", (e) => {
-                const btn = e.target.closest("button[data-add-cart]");
-                if (btn) {
-                    addToCart(Number(btn.getAttribute("data-add-cart")));
-                }
-            });
+        document.getElementById('shippingCounter').innerText = shippingCount;
+        document.getElementById('currencySelector').value = currentCurrency;
+        document.getElementById('langSelector').value = currentLang;
 
-            // Gestione Carrello Logica
-            function addToCart(productId) {
-                const product = productsData.find(p => p.id === productId);
-                if (!product) return;
-
-                const existingItem = cartData.find(item => item.id === productId);
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                } else {
-                    cartData.push({ ...product, quantity: 1 });
-                }
-                StorageManager.set("smason_cart", cartData);
-                updateCartCount();
-                alert(`"${product.title}" aggiunto al carrello!`);
-            }
-
-            function updateCartCount() {
-                const totalCount = cartData.reduce((sum, item) => sum + item.quantity, 0);
-                document.getElementById("cart-count").textContent = totalCount;
-            }
-
-            function renderCartItems() {
-                const container = document.getElementById("cart-items-container");
-                const totalContainer = document.getElementById("cart-total-container");
-                
-                if (cartData.length === 0) {
-                    container.innerHTML = "Il carrello è vuoto.";
-                    totalContainer.textContent = "";
-                    return;
-                }
-
-                container.innerHTML = "";
-                let grandTotal = 0;
-
-                cartData.forEach(item => {
-                    const itemTotal = item.price * item.quantity;
-                    grandTotal += itemTotal;
-
-                    const row = document.createElement("div");
-                    row.className = "cart-item-row";
-                    row.innerHTML = `
-                        <div>
-                            <strong>${item.title}</strong><br>
-                            <small>€ ${Number(item.price).toFixed(2)} x ${item.quantity}</small>
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            products.forEach(p => {
+                let convertedPrice = (p.price * rates[currentCurrency]).toFixed(2);
+                grid.innerHTML += `
+                    <div class="card-item">
+                        <img src="${p.image}" alt="${p.name}">
+                        <h3>${p.name}</h3>
+                        <p>${p.description}</p>
+                        <div class="price">${symbols[currentCurrency]} ${convertedPrice}</div>
+                        <div class="card-actions">
+                            <button onclick="addToCart(${p.id})">Acquista</button>
+                            <button onclick="toggleWishlist(${p.id})" style="background:#6c757d;"><i class="fa-solid fa-heart"></i></button>
                         </div>
-                        <div style="display: flex; gap: 0.5rem; align-items: center;">
-                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem;" data-cart-dec="${item.id}">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem;" data-cart-inc="${item.id}">+</button>
-                            <button class="btn btn-danger" style="padding: 0.2rem 0.5rem;" data-cart-del="${item.id}">🗑</button>
-                        </div>
-                    `;
-                    container.appendChild(row);
-                });
+                    </div>
+                `;
+            });
+            updateBadges();
+        }
 
-                totalContainer.textContent = `Totale Complessivo: € ${grandTotal.toFixed(2)}`;
+        function changeCurrency() {
+            currentCurrency = document.getElementById('currencySelector').value;
+            localStorage.setItem('sma_son_currency', currentCurrency);
+            renderProducts();
+            if (document.getElementById('cartModal').style.display === 'flex') {
+                openCart();
+            }
+        }
+
+        function changeLanguage() {
+            currentLang = document.getElementById('langSelector').value;
+            localStorage.setItem('sma_son_lang', currentLang);
+            
+            const titleEl = document.getElementById('catalogTitle');
+            const payTitle = document.getElementById('payTitle');
+            const payDesc = document.getElementById('payDesc');
+            const shipTitle = document.getElementById('shipTitle');
+            const shipDesc = document.getElementById('shipDesc');
+            const shippingTextLabel = document.getElementById('shippingTextLabel');
+            const contactInfoTitle = document.getElementById('contactInfoTitle');
+            
+            const cartTitle = document.getElementById('cartModalTitle');
+            const wishlistTitle = document.getElementById('wishlistModalTitle');
+            const adminTitle = document.getElementById('adminModalTitle');
+            const couponInput = document.getElementById('couponInput');
+            const applyCouponBtn = document.getElementById('applyCouponBtn');
+            const clearCartBtn = document.getElementById('clearCartBtn');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const adminContactsTitle = document.getElementById('adminContactsTitle');
+            const adminWaLabel = document.getElementById('adminWaLabel');
+            const adminWaTextLabel = document.getElementById('adminWaTextLabel');
+            const adminEmailTitle = document.getElementById('adminEmailTitle');
+            const adminEmailDestLabel = document.getElementById('adminEmailDestLabel');
+            const adminProductsTitle = document.getElementById('adminProductsTitle');
+            const adminOrdersTitle = document.getElementById('adminOrdersTitle');
+            const adminSaveSettingsBtn = document.getElementById('adminSaveSettingsBtn');
+            const adminSaveProductsBtn = document.getElementById('adminSaveProductsBtn');
+            const adminExportBtn = document.getElementById('adminExportBtn');
+
+            const translations = {
+                it: { 
+                    catalog: 'Catalogo Prodotti (16 Caselle)', payT: 'Metodi di Pagamento', payD: 'Accettiamo pagamenti sicuri e rateali:', shipT: 'Spedizioni & Servizi', shipD: 'Spedizioni rapide e gestione dedicata a carico nostro.', shipLbl: 'Spedizioni a carico loro:', contT: 'Contatti & Social',
+                    cartT: 'Carrello', wishT: 'Preferiti (Wishlist)', adminT: 'Pannello di Controllo & Configurazione', couponPl: 'Inserisci Coupon (es. SMASON10)', apply: 'Applica', clear: 'Svuota Carrello', checkout: 'Procedi all\'Ordine',
+                    admCont: 'Impostazioni Contatti & Social', waLbl: 'Numero WhatsApp (es. 393331234567):', waTxtLbl: 'Messaggio precompilato WhatsApp:', admEmail: 'Configurazione EmailJS (per gli ordini)', emailDestLbl: 'Tua Email di Destinazione (per ricevere gli ordini):', admProd: 'Gestione Prodotti (16 Caselle - Nome, Prezzo & Immagine)', admOrd: 'Registro Ordini Ricevuti',
+                    saveSet: 'Salva Impostazioni Contatti', saveProd: 'Salva Modifiche Prodotti', expBtn: 'Esporta Storico Ordini (CSV)'
+                },
+                en: { 
+                    catalog: 'Product Catalog (16 Boxes)', payT: 'Payment Methods', payD: 'We accept secure and installment payments:', shipT: 'Shipping & Services', shipD: 'Fast shipping and dedicated management covered by us.', shipLbl: 'Shipments handled by them:', contT: 'Contacts & Social',
+                    cartT: 'Shopping Cart', wishT: 'Wishlist', adminT: 'Control Panel & Settings', couponPl: 'Enter Coupon (e.g. SMASON10)', apply: 'Apply', clear: 'Clear Cart', checkout: 'Proceed to Checkout',
+                    admCont: 'Contacts & Social Settings', waLbl: 'WhatsApp Number (e.g. 393331234567):', waTxtLbl: 'Pre-filled WhatsApp message:', admEmail: 'EmailJS Configuration (for orders)', emailDestLbl: 'Your Destination Email (to receive orders):', admProd: 'Product Management (16 Boxes - Name, Price & Image)', admOrd: 'Received Orders Registry',
+                    saveSet: 'Save Contact Settings', saveProd: 'Save Product Changes', expBtn: 'Export Order History (CSV)'
+                },
+                fr: { 
+                    catalog: 'Catalogue de Produits (16 Cases)', payT: 'Méthodes de Paiement', payD: 'Nous acceptons les paiements sécurisés et échelonnés :', shipT: 'Expéditions & Services', shipD: 'Expédition rapide et gestion dédiée à notre charge.', shipLbl: 'Expéditions à leur charge :', contT: 'Contacts & Réseaux',
+                    cartT: 'Panier', wishT: 'Favoris (Wishlist)', adminT: 'Panneau de Configuration', couponPl: 'Entrer le Coupon (ex. SMASON10)', apply: 'Appliquer', clear: 'Vider le Panier', checkout: 'Passer la Commande',
+                    admCont: 'Paramètres Contacts & Réseaux Sociaux', waLbl: 'Numéro WhatsApp (ex. 393331234567):', waTxtLbl: 'Message WhatsApp pré-rempli:', admEmail: 'Configuration EmailJS (pour les commandes)', emailDestLbl: 'Votre Email de Destination :', admProd: 'Gestion des Produits (16 Cases)', admOrd: 'Registre des Commandes',
+                    saveSet: 'Enregistrer les Paramètres', saveProd: 'Enregistrer les Produits', expBtn: 'Exporter l\'Historique (CSV)'
+                },
+                es: { 
+                    catalog: 'Catálogo de Productos (16 Casillas)', payT: 'Métodos de Pago', payD: 'Aceptamos pagos seguros y fraccionados:', shipT: 'Envíos y Servicios', shipD: 'Envíos rápidos y gestión dedicada a nuestro cargo.', shipLbl: 'Envíos a su cargo:', contT: 'Contactos y Redes',
+                    cartT: 'Carrito', wishT: 'Favoritos (Wishlist)', adminT: 'Panel de Control y Configuración', couponPl: 'Ingresar Cupón (ej. SMASON10)', apply: 'Aplicar', clear: 'Vaciar Carrito', checkout: 'Proceder al Pago',
+                    admCont: 'Ajustes de Contacto y Redes Sociales', waLbl: 'Número de WhatsApp (ej. 393331234567):', waTxtLbl: 'Mensaje precargado de WhatsApp:', admEmail: 'Configuración de EmailJS', emailDestLbl: 'Tu Email de Destino:', admProd: 'Gestión de Productos (16 Casillas)', admOrd: 'Registro de Pedidos',
+                    saveSet: 'Guardar Ajustes', saveProd: 'Guardar Cambios de Productos', expBtn: 'Exportar Historial (CSV)'
+                },
+                de: { 
+                    catalog: 'Produktkatalog (16 Felder)', payT: 'Zahlungsmethoden', payD: 'Wir akzeptieren sichere Ratenzahlungen:', shipT: 'Versand & Service', shipD: 'Schneller Versand und engagierter Service von uns.', shipLbl: 'Sendungen zu deren Lasten:', contT: 'Kontakte & Social',
+                    cartT: 'Warenkorb', wishT: 'Wunschliste', adminT: 'Steuerpult & Einstellungen', couponPl: 'Gutschein eingeben (z.B. SMASON10)', apply: 'Anwenden', clear: 'Warenkorb leeren', checkout: 'Zur Kasse',
+                    admCont: 'Kontakt- & Social-Einstellungen', waLbl: 'WhatsApp-Nummer (z.B. 393331234567):', waTxtLbl: 'Vorausgefüllte WhatsApp-Nachricht:', admEmail: 'EmailJS-Konfiguration', emailDestLbl: 'Ihre Ziel-E-Mail:', admProd: 'Produktverwaltung (16 Felder)', admOrd: 'Bestellregister',
+                    saveSet: 'Einstellungen speichern', saveProd: 'Produktänderungen speichern', expBtn: 'Bestellverlauf exportieren (CSV)'
+                },
+                zh: { 
+                    catalog: '产品目录 (16个方格)', payT: '支付方式', payD: '我们接受安全及分期付款：', shipT: '运输与服务', shipD: '快速发货，专人负责。', shipLbl: '对方承担运费：', contT: '联系与社交',
+                    cartT: '购物车', wishT: '心愿单', adminT: '控制面板与设置', couponPl: '输入优惠券 (例如 SMASON10)', apply: '应用', clear: '清空购物车', checkout: '去结算',
+                    admCont: '联系与社交设置', waLbl: 'WhatsApp 号码 (例如 393331234567):', waTxtLbl: 'WhatsApp 预填消息:', admEmail: 'EmailJS 配置 (用于订单)', emailDestLbl: '您的目标邮箱 (接收订单):', admProd: '产品管理 (16个方格)', admOrd: '收到订单记录',
+                    saveSet: '保存联系设置', saveProd: '保存产品修改', expBtn: '导出订单历史 (CSV)'
+                },
+                id: { 
+                    catalog: 'Katalog Produk (16 Kotak)', payT: 'Metode Pembayaran', payD: 'Kami menerima pembayaran aman & cicilan:', shipT: 'Pengiriman & Layanan', shipD: 'Pengiriman cepat dan penanganan dari pihak kami.', shipLbl: 'Pengiriman ditanggung mereka:', contT: 'Kontak & Sosial',
+                    cartT: 'Keranjang Belanja', wishT: 'Daftar Keinginan', adminT: 'Panel Kontrol & Pengaturan', couponPl: 'Masukkan Kupon (cth. SMASON10)', apply: 'Terapkan', clear: 'Kosongkan Keranjang', checkout: 'Lanjutkan ke Pembayaran',
+                    admCont: 'Pengaturan Kontak & Sosial', waLbl: 'Nomor WhatsApp (cth. 393331234567):', waTxtLbl: 'Pesan WhatsApp pra-isi:', admEmail: 'Konfigurasi EmailJS', emailDestLbl: 'Email Tujuan Anda:', admProd: 'Manajemen Produk (16 Kotak)', admOrd: 'Catatan Pesanan',
+                    saveSet: 'Simpan Pengaturan', saveProd: 'Simpan Perubahan Produk', expBtn: 'Ekspor Riwayat Pesanan (CSV)'
+                },
+                ru: { 
+                    catalog: 'Каталог товаров (16 ячеек)', payT: 'Способы оплаты', payD: 'Безопасные платежи и рассрочка:', shipT: 'Доставка и Услуги', shipD: 'Быстрая доставка и обслуживание за наш счет.', shipLbl: 'Доставка за их счет:', contT: 'Контакты и соцсети',
+                    cartT: 'Корзина', wishT: 'Избранное', adminT: 'Панель управления и настройки', couponPl: 'Введите купон (напр. SMASON10)', apply: 'Применить', clear: 'Очистить корзину', checkout: 'Оформить заказ',
+                    admCont: 'Контакты и соцсети', waLbl: 'Номер WhatsApp (напр. 393331234567):', waTxtLbl: 'Предзаполненное сообщение WhatsApp:', admEmail: 'Настройка EmailJS', emailDestLbl: 'Ваш email для получения заказов:', admProd: 'Управление товарами (16 ячеек)', admOrd: 'Реестр заказов',
+                    saveSet: 'Сохранить настройки', saveProd: 'Сохранить изменения', expBtn: 'Экспорт истории (CSV)'
+                }
+            };
+
+            let t = translations[currentLang] || translations['it'];
+            titleEl.innerText = t.catalog;
+            payTitle.innerText = t.payT;
+            payDesc.innerText = t.payD;
+            shipTitle.innerText = t.shipT;
+            shipDesc.innerText = t.shipD;
+            shippingTextLabel.innerText = t.shipLbl;
+            contactInfoTitle.innerText = t.contT;
+            
+            cartTitle.innerText = t.cartT;
+            wishlistTitle.innerText = t.wishT;
+            adminTitle.innerText = t.adminT;
+            couponInput.placeholder = t.couponPl;
+            applyCouponBtn.innerText = t.apply;
+            clearCartBtn.innerText = t.clear;
+            checkoutBtn.innerText = t.checkout;
+            adminContactsTitle.innerText = t.admCont;
+            adminWaLabel.innerText = t.waLbl;
+            adminWaTextLabel.innerText = t.waTxtLbl;
+            adminEmailTitle.innerText = t.admEmail;
+            adminEmailDestLabel.innerText = t.emailDestLbl;
+            adminProductsTitle.innerText = t.admProd;
+            adminOrdersTitle.innerText = t.admOrd;
+            adminSaveSettingsBtn.innerText = t.saveSet;
+            adminSaveProductsBtn.innerText = t.saveProd;
+            adminExportBtn.innerText = t.expBtn;
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            localStorage.setItem('sma_son_cart', JSON.stringify(cart));
+            updateBadges();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('sma_son_cart', JSON.stringify(cart));
+            updateBadges();
+            openCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            discount = 0;
+            localStorage.removeItem('sma_son_cart');
+            updateBadges();
+            openCart();
+        }
+
+        function toggleWishlist(id) {
+            const index = wishlist.findIndex(item => item.id === id);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+            } else {
+                const product = products.find(p => p.id === id);
+                wishlist.push(product);
+            }
+            localStorage.setItem('sma_son_wishlist', JSON.stringify(wishlist));
+            updateBadges();
+        }
+
+        function updateBadges() {
+            document.getElementById('cartCount').innerText = cart.length;
+            document.getElementById('wishlistCount').innerText = wishlist.length;
+        }
+
+        function openCart() {
+            const container = document.getElementById('cartItems');
+            container.innerHTML = '';
+            let total = 0;
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color:#777; text-align:center;">Il carrello è vuoto.</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    let currentProductRef = products.find(p => p.id === item.id);
+                    let basePrice = currentProductRef ? currentProductRef.price : item.price;
+                    let p = (basePrice * rates[currentCurrency]).toFixed(2);
+                    total += parseFloat(p);
+                    container.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;">
+                            <span>${item.name} - <b>${symbols[currentCurrency]} ${p}</b></span>
+                            <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer; font-size:16px;" title="Rimuovi"><i class="fa-solid fa-trash"></i></button>
+                        </div>`;
+                });
+            }
+            
+            let shippingFee = cart.length > 0 ? (5 * rates[currentCurrency]) : 0;
+            if (cart.length > 0) {
+                total += shippingFee;
+                document.getElementById('shippingCostInfo').innerText = `Spedizione a carico loro: + ${symbols[currentCurrency]} ${shippingFee.toFixed(2)}`;
+            } else {
+                document.getElementById('shippingCostInfo').innerText = '';
             }
 
-            // Gestione eventi interazioni nel carrello
-            document.getElementById("cart-items-container").addEventListener("click", (e) => {
-                const incId = e.target.getAttribute("data-cart-inc");
-                const decId = e.target.getAttribute("data-cart-dec");
-                const delId = e.target.getAttribute("data-cart-del");
+            total = total * (1 - discount);
+            document.getElementById('cartTotal').innerText = `Totale: ${symbols[currentCurrency]} ${total.toFixed(2)}`;
+            
+            if (total > 0) {
+                let rate3 = (total / 3).toFixed(2);
+                document.getElementById('installments').innerText = `Paga in 3 rate da ${symbols[currentCurrency]} ${rate3} con Klarna o Scalapay`;
+            } else {
+                document.getElementById('installments').innerText = '';
+            }
 
-                if (incId) {
-                    const item = cartData.find(i => i.id === Number(incId));
-                    if (item) item.quantity++;
-                } else if (decId) {
-                    const item = cartData.find(i => i.id === Number(decId));
-                    if (item) {
-                        item.quantity--;
-                        if (item.quantity <= 0) {
-                            cartData = cartData.filter(i => i.id !== Number(decId));
-                        }
+            document.getElementById('cartModal').style.display = 'flex';
+        }
+        function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponInput').value.trim();
+            if (code === 'SMASON10') {
+                discount = 0.10;
+                alert('Coupon applicato: 10% di sconto!');
+                openCart();
+            } else {
+                alert('Codice coupon non valido');
+            }
+        }
+
+        function openWishlist() {
+            const container = document.getElementById('wishlistItems');
+            container.innerHTML = '';
+            if (wishlist.length === 0) {
+                container.innerHTML = '<p style="color:#777; text-align:center;">Nessun prodotto nei preferiti.</p>';
+            } else {
+                wishlist.forEach(item => {
+                    let currentProductRef = products.find(p => p.id === item.id);
+                    let basePrice = currentProductRef ? currentProductRef.price : item.price;
+                    let p = (basePrice * rates[currentCurrency]).toFixed(2);
+                    container.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${item.name}</span> <span>${symbols[currentCurrency]} ${p}</span></div>`;
+                });
+            }
+            document.getElementById('wishlistModal').style.display = 'flex';
+        }
+        function closeWishlist() { document.getElementById('wishlistModal').style.display = 'none'; }
+
+        function openAdmin() {
+            document.getElementById('settingWhatsapp').value = siteSettings.whatsapp || '';
+            document.getElementById('settingWhatsappText').value = siteSettings.whatsappText || '';
+            document.getElementById('settingFacebook').value = siteSettings.facebook || '';
+            document.getElementById('settingInstagram').value = siteSettings.instagram || '';
+            document.getElementById('settingTiktok').value = siteSettings.tiktok || '';
+            document.getElementById('settingToEmail').value = siteSettings.toEmail || '';
+            document.getElementById('settingEmailPublicKey').value = siteSettings.emailPublicKey || '';
+            document.getElementById('settingEmailServiceId').value = siteSettings.emailServiceId || '';
+            document.getElementById('settingEmailTemplateId').value = siteSettings.emailTemplateId || '';
+
+            const container = document.getElementById('adminProductList');
+            container.innerHTML = '';
+            products.forEach(p => {
+                container.innerHTML += `
+                    <div style="display:flex; flex-direction:column; gap:5px; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #eee;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <b>Casella #${p.id}</b>
+                            <input type="file" accept="image/*" onchange="updateProductImage(event, ${p.id})" style="font-size:11px; width:150px;">
+                        </div>
+                        <div style="display:flex; gap:5px;">
+                            <input type="text" id="admin_name_${p.id}" value="${p.name}" placeholder="Nome" style="flex:2;">
+                            <input type="number" step="0.01" id="admin_price_${p.id}" value="${p.price}" placeholder="Prezzo (EUR)" style="flex:1;">
+                        </div>
+                    </div>
+                `;
+            });
+
+            const ordersContainer = document.getElementById('adminOrdersList');
+            if (ordersHistory.length === 0) {
+                ordersContainer.innerHTML = '<p style="color:#777; text-align:center;">Nessun ordine registrato.</p>';
+            } else {
+                ordersContainer.innerHTML = ordersHistory.map((o, idx) => `<div><b>#${idx+1}</b> - ${o.date} - ${o.total}</div>`).join('');
+            }
+
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+        function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+
+        function updateProductImage(event, id) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const product = products.find(p => p.id === id);
+                    if (product) {
+                        product.image = e.target.result;
+                        localStorage.setItem('sma_son_products', JSON.stringify(products));
+                        renderProducts();
+                        alert('Immagine aggiornata!');
                     }
-                } else if (delId) {
-                    cartData = cartData.filter(i => i.id !== Number(delId));
-                }
-
-                StorageManager.set("smason_cart", cartData);
-                updateCartCount();
-                renderCartItems();
-            });
-
-            // Gestione Modali (Carrello & Admin)
-            const cartModal = document.getElementById("cart-modal");
-            const openCartBtn = document.getElementById("open-cart-btn");
-            const closeCartBtn = document.getElementById("close-cart-btn");
-            const checkoutBtn = document.getElementById("checkout-btn");
-
-            const adminModal = document.getElementById("admin-modal");
-            const openAdminBtn = document.getElementById("open-admin-btn");
-            const closeAdminBtn = document.getElementById("close-admin-btn");
-            const addProductForm = document.getElementById("add-product-form");
-
-            function toggleModal(modal, open) {
-                if (open) {
-                    modal.classList.add("active");
-                    modal.setAttribute("aria-hidden", "false");
-                    modal.querySelector(".modal").focus();
-                    if (modal === cartModal) renderCartItems();
-                    if (modal === adminModal) renderAdminProductsList();
-                } else {
-                    modal.classList.remove("active");
-                    modal.setAttribute("aria-hidden", "true");
-                }
-            }
-
-            openCartBtn.addEventListener("click", () => toggleModal(cartModal, true));
-            closeCartBtn.addEventListener("click", () => toggleModal(cartModal, false));
-            cartModal.addEventListener("click", (e) => { if (e.target === cartModal) toggleModal(cartModal, false); });
-
-            openAdminBtn.addEventListener("click", () => toggleModal(adminModal, true));
-            closeAdminBtn.addEventListener("click", () => toggleModal(adminModal, false));
-            adminModal.addEventListener("click", (e) => { if (e.target === adminModal) toggleModal(adminModal, false); });
-
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") {
-                    toggleModal(cartModal, false);
-                    toggleModal(adminModal, false);
-                }
-            });
-
-            // Checkout action
-            checkoutBtn.addEventListener("click", () => {
-                if (cartData.length === 0) {
-                    alert("Il carrello è vuoto!");
-                    return;
-                }
-                alert("Ordine inoltrato con successo! Grazie per aver scelto Smason Store.");
-                cartData = [];
-                StorageManager.set("smason_cart", cartData);
-                updateCartCount();
-                toggleModal(cartModal, false);
-            });
-
-            // Admin: Aggiunta Prodotto
-            addProductForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const name = document.getElementById("new-prod-name").value;
-                const categoryId = Number(document.getElementById("new-prod-category").value);
-                const price = parseFloat(document.getElementById("new-prod-price").value);
-
-                const newProduct = {
-                    id: Date.now(),
-                    folderId: categoryId,
-                    title: name,
-                    price: price
                 };
+                reader.readAsDataURL(file);
+            }
+        }
 
-                productsData.push(newProduct);
-                StorageManager.set("smason_products", productsData);
-                
-                addProductForm.reset();
-                renderAdminProductsList();
-                
-                // Sincronizza la vista corrente se aperta sulla categoria modificata
-                if (currentActiveFolderId) {
-                    renderProducts(currentActiveFolderId);
-                } else {
-                    renderFolders();
-                }
-                alert("Prodotto aggiunto con successo!");
+        function saveAllProducts() {
+            products.forEach(p => {
+                const nameInput = document.getElementById(`admin_name_${p.id}`);
+                const priceInput = document.getElementById(`admin_price_${p.id}`);
+                if (nameInput && nameInput.value.trim() !== '') p.name = nameInput.value.trim();
+                if (priceInput && !isNaN(priceInput.value)) p.price = parseFloat(priceInput.value).toFixed(2);
             });
+            localStorage.setItem('sma_son_products', JSON.stringify(products));
+            renderProducts();
+            alert('Tutti i prodotti sono stati aggiornati con successo!');
+            closeAdmin();
+        }
 
-            // Admin: Lista e Rimozione prodotti
-            function renderAdminProductsList() {
-                const listContainer = document.getElementById("admin-products-list");
-                listContainer.innerHTML = "";
-
-                if (productsData.length === 0) {
-                    listContainer.innerHTML = "<p>Nessun prodotto in magazzino.</p>";
-                    return;
-                }
-
-                productsData.forEach(prod => {
-                    const row = document.createElement("div");
-                    row.style.display = "flex";
-                    row.style.justifyContent = "space-between";
-                    row.style.alignItems = "center";
-                    row.style.padding = "0.25rem 0";
-                    row.style.borderBottom = "1px solid var(--border-color)";
-                    row.innerHTML = `
-                        <span>${prod.title} (€ ${Number(prod.price).toFixed(2)})</span>
-                        <button class="btn btn-danger" style="padding: 0.15rem 0.4rem; font-size: 0.8rem;" data-admin-del="${prod.id}">Elimina</button>
-                    `;
-                    listContainer.appendChild(row);
-                });
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Il carrello è vuoto!');
+                return;
             }
 
-            document.getElementById("admin-products-list").addEventListener("click", (e) => {
-                const delId = e.target.getAttribute("data-admin-del");
-                if (delId) {
-                    productsData = productsData.filter(p => p.id !== Number(delId));
-                    StorageManager.set("smason_products", productsData);
-                    renderAdminProductsList();
-                    
-                    // Sincronizza la vista corrente o le categorie
-                    if (currentActiveFolderId) {
-                        renderProducts(currentActiveFolderId);
-                    } else {
-                        renderFolders();
-                    }
-                }
-            });
+            shippingCount += cart.length;
+            localStorage.setItem('sma_son_shipping_count', shippingCount);
+            document.getElementById('shippingCounter').innerText = shippingCount;
 
-            // Avvio iniziale
-            renderFolders();
-            updateCartCount();
-        });
+            let total = 0;
+            let orderItemsText = cart.map((item, i) => {
+                let currentProductRef = products.find(p => p.id === item.id);
+                let basePrice = currentProductRef ? currentProductRef.price : item.price;
+                let p = (basePrice * rates[currentCurrency]).toFixed(2);
+                total += parseFloat(p);
+                return `${i + 1}. ${item.name} - ${symbols[currentCurrency]} ${p}`;
+            }).join('\n');
+
+            let shippingFee = 5 * rates[currentCurrency];
+            total += shippingFee;
+            total = total * (1 - discount);
+
+            let formattedTotal = `${symbols[currentCurrency]} ${total.toFixed(2)}`;
+
+            ordersHistory.push({
+                date: new Date().toLocaleString(),
+                total: formattedTotal,
+                itemsCount: cart.length
+            });
+            localStorage.setItem('sma_son_orders_history', JSON.stringify(ordersHistory));
+
+            let waMessage = `*NUOVO ORDINE RICEVUTO - SmaSon* 🛒\n\n` +
+                            `*Prodotti:* \n${orderItemsText}\n\n` +
+                            `*Spedizione:* ${symbols[currentCurrency]} ${shippingFee.toFixed(2)}\n` +
+                            `*Totale Complessivo:* *${formattedTotal}*`;
+
+            if (siteSettings.toEmail && siteSettings.emailPublicKey && siteSettings.emailServiceId && siteSettings.emailTemplateId) {
+                let templateParams = {
+                    to_email: siteSettings.toEmail,
+                    email: siteSettings.toEmail,
+                    to_name: siteSettings.toEmail,
+                    reply_to: siteSettings.toEmail,
+                    order_details: orderItemsText,
+                    total_items: cart.length
+                };
+                emailjs.send(siteSettings.emailServiceId, siteSettings.emailTemplateId, templateParams).catch(e => console.log(e));
+            }
+
+            cart = [];
+            discount = 0;
+            localStorage.removeItem('sma_son_cart');
+            closeCart();
+            updateBadges();
+
+            alert('Ordine registrato con successo! Si aprirà la chat WhatsApp per inviare la notifica al venditore.');
+
+            if (siteSettings.whatsapp) {
+                let encodedMessage = encodeURIComponent(waMessage);
+                window.open(`https://wa.me/${siteSettings.whatsapp}?text=${encodedMessage}`, '_blank');
+            } else {
+                alert('Nota: Inserisci il numero WhatsApp nel pannello Admin per automatizzare l\'invio diretto dei messaggi.');
+            }
+        }
+
+        function exportCSV() {
+            if (ordersHistory.length === 0) {
+                alert('Nessun ordine nello storico da esportare.');
+                return;
+            }
+            let csv = "ID,Data,Totale,Numero_Articoli\n";
+            ordersHistory.forEach((o, idx) => { 
+                csv += `${idx + 1},"${o.date}","${o.total}",${o.itemsCount}\n`; 
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'sma_son_storico_ordini.csv');
+            a.click();
+        }
+
+        function checkModalClose(event, modalId) {
+            if (event.target.id === modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+        }
+
+        applySettingsToPage();
+        changeLanguage();
+        renderProducts();
     </script>
 </body>
 </html>
